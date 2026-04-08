@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --background: #FDFBF7; /* Creamy Off-White */
+    --foreground: #333333; /* Dark Grey (not pitch black) */
+    --accent: #FADADD;     /* Soft Pastel Pink */
+    --accent-dark: #8B7D6B; /* Muted Beige / Taupe */
+    --border: #E8E2D6;     /* Subtle beige border */
+    
+    /* Font families */
+    --font-serif: "Prata", serif;
+    --font-sans: "Inter", sans-serif;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background: #1A1A1A;
+      --foreground: #F5F5F0;
+      --border: #333333;
+    }
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    font-family: var(--font-sans);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif);
+    letter-spacing: -0.02em;
+    font-weight: 500;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-accent-dark: var(--accent-dark);
+  --color-border-beige: var(--border);
+  
+  --font-serif: var(--font-serif);
+  --font-sans: var(--font-sans);
+}
