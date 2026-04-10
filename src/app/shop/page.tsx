@@ -7,20 +7,22 @@ import { motion, AnimatePresence } from "framer-motion";
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import ProductCard from "@/components/products/ProductCard";
-import { PRODUCTS, Product } from "@/data/products";
+import { Product } from "@/data/products";
+import { useProductStore } from "@/store/useProductStore";
 
 const InnerShopPage = () => {
   const searchParams = useSearchParams();
   const printFilter = searchParams?.get("print");
   const categoryFilter = searchParams?.get("category");
 
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>(PRODUCTS);
+  const products = useProductStore((state) => state.products);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeSort, setActiveSort] = useState("Recommended");
   const [isSortOpen, setIsSortOpen] = useState(false);
 
   useEffect(() => {
-    let result = PRODUCTS;
+    let result = [...products];
     
     if (printFilter) {
       result = result.filter(p => p.type.toLowerCase() === printFilter.toLowerCase());

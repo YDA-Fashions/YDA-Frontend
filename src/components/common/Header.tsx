@@ -4,11 +4,14 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Search, ShoppingBag, Heart, User, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
 import Logo from "./Logo";
 import CartToast from "../cart/CartToast";
-import OrderSuccessModal from "../cart/OrderSuccessModal";
+import BrandModal from "./BrandModal";
 import { useCartStore } from "../../store/useCartStore";
 import { useWishlistStore } from "../../store/useWishlistStore";
+import { useAuthStore } from "../../store/useAuthStore";
+import { useUIStore } from "../../store/useUIStore";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -19,8 +22,21 @@ const Header = () => {
   const [announcementIndex, setAnnouncementIndex] = useState(0);
   const [isMounted, setIsMounted] = useState(false);
   
+  const router = useRouter();
   const cartItemCount = useCartStore((state) => state.getTotalItems());
   const wishlistItemCount = useWishlistStore((state) => state.items.length);
+  const { user, signOut } = useAuthStore();
+  const [isAccountOpen, setIsAccountOpen] = useState(false);
+
+  const { 
+    isAccountModalOpen, 
+    setAccountModalOpen, 
+    isOrderModalOpen, 
+    setOrderModalOpen, 
+    isErrorModalOpen,
+    setErrorModalOpen,
+    modalData 
+  } = useUIStore();
 
   const announcements = [
     "Shop For ₹1000+ & Get 10% OFF ✨",
@@ -74,7 +90,36 @@ const Header = () => {
   return (
     <>
       <CartToast />
-      <OrderSuccessModal />
+      
+      {/* Global Branded Modals */}
+      <BrandModal 
+        isOpen={isAccountModalOpen}
+        onClose={() => setAccountModalOpen(false)}
+        type="account"
+        title="Welcome to YDA"
+        subtitle="Your account has been created successfully"
+        buttonText="Continue Selection"
+      />
+
+      <BrandModal 
+        isOpen={isOrderModalOpen}
+        onClose={() => setOrderModalOpen(false)}
+        type="order"
+        title="Order Confirmed"
+        subtitle="Your order has been placed successfully"
+        buttonText="Continue Shopping"
+        productName={modalData?.productName}
+        amount={modalData?.amount}
+      />
+
+      <BrandModal 
+        isOpen={isErrorModalOpen}
+        onClose={() => setErrorModalOpen(false)}
+        type="error"
+        title={modalData?.title || "Encountered an Issue"}
+        subtitle={modalData?.subtitle || "Something went wrong. Please try again."}
+        buttonText={modalData?.buttonText || "Acknowledged"}
+      />
       
       <header 
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -170,9 +215,50 @@ const Header = () => {
                 )}
               </Link>
 
-              <Link href="/login" className="hidden sm:block p-2 text-foreground/80 hover:text-black transition-colors" aria-label="Account">
-                <User size={18} strokeWidth={1.2} />
-              </Link>
+              <div className="relative">
+                <button 
+                  onClick={() => user ? setIsAccountOpen(!isAccountOpen) : router.push("/login")}
+                  className="p-2 text-foreground/80 hover:text-black transition-colors"
+                  aria-label="Account"
+                >
+                  {user ? (
+                    <div className="w-5 h-5 bg-foreground text-background text-[8px] flex items-center justify-center rounded-full font-black uppercase">
+                      {user.email?.[0]}
+                    </div>
+                  ) : (
+                    <User size={18} strokeWidth={1.2} />
+                  )}
+                </button>
+
+                <AnimatePresence>
+                  {isAccountOpen && user && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      className="absolute right-0 mt-4 w-64 bg-white border border-border-beige p-6 shadow-xl"
+                    >
+                      <div className="mb-6 pb-6 border-b border-border-beige">
+                        <p className="text-[10px] uppercase tracking-widest text-foreground/40 mb-1">Authenticated as</p>
+                        <p className="text-sm font-serif italic truncate">{user.email}</p>
+                      </div>
+                      <div className="space-y-4">
+                        <Link href="/account" className="block text-[10px] uppercase tracking-widest font-black hover:text-accent-dark transition-colors">Account Settings</Link>
+                        <Link href="/orders" className="block text-[10px] uppercase tracking-widest font-black hover:text-accent-dark transition-colors">Order History</Link>
+                        <button 
+                          onClick={() => {
+                            signOut();
+                            setIsAccountOpen(false);
+                          }}
+                          className="block w-full text-left text-[10px] uppercase tracking-widest font-black text-red-500 hover:text-red-700 transition-colors pt-4 border-t border-border-beige"
+                        >
+                          Sign Out From Studio
+                        </button>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             </div>
           </div>
         </div>

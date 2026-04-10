@@ -20,6 +20,8 @@ export const metadata: Metadata = {
   description: "Exquisite handcrafted bags and cushion covers featuring Sanganeri and Gujarati prints. Minimal luxury, timeless craftsmanship.",
 };
 
+import GlobalInit from "@/components/common/GlobalInit";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -30,7 +32,10 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${prata.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <GlobalInit />
+        {children}
+      </body>
     </html>
   );
 }

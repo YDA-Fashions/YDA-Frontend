@@ -8,9 +8,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import { useCartStore } from "@/store/useCartStore";
+import { useUIStore } from "@/store/useUIStore";
 
 const CartPage = () => {
-  const { items, removeItem, updateQuantity, getTotalPrice, getTotalItems, setOrderSuccessModalOpen, setLastOrderDetails, clearCart } = useCartStore();
+  const { items, removeItem, updateQuantity, getTotalPrice, getTotalItems, clearCart } = useCartStore();
+  const { setOrderModalOpen } = useUIStore();
   const [isProcessing, setIsProcessing] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -27,12 +29,10 @@ const CartPage = () => {
     setIsProcessing(true);
     // Simulate API call
     setTimeout(() => {
-      const orderId = "YDA" + Math.random().toString(36).substr(2, 9).toUpperCase();
-      setLastOrderDetails({
-        orderId,
-        totalAmount: subtotal
+      setOrderModalOpen(true, {
+        productName: items.length === 1 ? items[0].name : `${items.length} Multiple Pieces`,
+        amount: subtotal
       });
-      setOrderSuccessModalOpen(true);
       clearCart();
       setIsProcessing(false);
     }, 1500);

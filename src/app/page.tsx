@@ -10,10 +10,11 @@ import Footer from "@/components/common/Footer";
 import Hero from "@/components/home/Hero";
 import ProductCard from "@/components/products/ProductCard";
 import CollectionCard from "@/components/home/CollectionCard";
-import { PRODUCTS } from "@/data/products";
+import { useProductStore } from "@/store/useProductStore";
 
 export default function Home() {
-  const featuredProducts = PRODUCTS.slice(0, 10);
+  const products = useProductStore((state) => state.products);
+  const featuredProducts = products.filter(p => p.isFeatured).slice(0, 10);
   const [currentReview, setCurrentReview] = useState(0);
   const [showPopup, setShowPopup] = useState(false);
 

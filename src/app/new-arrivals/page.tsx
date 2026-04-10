@@ -5,15 +5,17 @@ import { motion } from "framer-motion";
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import ProductCard from "@/components/products/ProductCard";
-import { PRODUCTS, Product } from "@/data/products";
+import { Product } from "@/data/products";
+import { useProductStore } from "@/store/useProductStore";
 
 const NewArrivalsPage = () => {
+  const allProducts = useProductStore((state) => state.products);
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     // Show the 4 most recent products from the catalog
-    setProducts(PRODUCTS.slice(-4).reverse());
-  }, []);
+    setProducts([...allProducts].slice(-4).reverse());
+  }, [allProducts]);
 
   return (
     <div className="min-h-screen bg-background text-foreground">

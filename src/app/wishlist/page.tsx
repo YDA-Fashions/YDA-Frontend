@@ -8,18 +8,20 @@ import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import ProductCard from "@/components/products/ProductCard";
 import { useWishlistStore } from "@/store/useWishlistStore";
+import { useProductStore } from "@/store/useProductStore";
 
 const WishlistPage = () => {
   const { getWishlistItems, items: wishlistIds } = useWishlistStore();
+  const allProducts = useProductStore((state) => state.products);
   const [isMounted, setIsMounted] = useState(false);
   const [products, setProducts] = useState<any[]>([]);
 
   // Fix Hydration Error: Ensure component is mounted on client before rendering items
   useEffect(() => {
     setIsMounted(true);
-    // Fetch actual product objects from IDs
-    setProducts(getWishlistItems());
-  }, [getWishlistItems, wishlistIds]);
+    // Fetch actual product objects from IDs using dynamic product data
+    setProducts(getWishlistItems(allProducts));
+  }, [getWishlistItems, wishlistIds, allProducts]);
 
   if (!isMounted) {
     return (

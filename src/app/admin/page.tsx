@@ -3,17 +3,17 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { Plus, Edit2, Trash2, LayoutDashboard, Package, ShoppingCart, Users, ArrowUpRight } from "lucide-react";
-import { PRODUCTS, Product } from "@/data/products";
+import { useProductStore } from "@/store/useProductStore";
 import Logo from "@/components/common/Logo";
 
 const AdminPage = () => {
   const [activeTab, setActiveTab] = useState("products");
-  const [productList, setProductList] = useState<Product[]>(PRODUCTS);
+  const products = useProductStore((state) => state.products);
 
   const stats = [
     { label: "Total Revenue", value: "₹24,50,000", change: "+12.5%", color: "text-green-500" },
     { label: "Active Orders", value: "142", icon: ShoppingCart },
-    { label: "Total Products", value: productList.length, icon: Package },
+    { label: "Total Products", value: products.length, icon: Package },
     { label: "Customers", value: "1,200", icon: Users },
   ];
 
@@ -91,7 +91,7 @@ const AdminPage = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-border-beige/40">
-              {productList.map((product) => (
+              {products.map((product) => (
                 <tr key={product.id} className="hover:bg-accent/5 transition-colors">
                   <td className="px-6 py-4 flex items-center gap-4">
                     <div className="relative w-12 h-16 bg-[#F5F5F0]">

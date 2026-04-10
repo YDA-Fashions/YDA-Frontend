@@ -5,17 +5,19 @@ import { motion } from "framer-motion";
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import ProductCard from "@/components/products/ProductCard";
-import { PRODUCTS, Product } from "@/data/products";
+import { Product } from "@/data/products";
+import { useProductStore } from "@/store/useProductStore";
 
 const BigToteBagsPage = () => {
+  const allProducts = useProductStore((state) => state.products);
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    const filtered = PRODUCTS.filter(
+    const filtered = allProducts.filter(
       (p) => p.category === "bags" && p.size === "large"
     );
     setProducts(filtered);
-  }, []);
+  }, [allProducts]);
 
   return (
     <div className="min-h-screen bg-background text-foreground">

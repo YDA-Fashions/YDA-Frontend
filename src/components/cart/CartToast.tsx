@@ -16,12 +16,14 @@ const CartToast = () => {
     <AnimatePresence>
       {isCartToastOpen && (
         <motion.div
-          initial={{ opacity: 0, y: 100, x: "-50%" }}
+          initial={{ opacity: 0, y: 50, x: "-50%" }}
           animate={{ opacity: 1, y: 0, x: "-50%" }}
-          exit={{ opacity: 0, y: 100, x: "-50%" }}
-          className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[300] w-[90%] max-w-sm"
+          exit={{ opacity: 0, y: 50, x: "-50%" }}
+          className="fixed bottom-10 left-1/2 -translate-x-1/2 z-[300] w-[92%] max-w-md"
         >
-          <div className="bg-white rounded-sm shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-black/5 p-4 flex items-center gap-4">
+          <div className="bg-white/95 backdrop-blur-md rounded-sm shadow-[0_30px_60px_-15px_rgba(0,0,0,0.2)] border border-black/5 p-5 flex items-center gap-6 overflow-hidden relative">
+            {/* Design Element: Accent Bar */}
+            <div className="absolute left-0 top-0 bottom-0 w-1 bg-black" />
             {/* Product Image */}
             <div className="relative w-16 h-16 bg-[#F5F5F0] flex-shrink-0 rounded-sm overflow-hidden">
               <Image 
@@ -34,29 +36,29 @@ const CartToast = () => {
 
             {/* Content */}
             <div className="flex-grow min-w-0">
-              <div className="flex items-center gap-1.5 mb-1">
-                <CheckCircle2 size={12} className="text-emerald-600" />
-                <span className="text-[10px] uppercase tracking-widest font-black text-emerald-600">Added to Selection</span>
+              <div className="flex items-center gap-2 mb-1.5">
+                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                <span className="text-[10px] uppercase tracking-[0.3em] font-black text-black/50">Piece Added to Selection</span>
               </div>
-              <h4 className="text-[13px] font-serif truncate mb-0.5">{lastAddedItem.name}</h4>
-              <p className="text-[11px] font-black text-black/40">₹{lastAddedItem.selling_price.toLocaleString()}</p>
+              <h4 className="text-[15px] font-serif italic mb-1 truncate text-black">{lastAddedItem.name}</h4>
+              <p className="text-[12px] font-black tracking-tight text-black/40">₹{lastAddedItem.selling_price.toLocaleString()}</p>
             </div>
 
             {/* Actions */}
-            <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-3 border-l border-black/5 pl-5">
               <Link 
                 href="/cart"
                 onClick={() => setCartToastOpen(false)}
-                className="p-2.5 bg-black text-white rounded-full hover:bg-black/80 transition-colors"
-                title="View Cart"
+                className="text-[11px] uppercase tracking-[0.2em] font-black text-black hover:opacity-60 transition-all border-b border-black pb-0.5"
               >
-                <ArrowRight size={16} />
+                View
               </Link>
               <button 
                 onClick={() => setCartToastOpen(false)}
-                className="p-2.5 text-black/20 hover:text-black transition-colors"
+                className="p-1.5 text-black/20 hover:text-black transition-colors"
+                aria-label="Close"
               >
-                <X size={16} />
+                <X size={18} strokeWidth={1.5} />
               </button>
             </div>
           </div>
