@@ -99,6 +99,23 @@ export default function StoryPage() {
           </div>
         </section>
 
+        {/* Center Video Section (New) */}
+        <section className="py-24 bg-background">
+          <div className="container mx-auto px-6">
+            <div className="max-w-5xl mx-auto">
+              <div className="relative w-full aspect-video shadow-2xl overflow-hidden rounded-sm border border-border-beige/10">
+                <iframe 
+                   src="https://www.youtube.com/embed/Bt0S0hqjVX4"
+                   title="YDA Our Story"
+                   className="absolute inset-0 w-full h-full"
+                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                   allowFullScreen
+                 />
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Commitment Section */}
         <section className="container mx-auto px-6 py-32">
           <div className="max-w-4xl mx-auto text-center">

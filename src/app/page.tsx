@@ -89,9 +89,31 @@ export default function Home() {
       
       <main className="pt-[90px]"> {/* Optimized compact padding offset */}
         <Hero />
+        
+        {/* 2. Hero Promotional Text (Bold & Branded) */}
+        <section className="pt-12 pb-6 md:py-16 bg-background text-center">
+          <div className="container mx-auto px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              <h2 className="text-xl md:text-3xl lg:text-5xl font-black text-black uppercase tracking-tight leading-tight mb-2">
+                Shop For ₹1000+ & Get 10% Extra Discount
+              </h2>
+              <h3 className="text-lg md:text-2xl font-black text-black uppercase tracking-tight mb-6">
+                PLUS FREE Gift
+              </h3>
+              <p className="text-xs md:text-base font-black text-emerald-600 uppercase tracking-[0.3em]">
+                Hurry! Limited Time Deal 🔥
+              </p>
+            </motion.div>
+          </div>
+        </section>
 
-        {/* 2. Hero CTA Buttons Below Slider (Compact) */}
-        <section className="py-12 md:py-16 bg-background border-b border-border-beige/20">
+        {/* 3. Hero CTA Buttons (Moved Below Promo Text) */}
+        <section className="pb-12 md:pb-16 bg-background border-b border-border-beige/20">
           <div className="container mx-auto px-6 flex flex-col md:flex-row items-center justify-center gap-6">
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }}>
               <Link 
@@ -144,22 +166,33 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 3.2 High-Visibility Offer Banner */}
-        <section className="py-12 bg-[#FBF9F4] border-y border-border-beige/30">
-          <div className="container mx-auto px-6 text-center">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <h2 className="text-xl md:text-3xl lg:text-4xl font-black text-black uppercase tracking-tight mb-4">
-                Shop For ₹1000+ & Get 10% Extra Discount PLUS FREE Gift
-              </h2>
-              <p className="text-sm md:text-base font-black text-emerald-600 uppercase tracking-[0.3em]">
-                Hurry! Limited Time Deal 🔥
-              </p>
-            </motion.div>
+        {/* 4. Horizontal Video Reels Section (New) */}
+        <section className="py-12 md:py-24 bg-white overflow-hidden border-b border-border-beige/20">
+          <div className="container mx-auto px-6 mb-12">
+            <p className="text-[10px] uppercase tracking-[0.4em] font-bold text-accent-dark mb-4 text-center md:text-left">Artistry in Motion</p>
+            <h2 className="text-3xl md:text-5xl font-serif tracking-tight italic text-center md:text-left">Handcrafted Stories</h2>
+          </div>
+          
+          <div className="flex overflow-x-auto md:grid md:grid-cols-3 gap-4 md:gap-16 px-6 md:px-2 container mx-auto pb-8 snap-x scrollbar-hide no-scrollbar">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <motion.div 
+                key={i}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: i * 0.1 }}
+                className="flex-shrink-0 w-[160px] md:w-full aspect-[9/16] relative bg-foreground/5 overflow-hidden snap-center rounded-sm shadow-lg md:shadow-2xl hover:scale-[1.02] transition-transform duration-500"
+              >
+                <video 
+                  src="/videos/YDA-VIDEO-1.mp4"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+              </motion.div>
+            ))}
           </div>
         </section>
 
@@ -399,6 +432,28 @@ export default function Home() {
                   <p className="text-[10px] md:text-[11px] text-black/60 italic font-sans leading-relaxed px-2 uppercase tracking-wider">{item.text}</p>
                 </motion.div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* 7.5 Social Connect Section: YouTube (New) */}
+        <section className="py-12 md:py-24 bg-[#FBF9F4] border-t border-border-beige/50">
+          <div className="container mx-auto px-6 text-center">
+            <div className="max-w-5xl mx-auto space-y-12">
+               <div>
+                  <p className="text-[10px] uppercase tracking-[0.5em] font-black text-accent-dark mb-4 text-center">Our Creative Space</p>
+                  <h2 className="text-3xl md:text-5xl font-serif italic text-foreground text-center">The Making of Luxury</h2>
+               </div>
+               
+               <div className="relative w-full aspect-video shadow-2xl overflow-hidden rounded-sm border border-border-beige/30">
+                 <iframe 
+                   src="https://www.youtube.com/embed/Bt0S0hqjVX4"
+                   title="YDA Luxury Handcrafted Fashion"
+                   className="absolute inset-0 w-full h-full"
+                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                   allowFullScreen
+                 />
+               </div>
             </div>
           </div>
         </section>
