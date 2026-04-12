@@ -5,10 +5,26 @@ import Image from "next/image";
 import { Plus, Edit2, Trash2, LayoutDashboard, Package, ShoppingCart, Users, ArrowUpRight } from "lucide-react";
 import { useProductStore } from "@/store/useProductStore";
 import Logo from "@/components/common/Logo";
+import { seedProducts } from "@/utils/seedProducts";
 
 const AdminPage = () => {
   const [activeTab, setActiveTab] = useState("products");
+  const [isSyncing, setIsSyncing] = useState(false);
   const products = useProductStore((state) => state.products);
+  const fetchProducts = useProductStore((state) => state.fetchProducts);
+
+  const handleSync = async () => {
+    if (!confirm("This will upload all static products to Supabase. Continue?")) return;
+    setIsSyncing(true);
+    const result = await seedProducts();
+    if (result.success) {
+      alert(`Successfully synced ${result.count} products!`);
+      fetchProducts(); // Refresh the store
+    } else {
+      alert("Sync failed. Check console for details.");
+    }
+    setIsSyncing(false);
+  };
 
   const stats = [
     { label: "Total Revenue", value: "₹24,50,000", change: "+12.5%", color: "text-green-500" },
@@ -61,9 +77,18 @@ const AdminPage = () => {
             </p>
           </div>
           
-          <button className="bg-accent-dark text-white px-8 py-4 text-[10px] uppercase tracking-widest font-bold hover:bg-foreground transition-colors flex items-center gap-3">
-            <Plus size={16} /> New Entry
-          </button>
+          <div className="flex gap-4">
+            <button 
+              onClick={handleSync}
+              disabled={isSyncing}
+              className="border border-border-beige text-foreground/60 px-8 py-4 text-[10px] uppercase tracking-widest font-bold hover:bg-accent/5 transition-colors flex items-center gap-3 disabled:opacity-50"
+            >
+              {isSyncing ? "Syncing..." : "Sync Static Data"}
+            </button>
+            <button className="bg-accent-dark text-white px-8 py-4 text-[10px] uppercase tracking-widest font-bold hover:bg-foreground transition-colors flex items-center gap-3">
+              <Plus size={16} /> New Entry
+            </button>
+          </div>
         </div>
 
         {/* Stats Grid */}

@@ -123,51 +123,53 @@ const CartPage = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0, x: -20 }}
-                        className="bg-white border border-black/5 p-6 flex gap-6 md:gap-10 items-center rounded-sm group hover:shadow-sm transition-shadow"
+                        className="bg-white border border-black/5 p-4 md:p-6 flex flex-row md:flex-row gap-4 md:gap-10 items-center rounded-sm group hover:shadow-sm transition-shadow min-w-0 w-full overflow-hidden"
                       >
-                        <Link href={`/product/${item.id}`} className="relative aspect-square w-24 md:w-32 bg-[#F5F5F0] overflow-hidden flex-shrink-0 rounded-sm">
-                          <Image src={item.colors?.[0]?.images?.[0] || "/images/placeholder.jpg"} alt={item.name} fill className="object-contain p-4 group-hover:scale-105 transition-transform duration-700" />
+                        <Link href={`/product/${item.id}`} className="relative aspect-square w-20 md:w-32 bg-[#F5F5F0] overflow-hidden flex-shrink-0 rounded-sm">
+                          <Image src={item.colors?.[0]?.images?.[0] || "/images/placeholder.jpg"} alt={item.name} fill className="object-contain p-2 md:p-4 group-hover:scale-105 transition-transform duration-700" />
                         </Link>
                         
-                        <div className="flex-grow flex flex-col md:flex-row md:items-center justify-between gap-6">
-                          <div className="space-y-2">
-                            <span className="text-[9px] uppercase tracking-[0.2em] font-black text-black/40">
+                        <div className="flex-grow flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-6 min-w-0">
+                          <div className="space-y-1 md:space-y-2 min-w-0">
+                            <span className="text-[8px] md:text-[9px] uppercase tracking-[0.2em] font-black text-black/40 whitespace-nowrap overflow-hidden text-ellipsis block">
                               Artisan Heritage Series
                             </span>
                             <Link href={`/product/${item.id}`}>
-                              <h3 className="text-lg md:text-xl font-serif line-clamp-1">{item.name}</h3>
+                              <h3 className="text-sm md:text-xl font-serif line-clamp-1">{item.name}</h3>
                             </Link>
-                            <p className="text-sm font-black tracking-tight">₹{item.selling_price.toLocaleString()}</p>
+                            <p className="text-xs md:text-sm font-black tracking-tight">₹{item.selling_price.toLocaleString()}</p>
                           </div>
 
-                          <div className="flex items-center gap-8 md:gap-12">
+                          <div className="flex items-center justify-between md:justify-end gap-4 md:gap-12 w-full md:w-auto">
                             {/* Quantity Selector */}
-                            <div className="flex items-center bg-[#FBF9F4] rounded-full px-2 py-1 border border-black/5">
+                            <div className="flex items-center bg-[#FBF9F4] rounded-full px-1.5 py-0.5 border border-black/5">
                               <button 
                                 onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                                className="w-8 h-8 flex items-center justify-center hover:bg-black/5 rounded-full transition-colors"
+                                className="w-7 h-7 flex items-center justify-center hover:bg-black/5 rounded-full transition-colors"
                               >
-                                <Minus size={14} />
+                                <Minus size={12} />
                               </button>
-                              <span className="w-10 text-center text-xs font-black">{item.quantity}</span>
+                              <span className="w-8 text-center text-[10px] md:text-xs font-black">{item.quantity}</span>
                               <button 
                                 onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                className="w-8 h-8 flex items-center justify-center hover:bg-black/5 rounded-full transition-colors"
+                                className="w-7 h-7 flex items-center justify-center hover:bg-black/5 rounded-full transition-colors"
                               >
-                                <Plus size={14} />
+                                <Plus size={12} />
                               </button>
                             </div>
                             
-                            <div className="text-right min-w-[100px]">
-                              <p className="text-base font-black tracking-tighter">₹{(item.selling_price * item.quantity).toLocaleString()}</p>
+                            <div className="flex items-center gap-4">
+                              <div className="text-right whitespace-nowrap">
+                                <p className="text-sm md:text-base font-black tracking-tighter">₹{(item.selling_price * item.quantity).toLocaleString()}</p>
+                              </div>
+  
+                              <button 
+                                onClick={() => removeItem(item.id)}
+                                className="p-2 text-black/10 hover:text-red-400 transition-colors"
+                              >
+                                <Trash2 size={18} strokeWidth={1} />
+                              </button>
                             </div>
-
-                            <button 
-                              onClick={() => removeItem(item.id)}
-                              className="p-2 text-black/10 hover:text-red-400 transition-colors"
-                            >
-                              <Trash2 size={20} strokeWidth={1} />
-                            </button>
                           </div>
                         </div>
                       </motion.div>

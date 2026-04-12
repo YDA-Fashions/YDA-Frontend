@@ -23,7 +23,7 @@ const ProductPage = () => {
   
   const products = useProductStore((state) => state.products);
   const isLoading = useProductStore((state) => state.isLoading);
-  const product = products.find((p) => p.id === id);
+  const product = products.find((p) => p.id === id || p.product_code === id);
 
   const [selectedColor, setSelectedColor] = useState(0);
   const [selectedImage, setSelectedImage] = useState(0);
@@ -410,16 +410,3 @@ const ProductPage = () => {
 };
 
 export default ProductPage;
-
-import { supabase } from "@/lib/supabase"
-
-async function testSupabase() {
-  const { data, error } = await supabase
-    .from('products')
-    .select('*')
-
-  console.log("Products:", data)
-  console.log("Error:", error)
-}
-
-testSupabase()

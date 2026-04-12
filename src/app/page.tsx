@@ -116,9 +116,9 @@ export default function Home() {
         <section className="py-16 md:py-24 container mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
-              { id: 'small', title: "Small Totes", image: "/images/home-page-image/small-tote-1.jpg", href: "/small-tote-bags" },
-              { id: 'big', title: "Big Totes", image: "/images/home-page-image/big-tote-1.jpg", href: "/big-tote-bags" },
-              { id: 'cushion', title: "Cushions", image: "/images/home-page-image/cushion-1.png", href: "/cushion-covers" },
+              { id: 'small', title: "Small Totes", image: "/images/home-page-image/small-tote.jpg", href: "/small-tote-bags" },
+              { id: 'big', title: "Big Totes", image: "/images/home-page-image/big-tote.jpg", href: "/big-tote-bags" },
+              { id: 'cushion', title: "Cushions", image: "/images/home-page-image/cushion-1.jpg", href: "/cushion-covers" },
             ].map((cat) => (
               <motion.div 
                 key={cat.id}

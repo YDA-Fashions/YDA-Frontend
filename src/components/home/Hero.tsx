@@ -14,12 +14,7 @@ const BANNERS = [
   "/images/Slider-image-C/Slider-image-C6.jpg",
 ];
 
-const MOBILE_BANNERS = [
-  "/images/Mobile-slider-1/Mobile-slider-1.png",
-  "/images/Mobile-slider-1/Mobile-slider-2.png",
-  "/images/Mobile-slider-1/Mobile-slider-3.png",
-  "/images/Mobile-slider-1/Mobile-slider-4.png",
-];
+
 
 const Hero = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -30,9 +25,8 @@ const Hero = () => {
     checkMobile();
     window.addEventListener("resize", checkMobile);
     
-    const activeBanners = isMobile ? MOBILE_BANNERS : BANNERS;
     const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % activeBanners.length);
+      setCurrentIndex((prev) => (prev + 1) % BANNERS.length);
     }, 4000);
 
     return () => {
@@ -41,10 +35,10 @@ const Hero = () => {
     };
   }, [isMobile]);
 
-  const activeBanners = isMobile ? MOBILE_BANNERS : BANNERS;
+  const activeBanners = BANNERS;
 
   return (
-    <section className="relative h-[95vh] w-full overflow-hidden bg-black">
+    <section className="relative h-auto aspect-[16/9] md:h-[95vh] w-full overflow-hidden bg-black max-h-[300px] md:max-h-none">
       {/* Background Slider with Fade Effect */}
       <div className="absolute inset-0 z-0">
         <AnimatePresence mode="wait">

@@ -5,10 +5,11 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import ProductCard from "../products/ProductCard";
-import { PRODUCTS } from "../../data/products";
+import { useProductStore } from "@/store/useProductStore";
 
 const FeaturedProducts = () => {
-  const featuredItems = PRODUCTS.filter(p => p.isFeatured).slice(0, 4);
+  const products = useProductStore((state) => state.products);
+  const featuredItems = products.filter(p => p.isFeatured).slice(0, 4);
 
   return (
     <section className="py-24 md:py-32 bg-background">

@@ -1,5 +1,6 @@
 export interface Product {
-  id: string;
+  id: string;          // Maps to Supabase UUID
+  product_code?: string; // Business identifier (optional during migration)
   name: string;
   selling_price: number;
   original_price: number;

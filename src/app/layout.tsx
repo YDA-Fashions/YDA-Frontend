@@ -20,6 +20,13 @@ export const metadata: Metadata = {
   description: "Exquisite handcrafted bags and cushion covers featuring Sanganeri and Gujarati prints. Minimal luxury, timeless craftsmanship.",
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
+
 import GlobalInit from "@/components/common/GlobalInit";
 
 export default function RootLayout({

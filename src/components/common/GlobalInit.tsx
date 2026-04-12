@@ -5,6 +5,7 @@ import { supabase } from "@/lib/supabase";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useCartStore } from "@/store/useCartStore";
 import { useWishlistStore } from "@/store/useWishlistStore";
+import { useProductStore } from "@/store/useProductStore";
 
 /**
  * GlobalInit
@@ -18,8 +19,11 @@ const GlobalInit = () => {
   const setCartUserId = useCartStore((state) => state.setUserId);
   const setWishlistUserId = useWishlistStore((state) => state.setUserId);
 
+
   useEffect(() => {
-    // Hydrate the initial session
+    // 1. Auth & Store Hydration
+
+    // 2. Hydrate the initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
         setAuth(session.user, session);

@@ -19,12 +19,12 @@ const Logo: React.FC<LogoProps> = ({
   const getLogoStyles = () => {
     switch (variant) {
       case "icon":
-        return "w-8 h-8 md:w-10 md:h-10";
+        return "w-6 h-6 md:w-10 md:h-10";
       case "stacked":
-        return "w-24 h-auto md:w-32";
+        return "h-[32px] w-auto md:h-auto md:w-32";
       case "horizontal":
       default:
-        return "w-28 h-auto md:w-[120px]";
+        return "h-[30px] w-auto md:h-auto md:w-[120px]";
     }
   };
 
@@ -33,13 +33,13 @@ const Logo: React.FC<LogoProps> = ({
       href="/"
       className={`inline-block group ${className}`}
     >
-      <div className={`relative ${getLogoStyles()} transition-transform duration-500 group-hover:scale-105`}>
+      <div className={`relative ${getLogoStyles()} transition-transform duration-500 md:group-hover:scale-105`}>
         <Image 
           src="/images/logo/yda-logo-1-.png"
           width={400}
           height={100}
           alt="YDA Logo"
-          className="object-contain"
+          className="object-contain h-full w-auto"
           priority
         />
       </div>
