@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -10,7 +10,7 @@ import { supabase } from "@/lib/supabase";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useUIStore } from "@/store/useUIStore";
 
-const LoginPage = () => {
+const LoginContent = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -153,6 +153,14 @@ const LoginPage = () => {
 
       <Footer />
     </div>
+  );
+};
+
+const LoginPage = () => {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-background flex items-center justify-center font-serif text-xl italic opacity-40 animate-pulse">Synchronizing Selection...</div>}>
+      <LoginContent />
+    </Suspense>
   );
 };
 
