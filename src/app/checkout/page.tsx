@@ -15,7 +15,7 @@ import { orderService } from "@/services/orderService";
 const CheckoutPage = () => {
   const router = useRouter();
   const { items, getTotalPrice, clearCart } = useCartStore();
-  const { user } = useAuthStore();
+  const { user, isLoading: isAuthLoading } = useAuthStore();
   const { setOrderModalOpen, setErrorModalOpen } = useUIStore();
   
   const [formData, setFormData] = useState({
@@ -23,10 +23,32 @@ const CheckoutPage = () => {
     phone: "",
     address: ""
   });
-  const [paymentMethod, setPaymentMethod] = useState<"COD" | "ONLINE">("COD");
+  const [paymentMethod, setPaymentMethod] = useState<"COD" | "ONLINE">("ONLINE");
   const [isProcessing, setIsProcessing] = useState(false);
 
+  const loadRazorpay = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
+
   useEffect(() => {
+    // 1. Session Hydration Guard
+    const { isLoading, user } = useAuthStore.getState();
+    if (isLoading) return; // Wait for GlobalInit to hydrate from Supabase
+
+    // 2. Auth Guard: Guests must sign in to purchase
+    if (!user) {
+      console.warn("🔐 Checkout Protection: Redirecting guest to authentication portal.");
+      router.push("/login?redirect=/checkout");
+      return;
+    }
+
+    // 3. Cart Guard: Must have items to checkout
     if (items.length === 0) {
       router.push("/cart");
     }
@@ -34,14 +56,14 @@ const CheckoutPage = () => {
 
   const totalPrice = getTotalPrice();
 
-  const handlePlaceOrder = async (e: React.FormEvent) => {
+  const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Strict Validation
     if (!formData.name.trim() || !formData.phone.trim() || !formData.address.trim()) {
       setErrorModalOpen(true, {
         title: "Incomplete Details",
-        subtitle: "Please provide your full name, phone, and shipping address to proceed.",
+        subtitle: "Please provide your full name, phone, and shipping address.",
         buttonText: "Revise Selection"
       });
       return;
@@ -50,25 +72,68 @@ const CheckoutPage = () => {
     setIsProcessing(true);
 
     try {
+      if (paymentMethod === "ONLINE") {
+        const res = await loadRazorpay();
+        if (!res) {
+          alert("Razorpay SDK failed to load. Are you online?");
+          setIsProcessing(false);
+          return;
+        }
+
+        const options = {
+          key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_placeholder",
+          amount: totalPrice * 100, // Amount in paise
+          currency: "INR",
+          name: "YDA Fashions",
+          description: "Artisan Garment Purchase",
+          image: "/images/logo.png",
+          handler: async function (response: any) {
+            await finalizeOrder(response.razorpay_payment_id);
+          },
+          prefill: {
+            name: formData.name,
+            email: user?.email,
+            contact: formData.phone,
+          },
+          theme: {
+            color: "#1A1A1A",
+          },
+          modal: {
+            ondismiss: function() {
+              setIsProcessing(false);
+            }
+          }
+        };
+
+        const rzp = new window.Razorpay(options);
+        rzp.open();
+      } else {
+        await finalizeOrder("COD");
+      }
+    } catch (err: any) {
+      console.error(err);
+      setErrorModalOpen(true, {
+        title: "Transaction Failed",
+        subtitle: err.message || "Payment processing error.",
+        buttonText: "Retry"
+      });
+      setIsProcessing(false);
+    }
+  };
+
+  const finalizeOrder = async (paymentId: string) => {
+    try {
       const orderData = {
         user_id: user?.id,
-        items: items.map(item => ({
-          id: item.id,
-          name: item.name,
-          selling_price: item.selling_price,
-          quantity: item.quantity,
-          image: item.colors?.[0]?.images?.[0]
-        })),
+        items: items,
         amount: totalPrice,
         customer_name: formData.name.trim(),
         customer_phone: formData.phone.trim(),
         customer_address: formData.address.trim(),
-        payment_method: paymentMethod,
-        payment_status: paymentMethod === "ONLINE" ? "paid" : "pending"
+        payment_method: paymentMethod === "ONLINE" ? "Razorpay" : "COD",
+        payment_status: paymentId === "COD" ? "pending" : "paid",
       };
 
-      console.log("📝 Final Audit: Preparing to submit order to Supabase...", orderData);
-      
       await orderService.createOrder(orderData);
       
       clearCart();
@@ -79,14 +144,32 @@ const CheckoutPage = () => {
       router.push("/");
     } catch (error: any) {
       setErrorModalOpen(true, {
-        title: "Order Failed",
-        subtitle: error.message || "Failed to place your order. Please try again.",
-        buttonText: "Revise & Retry"
+        title: "Order Finalization Failed",
+        subtitle: "Order recorded in payment but failed to sync with database.",
+        buttonText: "Contact Support"
       });
     } finally {
       setIsProcessing(false);
     }
   };
+
+  if (isAuthLoading) {
+    return (
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6 text-center">
+        <Header />
+        <motion.div 
+          initial={{ opacity: 0 }} 
+          animate={{ opacity: 1 }}
+          className="space-y-6"
+        >
+          <div className="w-12 h-12 border-2 border-accent-dark border-t-transparent rounded-full animate-spin mx-auto" />
+          <p className="text-[10px] uppercase tracking-[0.5em] font-black text-accent-dark">Synchronizing Account</p>
+          <h2 className="text-2xl font-serif italic">Masterpiece curation in progress...</h2>
+        </motion.div>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#FCFBFA]">
@@ -109,7 +192,7 @@ const CheckoutPage = () => {
                 Secure Your <br /> <span className="not-italic">Masterpiece.</span>
               </h1>
 
-              <form onSubmit={handlePlaceOrder} className="space-y-12">
+              <form onSubmit={handleCheckout} className="space-y-12">
                 {/* Shipping Details */}
                 <section>
                   <h2 className="text-[11px] uppercase tracking-[0.4em] font-black mb-8 border-b border-black/5 pb-4">
@@ -174,26 +257,26 @@ const CheckoutPage = () => {
                     <button
                       type="button"
                       onClick={() => setPaymentMethod("ONLINE")}
-                      className={`p-6 border flex items-center gap-4 transition-all opacity-50 cursor-not-allowed ${
-                        paymentMethod === "ONLINE" ? "border-black bg-black text-white" : "border-black/5 bg-white"
+                      className={`p-6 border flex items-center gap-4 transition-all ${
+                        paymentMethod === "ONLINE" ? "border-black bg-black text-white" : "border-black/5 bg-white hover:border-black/20"
                       }`}
                     >
                       <CreditCard size={20} />
                       <div className="text-left">
                         <p className="text-[10px] font-black uppercase tracking-widest">Online Payment</p>
-                        <p className="text-[9px] opacity-60 uppercase mt-1">Razorpay (Coming Soon)</p>
+                        <p className="text-[9px] opacity-60 uppercase mt-1">Pay via Razorpay (Safe & Secure)</p>
                       </div>
                     </button>
                   </div>
                 </section>
 
-                <button 
-                  type="submit"
-                  disabled={isProcessing}
-                  className="w-full bg-black text-white py-6 text-[12px] uppercase tracking-[0.4em] font-black hover:bg-black/90 transition-all flex items-center justify-center gap-4 shadow-2xl disabled:opacity-50"
-                >
-                  {isProcessing ? "Authenticating Transaction..." : "Complete Your Order"}
-                </button>
+                  <button 
+                    type="submit"
+                    disabled={isProcessing}
+                    className="w-full bg-black text-white py-6 text-[12px] uppercase tracking-[0.4em] font-black hover:bg-black/90 transition-all flex items-center justify-center gap-4 shadow-2xl disabled:opacity-50"
+                  >
+                    {isProcessing ? "Processing Artflow..." : `Fulfill Order - ₹${totalPrice.toLocaleString()}`}
+                  </button>
               </form>
             </div>
 

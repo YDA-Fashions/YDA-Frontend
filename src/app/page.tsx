@@ -173,7 +173,7 @@ export default function Home() {
             <h2 className="text-3xl md:text-5xl font-serif tracking-tight italic text-center md:text-left">Handcrafted Stories</h2>
           </div>
           
-          <div className="flex overflow-x-auto md:grid md:grid-cols-3 gap-4 md:gap-16 px-6 md:px-2 container mx-auto pb-8 snap-x scrollbar-hide no-scrollbar">
+          <div className="flex overflow-x-auto gap-4 md:gap-12 px-6 container mx-auto pb-8 snap-x scrollbar-hide no-scrollbar">
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <motion.div 
                 key={i}
@@ -181,7 +181,7 @@ export default function Home() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: i * 0.1 }}
-                className="flex-shrink-0 w-[160px] md:w-full aspect-[9/16] relative bg-foreground/5 overflow-hidden snap-center rounded-sm shadow-lg md:shadow-2xl hover:scale-[1.02] transition-transform duration-500"
+                className="flex-shrink-0 w-[160px] md:w-[350px] aspect-[9/16] relative bg-foreground/5 overflow-hidden snap-center rounded-sm shadow-lg md:shadow-2xl hover:scale-[1.02] transition-transform duration-500"
               >
                 <video 
                   src="/videos/YDA-VIDEO-1.mp4"
@@ -494,50 +494,30 @@ export default function Home() {
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative bg-background w-full max-w-lg overflow-hidden shadow-2xl border border-border-beige/20 z-10"
+              className="relative w-full max-w-2xl overflow-hidden shadow-2xl z-10 mx-auto"
             >
               <div className="absolute top-4 right-4 z-20">
                 <button 
                   onClick={() => setShowPopup(false)}
-                  className="p-2 text-foreground/40 hover:text-foreground transition-colors"
+                  className="p-2 bg-black/20 hover:bg-black/40 text-white rounded-full backdrop-blur-sm transition-colors"
                 >
-                  <X size={20} strokeWidth={1.5} />
+                  <X size={20} strokeWidth={2} />
                 </button>
               </div>
               
-              <div className="p-12 md:p-20 text-center flex flex-col items-center">
-                <div className="mb-10 w-24 h-auto relative">
+              <Link href="/shop" onClick={() => setShowPopup(false)}>
+                <div className="relative w-full cursor-pointer group">
                   <Image 
-                    src="/images/logo/yda-logo-2.png" 
-                    alt="YDA Fashions" 
-                    width={100} 
-                    height={40} 
-                    className="object-contain"
+                    src="/images/home-page-image/Website-Popup.png" 
+                    alt="Exclusive Offer" 
+                    width={1240}
+                    height={1748}
+                    className="w-full h-auto object-contain transition-transform duration-700 group-hover:scale-105"
+                    priority
                   />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-500" />
                 </div>
-                <p className="text-[10px] uppercase tracking-[0.5em] font-black text-accent-dark mb-6">Exclusive Offer</p>
-                <h2 className="text-3xl md:text-5xl font-serif italic mb-8 leading-tight">
-                  Join the YDA Circle & Get 15% Off
-                </h2>
-                <p className="text-foreground/60 text-sm leading-relaxed mb-10 max-w-sm mx-auto">
-                  Subscribe to receive updates on our transition to seasonal collections and early access to artisanal prints.
-                </p>
-                <Link 
-                  href="/shop"
-                  onClick={() => setShowPopup(false)}
-                  className="inline-block px-12 py-4 bg-foreground text-background text-[11px] uppercase tracking-[0.4em] font-black transition-all hover:bg-accent-dark shadow-lg"
-                >
-                  Discover More
-                </Link>
-                <div className="mt-10">
-                  <button 
-                    onClick={() => setShowPopup(false)}
-                    className="text-[9px] uppercase tracking-[0.3em] text-foreground/40 hover:text-foreground transition-colors border-b border-transparent hover:border-foreground/20 italic"
-                  >
-                    No thanks, I'll browse first
-                  </button>
-                </div>
-              </div>
+              </Link>
             </motion.div>
           </div>
         )}

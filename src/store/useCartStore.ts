@@ -21,6 +21,7 @@ interface CartStore {
   userId: string | null;
   setUserId: (id: string | null) => void;
   syncCart: (userId: string) => Promise<void>;
+  clearLocalItems: () => void;
 
   // Actions
   addItem: (product: Product) => void;
@@ -48,13 +49,51 @@ export const useCartStore = create<CartStore>()(
 
       syncCart: async (userId) => {
         try {
-          const remoteCart = await cartService.getCart(userId);
-          // Simple implementation: merge remote with products list (this assumes products are available)
-          // For now, let's keep it simple: if local is empty, use remote.
-          // This is a complex area, but let's just make sure clearCart/addItem/removeItem call the service.
+          // 1. Get current guest items
+          const localItems = get().items;
+          
+          // 2. Fetch account items from Supabase
+          const remoteRows = await cartService.getCart(userId);
+          
+          const { useProductStore } = (require("@/store/useProductStore"));
+          const allProducts = useProductStore.getState().products;
+          
+          const remoteItems: CartItem[] = (remoteRows || []).map((row: any) => {
+            const product = allProducts.find((p: any) => p.id === row.product_id);
+            return product ? { ...product, quantity: row.quantity } : null;
+          }).filter(Boolean) as CartItem[];
+
+          // 3. Merge Logic: Account items take precedence, Guest items are added if new
+          const mergedMap = new Map<string, CartItem>();
+          
+          // Add remote items first
+          remoteItems.forEach(item => mergedMap.set(item.id, item));
+          
+          // Merge local items
+          localItems.forEach(item => {
+            if (mergedMap.has(item.id)) {
+              // Item exists in both: usually we take the higher quantity or combine
+              // Let's combine for the best guest experience
+              const existing = mergedMap.get(item.id)!;
+              existing.quantity += item.quantity;
+            } else {
+              // New guest item: add it and mark for backend sync
+              mergedMap.set(item.id, item);
+              cartService.syncItem(userId, item.id, item.quantity).catch(console.error);
+            }
+          });
+
+          const finalItems = Array.from(mergedMap.values());
+          set({ items: finalItems });
+          console.log("☁️ Cart: Guest selections successfully merged with your account.");
         } catch (error) {
           console.error('Error syncing cart:', error);
         }
+      },
+
+      clearLocalItems: () => {
+        set({ items: [], userId: null });
+        console.log("🧹 Cart: Local selection cleared for privacy.");
       },
 
       addItem: (product) => {

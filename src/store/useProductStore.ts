@@ -13,17 +13,18 @@ interface ProductStore {
 /**
  * Product Store
  * 
- * Manages the product catalog. 
- * Reverted to static data from local PRODUCTS array.
+ * Reverted to Static Model: Manages the product catalog using local data.
+ * No Supabase dependency for listing products.
  */
 export const useProductStore = create<ProductStore>((set) => ({
-  products: PRODUCTS, // Initialize with static data
+  products: PRODUCTS, // Initial state set to static data
   isLoading: false,
   error: null,
 
   fetchProducts: async () => {
-    // No-op since data is static, but kept for compatibility
-    set({ isLoading: false, error: null });
+    // No-op: Data is static and local. 
+    // Kept as a fulfilled promise to avoid breaking GlobalInit callers.
+    set({ products: PRODUCTS, isLoading: false, error: null });
   },
 
   setProducts: (products) => set({ products }),

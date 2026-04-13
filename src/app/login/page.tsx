@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import { useRouter, useSearchParams } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import { supabase } from "@/lib/supabase";
@@ -19,6 +19,9 @@ const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirect = searchParams?.get("redirect") || "/";
+  
   const setAuth = useAuthStore((state) => state.setAuth);
   const setAccountModalOpen = useUIStore((state) => state.setAccountModalOpen);
 
@@ -35,7 +38,7 @@ const LoginPage = () => {
         });
         if (signInError) throw signInError;
         setAuth(data.user, data.session);
-        router.push("/");
+        router.push(redirect);
       } else {
         const { data, error: signUpError } = await supabase.auth.signUp({
           email,
@@ -49,7 +52,7 @@ const LoginPage = () => {
         if (signUpError) throw signUpError;
         setAuth(data.user, data.session);
         setAccountModalOpen(true);
-        router.push("/");
+        router.push(redirect);
       }
     } catch (err: any) {
       setError(err.message || "An authentication error occurred.");

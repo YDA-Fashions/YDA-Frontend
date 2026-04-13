@@ -16,12 +16,13 @@ import { useProductStore } from "@/store/useProductStore";
  */
 const GlobalInit = () => {
   const { setAuth, setLoading, signOut } = useAuthStore();
-  const setCartUserId = useCartStore((state) => state.setUserId);
-  const setWishlistUserId = useWishlistStore((state) => state.setUserId);
-
+  const { setUserId: setCartUserId, syncCart, clearLocalItems: clearCart } = useCartStore();
+  const { setUserId: setWishlistUserId, syncWishlist, clearLocalItems: clearWishlist } = useWishlistStore();
+  const { fetchProducts } = useProductStore();
 
   useEffect(() => {
     // 1. Auth & Store Hydration
+    fetchProducts();
 
     // 2. Hydrate the initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -29,6 +30,8 @@ const GlobalInit = () => {
         setAuth(session.user, session);
         setCartUserId(session.user.id);
         setWishlistUserId(session.user.id);
+        syncCart(session.user.id);
+        syncWishlist(session.user.id);
       } else {
         setLoading(false);
       }
@@ -36,15 +39,22 @@ const GlobalInit = () => {
 
     // Listen for auth state changes (login, logout, token refresh)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        if (session?.user) {
-          setAuth(session.user, session);
-          setCartUserId(session.user.id);
-          setWishlistUserId(session.user.id);
-        } else {
+      (event, session) => {
+        if (event === "SIGNED_IN" || event === "INITIAL_SESSION") {
+          const uid = session?.user?.id || null;
+          if (uid) {
+            setAuth(session.user, session);
+            setCartUserId(uid);
+            setWishlistUserId(uid);
+            syncCart(uid);
+            syncWishlist(uid);
+          }
+        } else if (event === "SIGNED_OUT") {
           signOut();
           setCartUserId(null);
           setWishlistUserId(null);
+          clearCart();
+          clearWishlist();
         }
       }
     );

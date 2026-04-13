@@ -2,27 +2,28 @@ import { supabase } from "../lib/supabase";
 import { PRODUCTS } from "../data/products";
 
 /**
- * Seed Utility
+ * Production Seed Utility
  * 
- * Takes the static PRODUCTS array and syncs it to the Supabase 'products' table.
- * It maps the old string ID (e.g. 'YDA-TB-001') to the 'product_code' field,
- * allowing the database to generate a unique UUID for the primary 'id' field.
+ * Takes the static PRODUCTS array and syncs it to the production 'products' table.
+ * Maps traditional Rupees to backend Paise and handles unified metadata.
  */
 export const seedProducts = async () => {
-  console.log("🚀 Starting product seeding...");
+  console.log("🚀 Starting production product seeding...");
 
   const productsToInsert = PRODUCTS.map((p) => ({
-    product_code: p.id, // Current ID becomes the code
+    product_code: p.id,
     name: p.name,
-    selling_price: p.selling_price,
-    original_price: p.original_price,
-    stock: p.stock,
-    category: p.category,
-    type: p.type,
     description: p.description,
-    colors: p.colors,
-    is_featured: p.isFeatured,
-    size: p.size,
+    base_price: p.selling_price * 100, // Convert ₹ to Paise for production integrity
+    stock_quantity: p.stock,
+    category: p.category,
+    images: p.colors?.[0]?.images || [],
+    metadata: { 
+      type: p.type,
+      original_price: p.original_price,
+      size: p.size,
+      featured: p.isFeatured
+    }
   }));
 
   const { data, error } = await supabase
@@ -35,6 +36,6 @@ export const seedProducts = async () => {
     return { success: false, error };
   }
 
-  console.log("✅ Seeding complete! Inserted/Updated", data?.length, "products.");
+  console.log("✅ Seeding complete! Synchronized", data?.length, "masterpieces.");
   return { success: true, count: data?.length };
 };

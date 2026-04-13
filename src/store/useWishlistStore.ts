@@ -13,6 +13,7 @@ interface WishlistStore {
   userId: string | null;
   setUserId: (id: string | null) => void;
   syncWishlist: (userId: string) => Promise<void>;
+  clearLocalItems: () => void;
 }
 
 export const useWishlistStore = create<WishlistStore>()(
@@ -24,11 +25,30 @@ export const useWishlistStore = create<WishlistStore>()(
 
       syncWishlist: async (userId) => {
         try {
-          const remoteWishlist = await wishlistService.getWishlist(userId);
-          set({ items: remoteWishlist });
+          // 1. Get current guest items
+          const localIds = get().items;
+          
+          // 2. Fetch account items from Supabase
+          const remoteIds = await wishlistService.getWishlist(userId);
+          
+          // 3. Merge Logic: Combine unique IDs
+          const combinedSet = new Set([...(remoteIds || []), ...localIds]);
+          const finalIds = Array.from(combinedSet);
+          
+          // 4. Sync new local items to backend
+          const newIds = localIds.filter(id => !(remoteIds || []).includes(id));
+          newIds.forEach(id => wishlistService.addItem(userId, id).catch(console.error));
+
+          set({ items: finalIds });
+          console.log("🧡 Wishlist: Guest selections successfully merged with your account.");
         } catch (error) {
           console.error('Error syncing wishlist:', error);
         }
+      },
+
+      clearLocalItems: () => {
+        set({ items: [], userId: null });
+        console.log("🧹 Wishlist: Local selection cleared for privacy.");
       },
       
       addItem: (product: Product) => {
