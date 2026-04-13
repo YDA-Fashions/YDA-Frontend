@@ -12,6 +12,12 @@ import { useAuthStore } from "@/store/useAuthStore";
 import { useUIStore } from "@/store/useUIStore";
 import { orderService } from "@/services/orderService";
 
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
+
 const CheckoutPage = () => {
   const router = useRouter();
   const { items, getTotalPrice, clearCart } = useCartStore();
