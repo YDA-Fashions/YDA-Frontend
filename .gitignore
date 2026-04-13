@@ -45,4 +45,5 @@ YDA.zip
 *.log
 YDA.zip
 /build.log
-/latest_build.log
+# scratch
+/scratch
