@@ -25,7 +25,7 @@ const GlobalInit = () => {
     fetchProducts();
 
     // 2. Hydrate the initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(({ data: { session } }: any) => {
       if (session?.user) {
         setAuth(session.user, session);
         setCartUserId(session.user.id);
