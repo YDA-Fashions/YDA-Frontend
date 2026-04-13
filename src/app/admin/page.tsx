@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { Edit2, Trash2, LayoutDashboard, Package, ShoppingCart, Users, ArrowUpRight, X, Upload, Loader2 } from "lucide-react";
+import { Edit2, Trash2, LayoutDashboard, Package, ShoppingCart, Users, ArrowUpRight, X, Upload, Loader2, Plus } from "lucide-react";
 import { useProductStore } from "@/store/useProductStore";
 import { productService } from "@/services/productService";
 import { orderService } from "@/services/orderService";
