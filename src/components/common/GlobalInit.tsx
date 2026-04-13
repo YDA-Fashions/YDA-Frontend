@@ -41,13 +41,12 @@ const GlobalInit = () => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         if (event === "SIGNED_IN" || event === "INITIAL_SESSION") {
-          const uid = session?.user?.id || null;
-          if (uid) {
+          if (session?.user) {
             setAuth(session.user, session);
-            setCartUserId(uid);
-            setWishlistUserId(uid);
-            syncCart(uid);
-            syncWishlist(uid);
+            setCartUserId(session.user.id);
+            setWishlistUserId(session.user.id);
+            syncCart(session.user.id);
+            syncWishlist(session.user.id);
           }
         } else if (event === "SIGNED_OUT") {
           signOut();
