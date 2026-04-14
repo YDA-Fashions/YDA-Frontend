@@ -104,17 +104,17 @@ const ProductPage = () => {
     );
   }
 
-  // Expanded Recommendations: 15 products with 50/50 category split
+  // Expanded Recommendations: 15 products with deterministic category split
+  // Using deterministic sort (by id) to prevent server/client hydration mismatch
   const relatedProducts = (() => {
-    const sameCategory = products.filter(p => p.id !== product.id && p.category === product.category);
-    const otherCategory = products.filter(p => p.id !== product.id && p.category !== product.category);
+    const sameCategory = products
+      .filter(p => p.id !== product.id && p.category === product.category)
+      .slice(0, 8);
+    const otherCategory = products
+      .filter(p => p.id !== product.id && p.category !== product.category)
+      .slice(0, 7);
     
-    const mixed = [
-      ...sameCategory.sort(() => 0.5 - Math.random()).slice(0, 8),
-      ...otherCategory.sort(() => 0.5 - Math.random()).slice(0, 7)
-    ];
-    
-    return mixed;
+    return [...sameCategory, ...otherCategory];
   })();
 
   const currentImages = product.colors[selectedColor].images;
@@ -139,11 +139,9 @@ const ProductPage = () => {
   const handleBuyNow = async () => {
     if (!product) return;
     
-    // 1. Add to cart (this triggers the store logic which syncs with backend if logged in)
-    addItem(product);
-    
-    // 2. Redirect to checkout
-    router.push("/checkout");
+    // Bypass cart store to avoid race conditions
+    // pass the product ID via query param
+    router.push(`/checkout?buyNow=${product.id}&qty=${quantity}`);
   };
 
   return (

@@ -17,6 +17,11 @@ export default function Home() {
   const featuredProducts = products.filter(p => p.isFeatured).slice(0, 10);
   const [currentReview, setCurrentReview] = useState(0);
   const [showPopup, setShowPopup] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const fadeInScroll: any = {
     initial: { opacity: 0, y: 30 },
@@ -337,7 +342,7 @@ export default function Home() {
             </motion.div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 md:gap-x-16 gap-y-24">
-              {featuredProducts.map((product) => (
+              {mounted && featuredProducts.map((product) => (
                 <div key={product.id} className="w-full">
                    <ProductCard product={product} />
                 </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { Trash2, Minus, Plus, ArrowRight, ShoppingBag, Gift, Truck, ShieldCheck } from "lucide-react";
@@ -11,6 +12,7 @@ import { useCartStore } from "@/store/useCartStore";
 import { useUIStore } from "@/store/useUIStore";
 
 const CartPage = () => {
+  const router = useRouter();
   const { items, removeItem, updateQuantity, getTotalPrice, getTotalItems, clearCart } = useCartStore();
   const { setOrderModalOpen } = useUIStore();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -26,16 +28,7 @@ const CartPage = () => {
   const awayAmount = threshold - subtotal;
 
   const handleCheckout = () => {
-    setIsProcessing(true);
-    // Simulate API call
-    setTimeout(() => {
-      setOrderModalOpen(true, {
-        productName: items.length === 1 ? items[0].name : `${items.length} Multiple Pieces`,
-        amount: subtotal
-      });
-      clearCart();
-      setIsProcessing(false);
-    }, 1500);
+    router.push("/checkout");
   };
 
   return (

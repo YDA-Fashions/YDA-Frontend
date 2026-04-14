@@ -24,64 +24,40 @@ export const useWishlistStore = create<WishlistStore>()(
       setUserId: (id) => set({ userId: id }),
 
       syncWishlist: async (userId) => {
-        try {
-          // 1. Get current guest items
-          const localIds = get().items;
-          
-          // 2. Fetch account items from Supabase
-          const remoteIds = await wishlistService.getWishlist(userId);
-          
-          // 3. Merge Logic: Combine unique IDs
-          const combinedSet = new Set([...(remoteIds || []), ...localIds]);
-          const finalIds = Array.from(combinedSet);
-          
-          // 4. Sync new local items to backend
-          const newIds = localIds.filter(id => !(remoteIds || []).includes(id));
-          newIds.forEach(id => wishlistService.addItem(userId, id).catch(console.error));
-
-          set({ items: finalIds });
-          console.log("🧡 Wishlist: Guest selections successfully merged with your account.");
-        } catch (error) {
-          console.error('Error syncing wishlist:', error);
-        }
+        // Backend sync disabled per current architecture (strictly local)
+        set({ userId });
+        console.log("🧡 Wishlist: Session linked (Offline Mode).");
       },
 
       clearLocalItems: () => {
         set({ items: [], userId: null });
-        console.log("🧹 Wishlist: Local selection cleared for privacy.");
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem('yda-wishlist-storage');
+        }
+        console.log("🧹 Wishlist: Session state wiped.");
       },
       
       addItem: (product: Product) => {
-        const { userId } = get();
+        const { userId, items } = get();
         
-        // Hydration Guard
-        const { isLoading } = (require("@/store/useAuthStore").useAuthStore.getState());
-        if (isLoading) {
-          console.log("⏳ Wishlist: Waiting for authentication portal to hydrate...");
-          return;
-        }
+        // Skip if already in wishlist
+        if (items.includes(product.id)) return;
 
-        if (!userId) {
-          console.warn("🔐 Identity Required: User must be signed in to curate their selection.");
-          // Instead of hard redirect, let the UI handle the guest state or show login
-          return;
-        }
+        set({ items: [...items, product.id] });
+        console.log("🧡 Wishlist: Added", product.id);
 
-        const currentIds = get().items;
-        if (!currentIds.includes(product.id)) {
-          set({ items: [...currentIds, product.id] });
-          console.log("🧡 Added item to wishlist:", product.id, "for user:", userId);
-          wishlistService.addItem(userId, product.id)
-            .then(() => console.log("☁️ Wishlist synced to backend for:", product.id))
-            .catch(err => console.error("❌ Failed to sync wishlist to backend:", err));
+        if (userId) {
+          wishlistService.addItem(userId, product.id).catch(err => {
+            console.error("❌ Wishlist: Sync addition failed:", err);
+          });
         }
       },
 
       removeItem: (productId: string) => {
+        const { userId, items } = get();
         set({
-          items: get().items.filter((id) => id !== productId),
+          items: items.filter((id) => id !== productId),
         });
-        const { userId } = get();
         if (userId) {
           wishlistService.removeItem(userId, productId).catch(console.error);
         }
@@ -92,8 +68,8 @@ export const useWishlistStore = create<WishlistStore>()(
       },
 
       clearWishlist: () => {
-        set({ items: [] });
         const { userId } = get();
+        set({ items: [] });
         if (userId) {
           wishlistService.clearWishlist(userId).catch(console.error);
         }

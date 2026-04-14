@@ -10,44 +10,60 @@ export const orderService = {
   async createOrder(orderData: {
     user_id?: string;
     items: any[];
-    amount: number;
+    amount: number; // Expected in Paise (Ruprees * 100)
     customer_name: string;
     customer_phone: string;
     customer_address: string;
     payment_method: string;
     payment_status: string;
   }) {
-    // 1. Create the main Order record
-    const { data: order, error: orderError } = await supabase
-      .from("orders")
-      .insert([{
-        user_id: orderData.user_id,
-        total_amount: orderData.amount,
-        shipping_address: orderData.customer_address,
-        payment_method: orderData.payment_method,
-        status: orderData.payment_status === "paid" ? "paid" : "pending",
-        // We'll store the name/phone in metadata or a profiles table if needed
-      }])
-      .select()
-      .single();
+    // 1. Strict Auth Enforcement
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (authError || !user) throw new Error("Identity Required: Log in to finalize your curation.");
 
-    if (orderError) throw orderError;
+    // 2. STRICTOR VALIDATION (No silent fallbacks)
+    if (!orderData.amount || isNaN(orderData.amount) || orderData.amount <= 0) {
+      console.error("❌ Order Blocked: Invalid total amount", orderData.amount);
+      throw new Error("Financial Integrity Error: Invalid order total. Please refresh your cart.");
+    }
 
-    // 2. Insert items into order_items
-    const orderItems = orderData.items.map(item => ({
-      order_id: order.id,
-      product_id: item.id,
-      quantity: item.quantity,
-      price_at_purchase: item.selling_price
+    if (!orderData.items || orderData.items.length === 0) {
+      throw new Error("Selection Empty: Add at least one masterpiece to your selection.");
+    }
+
+    // 3. PAYLOAD VERIFICATION (Strict Structure for RPC v4)
+    const p_items = orderData.items.map(item => ({
+      id: item.id || item.product_code, // Ensure we use the code for DB join
+      quantity: Math.max(1, item.quantity || 1)
     }));
 
-    const { error: itemsError } = await supabase
-      .from("order_items")
-      .insert(orderItems);
+    console.log("📦 RPC PAYLOAD (v4):", {
+      p_user_id: user.id,
+      p_total: orderData.amount,
+      p_payment: orderData.payment_method === "COD" ? "COD" : "Razorpay",
+      p_address: orderData.customer_address,
+      p_items
+    });
 
-    if (itemsError) throw itemsError;
+    // 4. Call the Fortress RPC (updated create_order_v4)
+    const { data: orderId, error: rpcError } = await supabase.rpc("create_order_v4", {
+      p_user_id: user.id,
+      p_total: orderData.amount, 
+      p_payment: orderData.payment_method === "COD" ? "COD" : "Razorpay",
+      p_address: orderData.customer_address,
+      p_name: orderData.customer_name,   // Added
+      p_phone: orderData.customer_phone, // Added
+      p_items
+    });
 
-    return order;
+    if (rpcError) {
+      // EXPOSE DETAILED ERROR (Security check, stock, or mismatch)
+      console.error("❌ Order RPC Failure:", rpcError.message, rpcError.details, rpcError.hint);
+      throw new Error(rpcError.message || "Order Finalization Failed.");
+    }
+
+    console.log("✅ Order: Atomic creation successful. ID:", orderId);
+    return { id: orderId };
   },
 
   async getOrders(userId: string) {

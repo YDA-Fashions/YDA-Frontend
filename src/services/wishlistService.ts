@@ -7,42 +7,22 @@ import { supabase } from "@/lib/supabase";
  */
 export const wishlistService = {
   async getWishlist(userId: string): Promise<string[]> {
-    const { data, error } = await supabase
-      .from("wishlist_items")
-      .select("product_id")
-      .eq("user_id", userId);
-
-    if (error) throw error;
-    return (data || []).map((item: any) => item.product_id);
+    console.log("🧡 Wishlist: Skipping backend fetch (Offline Mode)");
+    return []; // Return empty database state
   },
 
   async addItem(userId: string, productId: string) {
-    const { error } = await supabase
-      .from("wishlist_items")
-      .upsert(
-        { user_id: userId, product_id: productId },
-        { onConflict: "user_id,product_id" }
-      );
-
-    if (error) throw error;
+    // No-op: Local state is primary
+    return;
   },
 
   async removeItem(userId: string, productId: string) {
-    const { error } = await supabase
-      .from("wishlist_items")
-      .delete()
-      .eq("user_id", userId)
-      .eq("product_id", productId);
-
-    if (error) throw error;
+    // No-op: Local state is primary
+    return;
   },
 
   async clearWishlist(userId: string) {
-    const { error } = await supabase
-      .from("wishlist_items")
-      .delete()
-      .eq("user_id", userId);
-
-    if (error) throw error;
+    // No-op: Local state is primary
+    return;
   },
 };

@@ -32,8 +32,20 @@ export const useAuthStore = create<AuthState>()(
       
       setLoading: (loading) => set({ isLoading: loading }),
       
-      signOut: () => {
+      signOut: async () => {
+        const { supabase } = await import("@/lib/supabase");
         console.log("🚪 Auth: Signing out and clearing session");
+        
+        // 1. Backend SignOut
+        await supabase?.auth.signOut();
+        
+        // 2. Immediate Local State Termination
+        const { useCartStore } = await import("./useCartStore");
+        const { useWishlistStore } = await import("./useWishlistStore");
+        
+        useCartStore.getState().clearLocalItems();
+        useWishlistStore.getState().clearLocalItems();
+        
         set({ user: null, session: null, isLoading: false });
       },
     }),

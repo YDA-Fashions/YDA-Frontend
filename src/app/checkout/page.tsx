@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowLeft, ShieldCheck, Truck, CreditCard, Banknote } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -10,6 +10,7 @@ import Footer from "@/components/common/Footer";
 import { useCartStore } from "@/store/useCartStore";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useUIStore } from "@/store/useUIStore";
+import { useProductStore } from "@/store/useProductStore";
 import { orderService } from "@/services/orderService";
 
 declare global {
@@ -20,10 +21,26 @@ declare global {
 
 const CheckoutPage = () => {
   const router = useRouter();
-  const { items, getTotalPrice, clearCart } = useCartStore();
+  const searchParams = useSearchParams();
+  const buyNowId = searchParams?.get("buyNow");
+  const buyNowQty = parseInt(searchParams?.get("qty") || "1");
+
+  const { items: cartItems, getTotalPrice, clearCart } = useCartStore();
+  const { products } = useProductStore();
   const { user, isLoading: isAuthLoading } = useAuthStore();
   const { setOrderModalOpen, setErrorModalOpen } = useUIStore();
   
+  // 1. Determine Checkout Context (Buy Now vs Cart)
+  const buyNowProduct = buyNowId ? products.find(p => p.id === buyNowId || p.product_code === buyNowId) : null;
+  
+  const activeItems = buyNowProduct 
+    ? [{ ...buyNowProduct, quantity: buyNowQty }] 
+    : cartItems;
+
+  const activeTotal = buyNowProduct
+    ? buyNowProduct.selling_price * buyNowQty
+    : getTotalPrice();
+
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -45,32 +62,40 @@ const CheckoutPage = () => {
   useEffect(() => {
     // 1. Session Hydration Guard
     const { isLoading, user } = useAuthStore.getState();
-    if (isLoading) return; // Wait for GlobalInit to hydrate from Supabase
+    if (isLoading) return; 
 
-    // 2. Auth Guard: Guests must sign in to purchase
+    // 2. Auth Guard
     if (!user) {
-      console.warn("🔐 Checkout Protection: Redirecting guest to authentication portal.");
       router.push("/login?redirect=/checkout");
       return;
     }
 
-    // 3. Cart Guard: Must have items to checkout
-    if (items.length === 0) {
+    // 3. Inventory Guard: Must have items to checkout
+    if (activeItems.length === 0 && !isAuthLoading) {
       router.push("/cart");
     }
-  }, [items.length, router]);
-
-  const totalPrice = getTotalPrice();
+  }, [activeItems.length, router, isAuthLoading]);
 
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Strict Validation
+    // Strict Field Validation
     if (!formData.name.trim() || !formData.phone.trim() || !formData.address.trim()) {
       setErrorModalOpen(true, {
         title: "Incomplete Details",
         subtitle: "Please provide your full name, phone, and shipping address.",
         buttonText: "Revise Selection"
+      });
+      return;
+    }
+
+    // STRICT FINANCIAL VALIDATION (No Fallback 0)
+    if (!activeTotal || activeTotal <= 0) {
+      console.error("❌ Checkout Blocked: Invalid total", activeTotal);
+      setErrorModalOpen(true, {
+        title: "Selection Error",
+        subtitle: "Your order total is invalid. Please return to the shop.",
+        buttonText: "Back to Shop"
       });
       return;
     }
@@ -88,7 +113,7 @@ const CheckoutPage = () => {
 
         const options = {
           key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_placeholder",
-          amount: totalPrice * 100, // Amount in paise
+          amount: activeTotal * 100, // Amount in paise
           currency: "INR",
           name: "YDA Fashions",
           description: "Artisan Garment Purchase",
@@ -117,7 +142,7 @@ const CheckoutPage = () => {
         await finalizeOrder("COD");
       }
     } catch (err: any) {
-      console.error(err);
+      console.error("❌ Transaction Logic Error:", err);
       setErrorModalOpen(true, {
         title: "Transaction Failed",
         subtitle: err.message || "Payment processing error.",
@@ -129,10 +154,17 @@ const CheckoutPage = () => {
 
   const finalizeOrder = async (paymentId: string) => {
     try {
+      // DEBUG: Verify payload before transmission
+      console.log("🚀 Initializing Finalization:", {
+        amount_paise: activeTotal * 100,
+        items_count: activeItems.length,
+        is_buy_now: !!buyNowId
+      });
+
       const orderData = {
         user_id: user?.id,
-        items: items,
-        amount: totalPrice,
+        items: activeItems,
+        amount: activeTotal * 100, 
         customer_name: formData.name.trim(),
         customer_phone: formData.phone.trim(),
         customer_address: formData.address.trim(),
@@ -142,17 +174,21 @@ const CheckoutPage = () => {
 
       await orderService.createOrder(orderData);
       
-      clearCart();
+      // Clear cart only if this wasn't a Buy Now flow
+      if (!buyNowId) clearCart();
+
       setOrderModalOpen(true, {
-        productName: items.length === 1 ? items[0].name : `${items.length} Multiple Pieces`,
-        amount: totalPrice
+        productName: activeItems.length === 1 ? activeItems[0].name : `${activeItems.length} Multiple Pieces`,
+        amount: activeTotal
       });
       router.push("/");
     } catch (error: any) {
+      // EXPOSE DETAILED ERROR
+      console.error("❌ Order Finalization Failure:", error.message, error.details);
       setErrorModalOpen(true, {
-        title: "Order Finalization Failed",
-        subtitle: "Order recorded in payment but failed to sync with database.",
-        buttonText: "Contact Support"
+        title: "Order Fulfillment Error",
+        subtitle: error.message || "We encountered an issue with stock or price verification.",
+        buttonText: "Revise Selection"
       });
     } finally {
       setIsProcessing(false);
@@ -281,7 +317,7 @@ const CheckoutPage = () => {
                     disabled={isProcessing}
                     className="w-full bg-black text-white py-6 text-[12px] uppercase tracking-[0.4em] font-black hover:bg-black/90 transition-all flex items-center justify-center gap-4 shadow-2xl disabled:opacity-50"
                   >
-                    {isProcessing ? "Processing Artflow..." : `Fulfill Order - ₹${totalPrice.toLocaleString()}`}
+                    {isProcessing ? "Processing Artflow..." : `Fulfill Order - ₹${activeTotal.toLocaleString()}`}
                   </button>
               </form>
             </div>
@@ -294,7 +330,7 @@ const CheckoutPage = () => {
                 </h2>
                 
                 <div className="space-y-6 mb-12">
-                  {items.map((item) => (
+                  {activeItems.map((item) => (
                     <div key={item.id} className="flex gap-4">
                       <div className="w-16 h-16 bg-[#FBF9F4] flex-shrink-0">
                         <img 
@@ -317,7 +353,7 @@ const CheckoutPage = () => {
                 <div className="space-y-4 mb-10 border-t border-black/5 pt-10">
                   <div className="flex justify-between items-center text-[10px] uppercase tracking-widest font-black text-black/30">
                     <span>Subtotal</span>
-                    <span className="text-black">₹{totalPrice.toLocaleString()}</span>
+                    <span className="text-black">₹{activeTotal.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between items-center text-[10px] uppercase tracking-widest font-black text-black/30">
                     <span>Shipping</span>
@@ -325,7 +361,7 @@ const CheckoutPage = () => {
                   </div>
                   <div className="flex justify-between items-center pt-6">
                     <span className="text-[12px] uppercase tracking-[0.3em] font-black italic">Total Investment</span>
-                    <span className="text-2xl font-black">₹{totalPrice.toLocaleString()}</span>
+                    <span className="text-2xl font-black">₹{activeTotal.toLocaleString()}</span>
                   </div>
                 </div>
 
@@ -351,4 +387,19 @@ const CheckoutPage = () => {
   );
 };
 
-export default CheckoutPage;
+import { Suspense } from "react";
+
+export default function CheckoutPageWrapper() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-[#FCFBFA] flex items-center justify-center">
+        <div className="animate-pulse flex flex-col items-center gap-4">
+          <div className="w-12 h-12 bg-black/5 rounded-full" />
+          <div className="h-4 w-48 bg-black/5 rounded" />
+        </div>
+      </div>
+    }>
+      <CheckoutPage />
+    </Suspense>
+  );
+}
