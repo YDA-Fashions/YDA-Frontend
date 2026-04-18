@@ -18,6 +18,9 @@ const prata = Prata({
 export const metadata: Metadata = {
   title: "YDA | Premium Sanganeri & Gujarati Handcrafted Bags",
   description: "Exquisite handcrafted bags and cushion covers featuring Sanganeri and Gujarati prints. Minimal luxury, timeless craftsmanship.",
+  verification: {
+    google: "GZM7ef9LBexMHArE9S2ZXfQxXQXQrxijc1FgXo3FfNY",
+  },
 };
 
 export const viewport = {
