@@ -41,13 +41,55 @@ const CheckoutPage = () => {
     ? buyNowProduct.selling_price * buyNowQty
     : getTotalPrice();
 
+  // 2. Structured Form State
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
-    address: ""
+    pincode: "",
+    house: "",
+    area: "",
+    landmark: "",
+    city: "",
+    state: ""
   });
-  const [paymentMethod, setPaymentMethod] = useState<"COD" | "ONLINE">("ONLINE");
+
   const [isProcessing, setIsProcessing] = useState(false);
+  const [pincodeLoading, setPincodeLoading] = useState(false);
+  const [manualMode, setManualMode] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<"COD" | "ONLINE">("ONLINE");
+
+  // 3. Pincode API Integration
+  useEffect(() => {
+    const fetchPincodeData = async () => {
+      if (formData.pincode.length === 6) {
+        setPincodeLoading(true);
+        try {
+          const res = await fetch(`https://api.postalpincode.in/pincode/${formData.pincode}`);
+          const data = await res.json();
+
+          if (data[0].Status === "Success" && data[0].PostOffice) {
+            const post = data[0].PostOffice[0];
+            setFormData(prev => ({
+              ...prev,
+              city: post.District,
+              state: post.State
+            }));
+            setManualMode(false);
+          } else {
+            console.warn("Invalid Pincode");
+            setManualMode(true);
+          }
+        } catch (err) {
+          console.error("Pincode API Error:", err);
+          setManualMode(true);
+        } finally {
+          setPincodeLoading(false);
+        }
+      }
+    };
+
+    fetchPincodeData();
+  }, [formData.pincode]);
 
   const loadRazorpay = () => {
     return new Promise((resolve) => {
@@ -60,17 +102,13 @@ const CheckoutPage = () => {
   };
 
   useEffect(() => {
-    // 1. Session Hydration Guard
+    // Session Guard
     const { isLoading, user } = useAuthStore.getState();
     if (isLoading) return; 
-
-    // 2. Auth Guard
     if (!user) {
       router.push("/login?redirect=/checkout");
       return;
     }
-
-    // 3. Inventory Guard: Must have items to checkout
     if (activeItems.length === 0 && !isAuthLoading) {
       router.push("/cart");
     }
@@ -79,22 +117,43 @@ const CheckoutPage = () => {
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Strict Field Validation
-    if (!formData.name.trim() || !formData.phone.trim() || !formData.address.trim()) {
+    // A. Validation Logic
+    const { name, phone, pincode, house, area, city, state } = formData;
+
+    // 1. Required Fields
+    if (!name.trim() || !phone.trim() || !pincode.trim() || !house.trim() || !area.trim() || !city.trim()) {
       setErrorModalOpen(true, {
-        title: "Incomplete Details",
-        subtitle: "Please provide your full name, phone, and shipping address.",
-        buttonText: "Revise Selection"
+        title: "Missing Information",
+        subtitle: "Please fill all required fields to proceed with your curation.",
+        buttonText: "Revise Details"
       });
       return;
     }
 
-    // STRICT FINANCIAL VALIDATION (No Fallback 0)
+    // 2. Phone Validation (Strict Indian Format)
+    if (!/^[6-9]\d{9}$/.test(phone)) {
+      setErrorModalOpen(true, {
+        title: "Invalid Phone",
+        subtitle: "Please provide a valid 10-digit Indian phone number starting with 6-9.",
+        buttonText: "Fix Number"
+      });
+      return;
+    }
+
+    // 3. Pincode Validation
+    if (!/^\d{6}$/.test(pincode)) {
+      setErrorModalOpen(true, {
+        title: "Invalid Pincode",
+        subtitle: "Please provide a valid 6-digit PIN code.",
+        buttonText: "Fix Pincode"
+      });
+      return;
+    }
+
     if (!activeTotal || activeTotal <= 0) {
-      console.error("❌ Checkout Blocked: Invalid total", activeTotal);
       setErrorModalOpen(true, {
         title: "Selection Error",
-        subtitle: "Your order total is invalid. Please return to the shop.",
+        subtitle: "Invalid order total. Please return to selection.",
         buttonText: "Back to Shop"
       });
       return;
@@ -113,7 +172,7 @@ const CheckoutPage = () => {
 
         const options = {
           key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_placeholder",
-          amount: activeTotal * 100, // Amount in paise
+          amount: activeTotal * 100,
           currency: "INR",
           name: "YDA Fashions",
           description: "Artisan Garment Purchase",
@@ -126,14 +185,8 @@ const CheckoutPage = () => {
             email: user?.email,
             contact: formData.phone,
           },
-          theme: {
-            color: "#1A1A1A",
-          },
-          modal: {
-            ondismiss: function() {
-              setIsProcessing(false);
-            }
-          }
+          theme: { color: "#1A1A1A" },
+          modal: { ondismiss: () => setIsProcessing(false) }
         };
 
         const rzp = new window.Razorpay(options);
@@ -154,12 +207,14 @@ const CheckoutPage = () => {
 
   const finalizeOrder = async (paymentId: string) => {
     try {
-      // DEBUG: Verify payload before transmission
-      console.log("🚀 Initializing Finalization:", {
-        amount_paise: activeTotal * 100,
-        items_count: activeItems.length,
-        is_buy_now: !!buyNowId
-      });
+      // Format Address components
+      const fullAddress = `
+        ${formData.house.trim()}, 
+        ${formData.area.trim()}, 
+        ${formData.landmark ? formData.landmark.trim() + ', ' : ''}
+        ${formData.city.trim()}, 
+        ${formData.state.trim()} - ${formData.pincode.trim()}
+      `.replace(/\s+/g, ' ').trim();
 
       const orderData = {
         user_id: user?.id,
@@ -167,14 +222,13 @@ const CheckoutPage = () => {
         amount: activeTotal * 100, 
         customer_name: formData.name.trim(),
         customer_phone: formData.phone.trim(),
-        customer_address: formData.address.trim(),
+        customer_address: fullAddress,
         payment_method: paymentMethod === "ONLINE" ? "Razorpay" : "COD",
         payment_status: paymentId === "COD" ? "pending" : "paid",
       };
 
       await orderService.createOrder(orderData);
       
-      // Clear cart only if this wasn't a Buy Now flow
       if (!buyNowId) clearCart();
 
       setOrderModalOpen(true, {
@@ -183,8 +237,7 @@ const CheckoutPage = () => {
       });
       router.push("/");
     } catch (error: any) {
-      // EXPOSE DETAILED ERROR
-      console.error("❌ Order Finalization Failure:", error.message, error.details);
+      console.error("❌ Order Finalization Failure:", error.message);
       setErrorModalOpen(true, {
         title: "Order Fulfillment Error",
         subtitle: error.message || "We encountered an issue with stock or price verification.",
@@ -199,15 +252,8 @@ const CheckoutPage = () => {
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6 text-center">
         <Header />
-        <motion.div 
-          initial={{ opacity: 0 }} 
-          animate={{ opacity: 1 }}
-          className="space-y-6"
-        >
-          <div className="w-12 h-12 border-2 border-accent-dark border-t-transparent rounded-full animate-spin mx-auto" />
-          <p className="text-[10px] uppercase tracking-[0.5em] font-black text-accent-dark">Synchronizing Account</p>
-          <h2 className="text-2xl font-serif italic">Masterpiece curation in progress...</h2>
-        </motion.div>
+        <div className="w-12 h-12 border-2 border-accent-dark border-t-transparent rounded-full animate-spin mx-auto mb-6" />
+        <p className="text-[10px] font-black uppercase tracking-widest">Synchronizing Selection</p>
         <Footer />
       </div>
     );
@@ -221,7 +267,7 @@ const CheckoutPage = () => {
         <div className="container mx-auto px-6 max-w-7xl">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
             
-            {/* LEFT: Checkout Form */}
+            {/* LEFT: UPGRADED Checkout Form */}
             <div className="lg:col-span-7">
               <Link 
                 href="/cart" 
@@ -235,10 +281,10 @@ const CheckoutPage = () => {
               </h1>
 
               <form onSubmit={handleCheckout} className="space-y-12">
-                {/* Shipping Details */}
+                {/* 1. Fulfillment Details */}
                 <section>
-                  <h2 className="text-[11px] uppercase tracking-[0.4em] font-black mb-8 border-b border-black/5 pb-4">
-                    1. Fulfillment Details
+                  <h2 className="text-[11px] uppercase tracking-[0.4em] font-black mb-10 border-b border-black/5 pb-4">
+                    1. Contact Information
                   </h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div>
@@ -257,29 +303,108 @@ const CheckoutPage = () => {
                       <input 
                         type="tel" 
                         required
+                        maxLength={10}
                         value={formData.phone}
-                        onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                        onChange={(e) => setFormData({...formData, phone: e.target.value.replace(/\D/g, '')})}
                         className="w-full bg-white border border-black/5 p-5 text-sm outline-none focus:border-black transition-colors"
-                        placeholder="+91 00000 00000"
-                      />
-                    </div>
-                    <div className="md:col-span-2">
-                      <label className="text-[9px] uppercase tracking-widest font-bold text-black/40 mb-3 block">Full Address</label>
-                      <textarea 
-                        required
-                        value={formData.address}
-                        onChange={(e) => setFormData({...formData, address: e.target.value})}
-                        className="w-full bg-white border border-black/5 p-5 text-sm outline-none focus:border-black transition-colors min-h-[120px]"
-                        placeholder="House No, Street, Landmark, City, Pincode"
+                        placeholder="10-digit Mobile No"
                       />
                     </div>
                   </div>
                 </section>
 
-                {/* Payment Selection */}
+                {/* 2. Delivery Address */}
+                <section>
+                  <h2 className="text-[11px] uppercase tracking-[0.4em] font-black mb-10 border-b border-black/5 pb-4">
+                    2. Shipping Architecture
+                  </h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {/* Pincode with Loading State */}
+                    <div className="md:col-span-1">
+                      <label className="text-[9px] uppercase tracking-widest font-bold text-black/40 mb-3 block">
+                        Pincode {pincodeLoading && <span className="text-accent ml-2 normal-case animate-pulse italic">— Verifying Location...</span>}
+                      </label>
+                      <input 
+                        type="tel" 
+                        required
+                        maxLength={6}
+                        value={formData.pincode}
+                        onChange={(e) => setFormData({...formData, pincode: e.target.value.replace(/\D/g, '')})}
+                        className="w-full bg-white border border-black/5 p-5 text-sm outline-none focus:border-black transition-colors"
+                        placeholder="6-digit PIN Code"
+                      />
+                    </div>
+
+                    <div className="md:col-span-1">
+                      <label className="text-[9px] uppercase tracking-widest font-bold text-black/40 mb-3 block">House / Flat No.</label>
+                      <input 
+                        type="text" 
+                        required
+                        value={formData.house}
+                        onChange={(e) => setFormData({...formData, house: e.target.value})}
+                        className="w-full bg-white border border-black/5 p-5 text-sm outline-none focus:border-black transition-colors"
+                        placeholder="e.g. 22A, Regency Apartments"
+                      />
+                    </div>
+
+                    <div className="md:col-span-2">
+                      <label className="text-[9px] uppercase tracking-widest font-bold text-black/40 mb-3 block">Area / Street / Colony</label>
+                      <input 
+                        type="text" 
+                        required
+                        value={formData.area}
+                        onChange={(e) => setFormData({...formData, area: e.target.value})}
+                        className="w-full bg-white border border-black/5 p-5 text-sm outline-none focus:border-black transition-colors"
+                        placeholder="e.g. Civil Lines"
+                      />
+                    </div>
+
+                    <div className="md:col-span-2">
+                      <label className="text-[9px] uppercase tracking-widest font-bold text-black/40 mb-3 block">Landmark (Optional – Helps faster delivery)</label>
+                      <input 
+                        type="text" 
+                        value={formData.landmark}
+                        onChange={(e) => setFormData({...formData, landmark: e.target.value})}
+                        className="w-full bg-white border border-black/5 p-5 text-sm outline-none focus:border-black transition-colors italic"
+                        placeholder="e.g. Near Metro Station"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-[9px] uppercase tracking-widest font-bold text-black/40 mb-3 block">City / District</label>
+                      <input 
+                        type="text" 
+                        readOnly={!manualMode}
+                        value={formData.city}
+                        onChange={(e) => setFormData({...formData, city: e.target.value})}
+                        className={`w-full border border-black/5 p-5 text-sm outline-none ${manualMode ? 'bg-white focus:border-black' : 'bg-black/[0.02] text-black/40 cursor-not-allowed'}`}
+                        placeholder={manualMode ? "Enter City" : "Auto-filled via PIN"}
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-[9px] uppercase tracking-widest font-bold text-black/40 mb-3 block">State</label>
+                      <input 
+                        type="text" 
+                        readOnly={!manualMode}
+                        value={formData.state}
+                        onChange={(e) => setFormData({...formData, state: e.target.value})}
+                        className={`w-full border border-black/5 p-5 text-sm outline-none ${manualMode ? 'bg-white focus:border-black' : 'bg-black/[0.02] text-black/40 cursor-not-allowed'}`}
+                        placeholder={manualMode ? "Enter State" : "Auto-filled via PIN"}
+                      />
+                    </div>
+                  </div>
+                  {manualMode && (
+                    <p className="text-[10px] font-black uppercase text-accent mt-6">
+                      ⚠️ Could not verify PIN automatically. Manual entry enabled.
+                    </p>
+                  )}
+                </section>
+
+                {/* 3. Payment Selection */}
                 <section>
                   <h2 className="text-[11px] uppercase tracking-[0.4em] font-black mb-8 border-b border-black/5 pb-4">
-                    2. Payment Method
+                    3. Payment Paradigm
                   </h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <button
@@ -306,19 +431,19 @@ const CheckoutPage = () => {
                       <CreditCard size={20} />
                       <div className="text-left">
                         <p className="text-[10px] font-black uppercase tracking-widest">Online Payment</p>
-                        <p className="text-[9px] opacity-60 uppercase mt-1">Pay via Razorpay (Safe & Secure)</p>
+                        <p className="text-[9px] opacity-60 uppercase mt-1">Pay via Razorpay</p>
                       </div>
                     </button>
                   </div>
                 </section>
 
-                  <button 
-                    type="submit"
-                    disabled={isProcessing}
-                    className="w-full bg-black text-white py-6 text-[12px] uppercase tracking-[0.4em] font-black hover:bg-black/90 transition-all flex items-center justify-center gap-4 shadow-2xl disabled:opacity-50"
-                  >
-                    {isProcessing ? "Processing Artflow..." : `Fulfill Order - ₹${activeTotal.toLocaleString()}`}
-                  </button>
+                <button 
+                  type="submit"
+                  disabled={isProcessing || (pincodeLoading && !manualMode)}
+                  className="w-full bg-black text-white py-6 text-[12px] uppercase tracking-[0.4em] font-black hover:bg-black/90 transition-all flex items-center justify-center gap-4 shadow-2xl disabled:opacity-50"
+                >
+                  {isProcessing ? "Processing Artflow..." : `Fulfill Order - ₹${activeTotal.toLocaleString()}`}
+                </button>
               </form>
             </div>
 
