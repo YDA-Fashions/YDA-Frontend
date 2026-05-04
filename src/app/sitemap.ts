@@ -14,7 +14,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/cushion-covers",
     "/sanganeri-gujarati-prints",
     "/story",
-    "/wishlist",
     "/cart",
   ].map((route) => ({
     url: `${baseUrl}${route}`,

@@ -9,7 +9,6 @@ import Logo from "./Logo";
 import CartToast from "../cart/CartToast";
 import BrandModal from "./BrandModal";
 import { useCartStore } from "../../store/useCartStore";
-import { useWishlistStore } from "../../store/useWishlistStore";
 import { useAuthStore } from "../../store/useAuthStore";
 import { useUIStore } from "../../store/useUIStore";
 import { PRODUCTS } from "../../data/products";
@@ -27,7 +26,6 @@ const Header = () => {
   
   const router = useRouter();
   const cartItemCount = useCartStore((state) => state.getTotalItems());
-  const wishlistItemCount = useWishlistStore((state) => state.items.length);
   const { user, signOut } = useAuthStore();
   const [isAccountOpen, setIsAccountOpen] = useState(false);
 
@@ -380,15 +378,6 @@ const Header = () => {
               >
                 <Search size={18} strokeWidth={1.2} />
               </button>
-
-              <Link href="/wishlist" className="p-2 text-foreground/80 hover:text-black transition-colors relative" aria-label="Wishlist">
-                <Heart size={18} strokeWidth={1.2} />
-                {isMounted && wishlistItemCount > 0 && (
-                  <span className="absolute top-1 right-0 bg-[#FFD700] text-black text-[8px] w-4 h-4 flex items-center justify-center rounded-full font-black">
-                    {wishlistItemCount}
-                  </span>
-                )}
-              </Link>
               
               <Link 
                 href="/cart"

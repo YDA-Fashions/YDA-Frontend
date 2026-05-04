@@ -10,7 +10,6 @@ import Footer from "@/components/common/Footer";
 import ProductCard from "@/components/products/ProductCard";
 import { Product } from "@/data/products";
 import { useCartStore } from "@/store/useCartStore";
-import { useWishlistStore } from "@/store/useWishlistStore";
 import Link from "next/link";
 
 interface ProductDetailClientProps {
@@ -32,7 +31,6 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
   const containerRef = useRef<HTMLDivElement>(null);
 
   const addItem = useCartStore((state) => state.addItem);
-  const { isInWishlist } = useWishlistStore();
 
   const reviews = [
     {
@@ -75,7 +73,6 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
   }, [reviews.length]);
 
   const currentImages = product.colors[selectedColor].images;
-  const isWishlisted = isInWishlist(product.id);
 
   const nextReview = () => setCurrentReview((prev) => (prev + 1) % reviews.length);
   const prevReview = () => setCurrentReview((prev) => (prev - 1 + reviews.length) % reviews.length);
@@ -158,7 +155,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                     <div 
                       className="w-full h-full relative bg-white"
                       style={{
-                        backgroundImage: `url(${currentImages[selectedImage]})`,
+                        backgroundImage: `url("${currentImages[selectedImage]}")`,
                         backgroundPosition: `${((Math.max(20, Math.min(80, zoomPos.x)) - 20) / 60) * 100}% ${((Math.max(20, Math.min(80, zoomPos.y)) - 20) / 60) * 100}%`,
                         backgroundSize: '250%',
                         backgroundRepeat: 'no-repeat'

@@ -7,7 +7,6 @@ import { Heart, ShoppingBag } from "lucide-react";
 import { motion } from "framer-motion";
 import { Product } from "../../data/products";
 import { useCartStore } from "../../store/useCartStore";
-import { useWishlistStore } from "../../store/useWishlistStore";
 import { useState, useEffect } from "react";
 
 interface ProductCardProps {
@@ -16,23 +15,11 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const addItem = useCartStore((state) => state.addItem);
-  const { addItem: addWishlist, removeItem: removeWishlist, isInWishlist } = useWishlistStore();
   const [isMounted, setIsMounted] = useState(false);
   
   useEffect(() => {
     setIsMounted(true);
   }, []);
-
-  const isWishlisted = isInWishlist(product.id);
-
-  const toggleWishlist = (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (isWishlisted) {
-      removeWishlist(product.id);
-    } else {
-      addWishlist(product);
-    }
-  };
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -60,16 +47,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               className="object-contain transition-transform duration-[1.5s] group-hover:scale-150 ease-out"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
             />
-            
-            {/* Wishlist Button */}
-            <button 
-              onClick={toggleWishlist}
-              className={`absolute top-3 right-3 p-2 rounded-full backdrop-blur-md transition-colors z-10 ${
-                isMounted && isWishlisted ? "bg-accent-dark text-white" : "bg-white/60 text-foreground hover:bg-white"
-              }`}
-            >
-              <Heart size={14} fill={isMounted && isWishlisted ? "currentColor" : "none"} strokeWidth={1.5} />
-            </button>
           </div>
 
           <div className="p-4 flex flex-col gap-2">
