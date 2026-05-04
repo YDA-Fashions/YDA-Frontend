@@ -162,9 +162,11 @@ const OrdersPage = () => {
                       <div className="space-y-6 md:border-l md:border-black/5 md:pl-12">
                         <p className="text-[9px] uppercase tracking-widest font-black text-black/20">Fulfillment Target</p>
                         <div className="space-y-4">
-                          <p className="text-xs font-sans text-black/60 leading-relaxed max-w-xs italic">
-                            {order.shipping_address}
-                          </p>
+                          <div className="text-xs font-sans text-black/80 leading-relaxed max-w-xs space-y-1">
+                            <p className="font-bold uppercase tracking-widest text-[10px]">{order.customer_name || user?.email}</p>
+                            {order.customer_phone && <p className="italic text-black/60">+91 {order.customer_phone}</p>}
+                            <p className="text-black/60 pt-2">{order.shipping_address}</p>
+                          </div>
                           <div className="pt-4 flex items-center gap-3">
                              <CheckCircle size={14} className="text-emerald-500" />
                              <span className="text-[9px] font-black uppercase tracking-widest text-black/40">Handcrafted Authentication Verified</span>
