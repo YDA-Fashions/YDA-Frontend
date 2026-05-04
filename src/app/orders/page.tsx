@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, ShoppingBag, Package, Truck, CheckCircle, Clock, Search } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
@@ -67,37 +68,19 @@ const OrdersPage = () => {
       <main className="pt-28 pb-24 md:pt-40">
         <div className="container mx-auto px-6 max-w-5xl">
           
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
-            <h1 className="text-2xl md:text-3xl font-sans font-medium text-black">Your Orders</h1>
-            <div className="flex items-center gap-4 w-full md:w-auto">
-              <div className="relative w-full md:w-80">
-                <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-black/40" />
-                <input 
-                  type="text" 
-                  placeholder="Search all orders" 
-                  className="w-full border border-black/20 rounded-md py-2 pl-10 pr-4 text-sm outline-none focus:border-[#FFD814] focus:ring-2 focus:ring-[#FFD814]/30"
-                />
-              </div>
-              <button className="bg-[#333] hover:bg-black text-white px-4 py-2 rounded-full text-sm font-sans transition-colors whitespace-nowrap">
-                Search Orders
-              </button>
-            </div>
-          </div>
-
-          {/* Amazon-style Tabs */}
-          <div className="flex border-b border-black/10 mb-8 gap-6 overflow-x-auto custom-scrollbar-hide">
-            <button className="text-sm font-bold font-sans text-amber-700 border-b-2 border-amber-700 pb-2 whitespace-nowrap">
-              Orders
-            </button>
-            <button className="text-sm font-sans text-cyan-700 hover:text-amber-700 pb-2 whitespace-nowrap">
-              Buy Again
-            </button>
-            <button className="text-sm font-sans text-cyan-700 hover:text-amber-700 pb-2 whitespace-nowrap">
-              Not Yet Shipped
-            </button>
-            <button className="text-sm font-sans text-cyan-700 hover:text-amber-700 pb-2 whitespace-nowrap">
-              Cancelled Orders
-            </button>
+          <div className="mb-12 md:mb-16 border-b border-black/5 pb-8">
+            <Link 
+              href="/" 
+              className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] font-black text-black/40 hover:text-black transition-colors mb-8"
+            >
+              <ArrowLeft size={14} /> Back to Studio
+            </Link>
+            <h1 className="text-4xl md:text-5xl font-serif tracking-tight text-black">
+              Your Order History
+            </h1>
+            <p className="text-xs uppercase tracking-widest text-black/40 mt-4 font-sans font-bold">
+              {orders.length} {orders.length === 1 ? 'Order' : 'Orders'} Placed
+            </p>
           </div>
 
           <AnimatePresence mode="wait">
@@ -105,119 +88,129 @@ const OrdersPage = () => {
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="py-16 text-center border border-black/5 bg-white rounded-sm"
+                className="py-24 text-center bg-white border border-black/5 rounded-sm"
               >
-                <div className="w-20 h-20 bg-black/5 rounded-full flex items-center justify-center mx-auto mb-6 text-black/20">
+                <div className="w-20 h-20 bg-black/5 rounded-full flex items-center justify-center mx-auto mb-8 text-black/20">
                   <Package size={32} strokeWidth={1} />
                 </div>
-                <h3 className="text-xl font-sans mb-4">Looks like you haven't placed an order in the last 3 months.</h3>
+                <h3 className="text-2xl font-serif mb-6 text-black/60">Your order history is currently empty.</h3>
                 <Link 
                   href="/shop"
-                  className="inline-block bg-transparent text-cyan-700 hover:text-amber-700 hover:underline font-sans text-sm"
+                  className="inline-block bg-black text-white px-10 py-4 text-[11px] uppercase tracking-widest font-bold hover:bg-black/90 transition-all shadow-md"
                 >
-                  View orders in 2025
+                  Start Shopping
                 </Link>
               </motion.div>
             ) : (
-              <div className="space-y-6">
-                <p className="text-sm font-bold font-sans mb-4">{orders.length} orders placed</p>
-
+              <div className="space-y-12">
                 {orders.map((order, idx) => (
                   <motion.div 
                     key={order.id}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: idx * 0.1 }}
-                    className="border border-black/10 rounded-lg overflow-hidden bg-white"
+                    className="border border-black/10 rounded-sm bg-white p-6 md:p-10 shadow-sm"
                   >
-                    {/* Header (Grey Background) */}
-                    <div className="bg-[#F2F2F2] border-b border-black/10 p-4 flex flex-col md:flex-row justify-between text-sm font-sans text-[#565959]">
-                      <div className="flex gap-10">
-                        <div className="space-y-1">
-                          <p className="uppercase text-xs font-semibold">Order Placed</p>
-                          <p>{new Date(order.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
-                        </div>
-                        <div className="space-y-1">
-                          <p className="uppercase text-xs font-semibold">Total</p>
-                          <p>₹{(order.total_amount / 100).toLocaleString()}</p>
-                        </div>
-                        <div className="space-y-1 hidden sm:block">
-                          <p className="uppercase text-xs font-semibold">Ship To</p>
-                          <p className="text-cyan-700 hover:text-amber-700 hover:underline cursor-pointer">
-                            {order.customer_name || user?.email}
+                    {/* Order Details Header */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 pb-8 border-b border-black/10 mb-8">
+                      <div className="space-y-1">
+                        <p className="text-[10px] uppercase tracking-widest font-black text-black/40">Order Placed</p>
+                        <p className="text-sm font-sans font-semibold">
+                          {new Date(order.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}
+                        </p>
+                      </div>
+                      <div className="space-y-1">
+                        <p className="text-[10px] uppercase tracking-widest font-black text-black/40">Total Value</p>
+                        <p className="text-sm font-sans font-semibold text-emerald-800">
+                          ₹{(order.total_amount / 100).toLocaleString()}
+                        </p>
+                      </div>
+                      <div className="space-y-1 col-span-2 md:col-span-1">
+                        <p className="text-[10px] uppercase tracking-widest font-black text-black/40">Order Reference</p>
+                        <p className="text-sm font-sans font-semibold">
+                          #{order.id.slice(0, 12).toUpperCase()}
+                        </p>
+                      </div>
+                      <div className="space-y-1 col-span-2 md:col-span-1">
+                        <p className="text-[10px] uppercase tracking-widest font-black text-black/40">Status</p>
+                        <div className="flex items-center gap-2">
+                          {getStatusIcon(order.status)}
+                          <p className="text-sm font-sans font-bold uppercase tracking-widest">
+                            {order.status}
                           </p>
                         </div>
                       </div>
-                      
-                      <div className="mt-4 md:mt-0 text-left md:text-right space-y-1">
-                        <p className="uppercase text-xs font-semibold">Order # {order.id.slice(0, 16).toUpperCase()}</p>
-                        <div className="flex items-center gap-2 md:justify-end text-cyan-700">
-                          <a href="#" className="hover:text-amber-700 hover:underline">View order details</a>
-                          <span className="text-black/20">|</span>
-                          <a href="#" className="hover:text-amber-700 hover:underline">Invoice</a>
-                        </div>
-                      </div>
                     </div>
 
-                    {/* Body */}
-                    <div className="p-6">
-                      <div className="mb-6">
-                        <h3 className="text-lg font-bold font-sans text-emerald-800 flex items-center gap-2 mb-1">
-                          {order.status === 'pending' ? 'Arriving soon' : 
-                           order.status === 'delivered' ? 'Delivered' : 'Processing order'}
-                        </h3>
-                        <p className="text-sm font-sans text-black/60">
-                          Your package is being handled with care by our artisans.
-                        </p>
-                      </div>
-
-                      <div className="flex flex-col md:flex-row gap-6">
-                        <div className="flex-grow space-y-6">
+                    {/* Order Items & Shipping Address Layout */}
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                      
+                      {/* Left: Products List (Large Images) */}
+                      <div className="lg:col-span-2 space-y-8">
+                        <p className="text-[11px] uppercase tracking-widest font-black text-black/30 border-b border-black/5 pb-2">Products</p>
+                        
+                        <div className="space-y-8">
                           {order.order_items?.map((item: any) => (
-                            <div key={item.id} className="flex gap-6">
-                              <div className="w-20 h-20 bg-[#F5F5F0] flex-shrink-0 rounded-sm overflow-hidden">
-                                <img 
+                            <div key={item.id} className="flex flex-col sm:flex-row gap-6 md:gap-10">
+                              
+                              {/* Large Product Image */}
+                              <div className="w-full sm:w-48 md:w-56 aspect-square bg-[#F5F5F0] flex-shrink-0 rounded-sm overflow-hidden relative">
+                                <Image 
                                   src={item.products?.colors?.[0]?.images?.[0] || "/images/placeholder.jpg"} 
                                   alt={item.products?.name} 
-                                  className="w-full h-full object-contain p-1 mix-blend-multiply"
+                                  fill
+                                  className="object-contain p-4 mix-blend-multiply"
                                 />
                               </div>
-                              <div className="flex-grow space-y-1">
-                                <a href={`/product/${item.products?.id}`} className="text-sm font-medium font-sans text-cyan-700 hover:text-amber-700 hover:underline line-clamp-2">
-                                  {item.products?.name}
-                                </a>
-                                <p className="text-xs text-black/60 font-sans">
-                                  Return window closed
+                              
+                              {/* Product Info */}
+                              <div className="flex-grow pt-2">
+                                <Link href={`/product/${item.products?.id}`}>
+                                  <h3 className="text-xl md:text-2xl font-serif mb-2 hover:underline">
+                                    {item.products?.name}
+                                  </h3>
+                                </Link>
+                                <p className="text-sm font-sans text-black/60 mb-6">
+                                  Quantity: <span className="font-bold text-black">{item.quantity}</span>
                                 </p>
-                                <div className="mt-2">
-                                  <button className="bg-[#FFD814] hover:bg-[#F7CA00] border border-[#FCD200] rounded-full px-4 py-1.5 text-xs font-sans shadow-sm transition-all flex items-center gap-2">
-                                    <ShoppingBag size={12} />
-                                    Buy it again
-                                  </button>
-                                </div>
+                                <p className="text-lg font-sans font-bold text-black">
+                                  ₹{(item.price_at_purchase / 100).toLocaleString()} <span className="text-xs font-normal text-black/40">(per item)</span>
+                                </p>
                               </div>
+
                             </div>
                           ))}
                         </div>
+                      </div>
 
-                        {/* Action Buttons Column */}
-                        <div className="w-full md:w-64 flex-shrink-0 space-y-2 mt-4 md:mt-0">
-                          <button className="w-full bg-white hover:bg-gray-50 border border-gray-300 rounded-full py-2 px-4 text-sm font-sans shadow-sm transition-all text-center">
-                            Track package
-                          </button>
-                          <button className="w-full bg-white hover:bg-gray-50 border border-gray-300 rounded-full py-2 px-4 text-sm font-sans shadow-sm transition-all text-center">
-                            Return or replace items
-                          </button>
-                          <button className="w-full bg-white hover:bg-gray-50 border border-gray-300 rounded-full py-2 px-4 text-sm font-sans shadow-sm transition-all text-center">
-                            Share gift receipt
-                          </button>
-                          <button className="w-full bg-white hover:bg-gray-50 border border-gray-300 rounded-full py-2 px-4 text-sm font-sans shadow-sm transition-all text-center">
-                            Write a product review
-                          </button>
+                      {/* Right: Fulfillment & Address */}
+                      <div className="lg:col-span-1">
+                        <div className="bg-[#FBF9F4] border border-black/5 p-6 rounded-sm">
+                          <p className="text-[11px] uppercase tracking-widest font-black text-black/30 mb-6 border-b border-black/5 pb-2">
+                            Shipping Details
+                          </p>
+                          <div className="space-y-2 font-sans text-sm text-black/80">
+                            <p className="font-bold text-black mb-2">{order.customer_name || user?.email}</p>
+                            {order.customer_phone && <p className="mb-4">Phone: +91 {order.customer_phone}</p>}
+                            <p className="leading-relaxed">
+                              {order.shipping_address}
+                            </p>
+                          </div>
+
+                          <div className="mt-8 pt-6 border-t border-black/5 space-y-4">
+                            <div className="flex items-center gap-3">
+                              <CheckCircle size={16} className="text-emerald-600 flex-shrink-0" />
+                              <span className="text-xs font-sans font-medium text-black/60">Authentication Verified</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <Truck size={16} className="text-emerald-600 flex-shrink-0" />
+                              <span className="text-xs font-sans font-medium text-black/60">Handled with Artisan Care</span>
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    </div>
 
+                    </div>
                   </motion.div>
                 ))}
               </div>
