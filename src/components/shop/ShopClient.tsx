@@ -22,18 +22,29 @@ export default function ShopClient({ initialProducts }: ShopClientProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeSort, setActiveSort] = useState("Recommended");
   const [isSortOpen, setIsSortOpen] = useState(false);
+  
+  // New local state for filtering
+  const [activeCategory, setActiveCategory] = useState<string>("All");
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   useEffect(() => {
     let result = [...initialProducts];
     
+    // URL Params Filter (from Header links)
     if (printFilter) {
       result = result.filter(p => p.type.toLowerCase() === printFilter.toLowerCase());
     }
     
     if (categoryFilter) {
-      result = result.filter(p => p.category === categoryFilter);
+      result = result.filter(p => p.category.toLowerCase() === categoryFilter.toLowerCase());
     }
 
+    // Local Dropdown Filter
+    if (activeCategory !== "All") {
+      result = result.filter(p => p.category.toLowerCase() === activeCategory.toLowerCase());
+    }
+
+    // Search
     if (searchQuery) {
       result = result.filter(p => 
         p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -41,10 +52,20 @@ export default function ShopClient({ initialProducts }: ShopClientProps) {
       );
     }
     
+    // Sort
+    if (activeSort === "Price: Low to High") {
+      result.sort((a, b) => a.selling_price - b.selling_price);
+    } else if (activeSort === "Price: High to Low") {
+      result.sort((a, b) => b.selling_price - a.selling_price);
+    } else if (activeSort === "Newest") {
+      result.sort((a, b) => b.id.localeCompare(a.id)); // Assuming ID corresponds roughly to recency
+    }
+
     setFilteredProducts(result);
-  }, [printFilter, categoryFilter, searchQuery, initialProducts]);
+  }, [printFilter, categoryFilter, searchQuery, activeCategory, activeSort, initialProducts]);
 
   const sortOptions = ["Recommended", "Price: Low to High", "Price: High to Low", "Newest"];
+  const filterOptions = ["All", "Bags", "Cushions"];
 
   return (
     <div className="min-h-screen bg-background">
@@ -67,11 +88,41 @@ export default function ShopClient({ initialProducts }: ShopClientProps) {
             </div>
 
             <div className="flex items-center gap-12 self-end w-full md:w-auto">
-              <button className="flex items-center gap-3 text-[10px] uppercase tracking-widest font-bold text-foreground/60 hover:text-foreground transition-colors group">
-                <SlidersHorizontal size={16} className="group-hover:rotate-180 transition-transform duration-500" />
-                Filter Collections
-              </button>
+              
+              {/* Category Filter */}
+              <div className="relative">
+                <button 
+                  onClick={() => setIsFilterOpen(!isFilterOpen)}
+                  className="flex items-center gap-3 text-[10px] uppercase tracking-widest font-bold text-foreground/60 hover:text-foreground transition-colors group"
+                >
+                  <SlidersHorizontal size={16} className={`transition-transform duration-500 ${isFilterOpen ? "rotate-180" : ""}`} />
+                  Filter: {activeCategory}
+                </button>
 
+                <AnimatePresence>
+                  {isFilterOpen && (
+                    <motion.div 
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
+                      className="absolute right-0 md:left-0 md:right-auto top-full mt-4 bg-white border border-border-beige p-6 min-w-[200px] z-30 shadow-2xl space-y-4"
+                    >
+                      {filterOptions.map((opt) => (
+                        <button 
+                          key={opt}
+                          onClick={() => { setActiveCategory(opt); setIsFilterOpen(false); }}
+                          className="w-full text-left text-[10px] uppercase tracking-widest flex items-center justify-between hover:text-accent-dark transition-colors"
+                        >
+                          {opt}
+                          {activeCategory === opt && <Check size={12} />}
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Sort Dropdown */}
               <div className="relative">
                 <button 
                   onClick={() => setIsSortOpen(!isSortOpen)}
