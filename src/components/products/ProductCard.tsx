@@ -57,7 +57,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               src={product.colors?.[0]?.images?.[0] || "/images/placeholder.jpg"}
               alt={product.name}
               fill
-              className="object-contain transition-transform duration-700 group-hover:scale-105"
+              className="object-contain transition-transform duration-[1.5s] group-hover:scale-150 ease-out"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
             />
             
