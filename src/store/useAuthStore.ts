@@ -41,10 +41,8 @@ export const useAuthStore = create<AuthState>()(
         
         // 2. Immediate Local State Termination
         const { useCartStore } = await import("./useCartStore");
-        const { useWishlistStore } = await import("./useWishlistStore");
         
         useCartStore.getState().clearLocalItems();
-        useWishlistStore.getState().clearLocalItems();
         
         set({ user: null, session: null, isLoading: false });
       },
