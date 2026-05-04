@@ -115,7 +115,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                   onMouseEnter={() => setIsHovered(true)}
                   onMouseLeave={() => setIsHovered(false)}
                   onClick={() => setIsZoomModalOpen(true)}
-                  className="relative aspect-square bg-white border border-border-beige/10 overflow-hidden cursor-zoom-in rounded-sm"
+                  className="relative aspect-square bg-white border border-border-beige/10 overflow-hidden cursor-crosshair rounded-sm"
                 >
                   <AnimatePresence mode="wait">
                     <motion.div
@@ -135,7 +135,37 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                       />
                     </motion.div>
                   </AnimatePresence>
+
+                  {/* Amazon-style Lens overlay */}
+                  {isHovered && (
+                    <div 
+                      className="absolute pointer-events-none border border-black/20 bg-black/5 hidden lg:block z-10"
+                      style={{
+                        left: `${Math.max(20, Math.min(80, zoomPos.x))}%`, 
+                        top: `${Math.max(20, Math.min(80, zoomPos.y))}%`, 
+                        width: '40%', 
+                        height: '40%',
+                        transform: 'translate(-50%, -50%)',
+                        boxShadow: '0 0 0 9999px rgba(255, 255, 255, 0.4)'
+                      }}
+                    />
+                  )}
                 </div>
+
+                {/* Amazon-style Zoomed Output Box (appears on the right) */}
+                {isHovered && (
+                  <div className="absolute top-0 left-full ml-8 w-full max-w-[600px] aspect-square bg-white z-[100] border border-border-beige shadow-2xl hidden lg:block rounded-sm overflow-hidden pointer-events-none">
+                    <div 
+                      className="w-full h-full relative bg-white"
+                      style={{
+                        backgroundImage: `url(${currentImages[selectedImage]})`,
+                        backgroundPosition: `${((Math.max(20, Math.min(80, zoomPos.x)) - 20) / 60) * 100}% ${((Math.max(20, Math.min(80, zoomPos.y)) - 20) / 60) * 100}%`,
+                        backgroundSize: '250%',
+                        backgroundRepeat: 'no-repeat'
+                      }}
+                    />
+                  </div>
+                )}
 
                 <div className="flex gap-4 overflow-x-auto pb-4 custom-scrollbar-hide snap-x">
                   {currentImages.map((img, idx) => (
