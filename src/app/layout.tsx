@@ -67,6 +67,7 @@ export const viewport = {
 
 import GlobalInit from "@/components/common/GlobalInit";
 import JsonLd from "@/components/common/JsonLd";
+import CustomCursor from "@/components/common/CustomCursor";
 
 export default function RootLayout({
   children,
@@ -98,6 +99,7 @@ export default function RootLayout({
           }}
         />
         <GlobalInit />
+        <CustomCursor />
         {children}
       </body>
     </html>

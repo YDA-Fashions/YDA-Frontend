@@ -3,11 +3,13 @@
 import React, { useState, useRef, MouseEvent, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Heart, ShoppingBag, ArrowLeft, ShieldCheck, Truck, RotateCcw, X, Star, ArrowRight } from "lucide-react";
+import { ShoppingBag, ArrowLeft, ShieldCheck, Truck, RotateCcw, X, Star, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import ProductCard from "@/components/products/ProductCard";
+import StickyCartBar from "@/components/products/StickyCartBar";
+import { useMagneticEffect } from "@/hooks/useMagneticEffect";
 import { Product } from "@/data/products";
 import { useCartStore } from "@/store/useCartStore";
 import Link from "next/link";
@@ -29,8 +31,15 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
   const [zoomPos, setZoomPos] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  // Ref used by StickyCartBar to track when the Add-to-Cart button leaves viewport
+  const addToCartRef = useRef<HTMLDivElement>(null);
+
+  // Magnetic effect hooks for the two CTA buttons
+  const addMagnetic = useMagneticEffect(0.3);
+  const buyMagnetic = useMagneticEffect(0.3);
 
   const addItem = useCartStore((state) => state.addItem);
+  const isAdded = useCartStore((state) => state.items.some((item) => item.id === product.id));
 
   const reviews = [
     {
@@ -223,21 +232,35 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                   </div>
                 )}
 
-                <div className="grid grid-cols-1 gap-4">
+                {/* Ref here so StickyCartBar knows when this leaves the viewport */}
+                <div ref={addToCartRef} className="grid grid-cols-1 gap-4">
+                  {/* Magnetic Add to Cart */}
                   <motion.button
-                    whileHover={{ scale: 1.01 }}
+                    ref={addMagnetic.ref as React.RefObject<HTMLButtonElement>}
+                    onMouseMove={addMagnetic.onMouseMove}
+                    onMouseLeave={addMagnetic.onMouseLeave}
+                    animate={{ x: addMagnetic.offset.x, y: addMagnetic.offset.y }}
+                    transition={{ type: "spring", stiffness: 200, damping: 20 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => addItem(product)}
-                    className="w-full bg-[#FFD700] hover:bg-[#F2CC00] text-black py-5 text-[11px] uppercase tracking-[0.4em] font-black transition-all duration-500 shadow-lg"
+                    className="w-full bg-[#FFD700] hover:bg-[#F2CC00] text-black py-5 text-[11px] uppercase tracking-[0.4em] font-black transition-colors duration-300 shadow-lg"
                   >
                     Add to Selection
                   </motion.button>
-                  <button 
+
+                  {/* Magnetic Buy Now */}
+                  <motion.button
+                    ref={buyMagnetic.ref as React.RefObject<HTMLButtonElement>}
+                    onMouseMove={buyMagnetic.onMouseMove}
+                    onMouseLeave={buyMagnetic.onMouseLeave}
+                    animate={{ x: buyMagnetic.offset.x, y: buyMagnetic.offset.y }}
+                    transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                    whileTap={{ scale: 0.98 }}
                     onClick={handleBuyNow}
-                    className="flex-grow bg-[#1a1a1a] text-white py-6 uppercase tracking-[0.4em] text-[12px] font-sans font-black hover:bg-black transition-all flex items-center justify-center gap-4 active:scale-[0.98] shadow-2xl"
+                    className="flex-grow bg-[#1a1a1a] text-white py-6 uppercase tracking-[0.4em] text-[12px] font-sans font-black hover:bg-black transition-colors flex items-center justify-center gap-4 shadow-2xl"
                   >
                     Buy Now <ArrowRight size={18} />
-                  </button>
+                  </motion.button>
                 </div>
               </div>
 
@@ -366,6 +389,14 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
           )}
         </AnimatePresence>
       </main>
+
+      {/* Sticky Add-to-Cart Bar */}
+      <StickyCartBar
+        product={product}
+        onAddToCart={() => addItem(product)}
+        triggerRef={addToCartRef}
+        isAdded={isAdded}
+      />
 
       <Footer />
     </div>

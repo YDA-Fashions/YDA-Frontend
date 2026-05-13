@@ -126,12 +126,18 @@ const Footer = () => {
           <p className="text-[9px] uppercase tracking-[0.4em] text-foreground/30 font-bold">
             &copy; {new Date().getFullYear()} YDA FASHION STUDIO.
           </p>
-          <div className="flex gap-12">
+          <div className="flex gap-6 md:gap-12 flex-wrap justify-center">
             <Link href="/privacy" className="text-[9px] uppercase tracking-[0.4em] text-foreground/30 hover:text-foreground transition-colors font-bold">
               Privacy
             </Link>
             <Link href="/terms" className="text-[9px] uppercase tracking-[0.4em] text-foreground/30 hover:text-foreground transition-colors font-bold">
               Terms
+            </Link>
+            <Link href="/shipping" className="text-[9px] uppercase tracking-[0.4em] text-foreground/30 hover:text-foreground transition-colors font-bold">
+              Shipping
+            </Link>
+            <Link href="/returns" className="text-[9px] uppercase tracking-[0.4em] text-foreground/30 hover:text-foreground transition-colors font-bold">
+              Returns
             </Link>
           </div>
           <p className="text-[9px] uppercase tracking-[0.4em] text-foreground/30 font-bold hidden lg:block">

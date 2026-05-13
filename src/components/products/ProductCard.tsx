@@ -35,7 +35,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       whileInView={{ opacity: 1, y: 0 }}
       whileHover={{ y: -8 }}
       viewport={{ once: true }}
-      className="group bg-white transition-shadow duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.06)] overflow-hidden rounded-sm border border-black/5"
+      className="group bg-white transition-shadow duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.06)] overflow-hidden rounded-md border border-black/5"
     >
       <div className="relative overflow-hidden">
         <Link href={`/product/${product.id}`} className="block">

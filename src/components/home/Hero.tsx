@@ -40,17 +40,26 @@ const Hero = () => {
   return (
     <section className="relative h-auto aspect-[16/9] md:h-[95vh] w-full overflow-hidden bg-black max-h-[300px] md:max-h-none">
       {/* Background Slider */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0">
-          <Image
-            src={activeBanners[currentIndex % activeBanners.length]}
-            alt={`YDA Premium Banner ${currentIndex + 1}`}
-            fill
-            priority={currentIndex === 0}
-            className="object-cover brightness-[0.85]"
-            sizes="100vw"
-          />
-        </div>
+      <div className="absolute inset-0 z-0 bg-[#FDFBF7]">
+        <AnimatePresence initial={false}>
+          <motion.div
+            key={currentIndex}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.2, ease: "easeInOut" }}
+            className="absolute inset-0"
+          >
+            <Image
+              src={activeBanners[currentIndex % activeBanners.length]}
+              alt={`YDA Premium Banner ${currentIndex + 1}`}
+              fill
+              priority={currentIndex === 0}
+              className="object-cover brightness-[0.85]"
+              sizes="100vw"
+            />
+          </motion.div>
+        </AnimatePresence>
       </div>
 
       {/* Slider Indicators (Dots) - Slightly Higher for better visibility on 85vh */}

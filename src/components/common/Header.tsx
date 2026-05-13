@@ -2,12 +2,13 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Search, ShoppingBag, Heart, User, Menu, X, ArrowRight } from "lucide-react";
+import { Search, ShoppingBag, User, Menu, X, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Logo from "./Logo";
 import CartToast from "../cart/CartToast";
 import BrandModal from "./BrandModal";
+import HoverImageLink from "./HoverImageLink";
 import { useCartStore } from "../../store/useCartStore";
 import { useAuthStore } from "../../store/useAuthStore";
 import { useUIStore } from "../../store/useUIStore";
@@ -99,11 +100,11 @@ const Header = () => {
       ).slice(0, 8);
 
   const navLinks = [
-    { name: "Big Totes", href: "/big-tote-bags" },
-    { name: "Small Totes", href: "/small-tote-bags" },
-    { name: "New Arrivals", href: "/new-arrivals" },
-    { name: "Cushion Covers", href: "/cushion-covers" },
-    { name: "Sanganeri & Gujarati Prints", href: "/sanganeri-gujarati-prints" },
+    { name: "Big Totes", href: "/big-tote-bags", previewImage: "/images/products/big-tote-bags/YDA-big-tote-primary.jpg" },
+    { name: "Small Totes", href: "/small-tote-bags", previewImage: "/images/products/small-tote-bags/YDA-small-tote-primary.jpg" },
+    { name: "New Arrivals", href: "/new-arrivals", previewImage: "/images/products/big-tote-bags/YDA-big-tote-primary.jpg" },
+    { name: "Cushion Covers", href: "/cushion-covers", previewImage: "/images/products/cushion-covers/YDA-cushion-cover-primary.jpg" },
+    { name: "Sanganeri & Gujarati Prints", href: "/sanganeri-gujarati-prints", previewImage: "/images/products/big-tote-bags/YDA-big-tote-primary.jpg" },
   ];
 
   return (
@@ -302,8 +303,10 @@ const Header = () => {
       </AnimatePresence>
       
       <header 
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? "bg-white/95 backdrop-blur-md shadow-sm" : "bg-white"
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+          isScrolled 
+            ? "bg-white/80 backdrop-blur-xl backdrop-saturate-150 shadow-[0_1px_24px_rgba(0,0,0,0.06)] border-b border-white/40" 
+            : "bg-white"
         } ${showHeader ? "translate-y-0" : "-translate-y-full md:translate-y-0"}`}
       >
         {/* Announcement Bar */}
@@ -356,14 +359,13 @@ const Header = () => {
                 // Full Menu at center when scrolled
                 <nav className="hidden lg:flex items-center gap-6 xl:gap-10">
                   {navLinks.map((link) => (
-                    <Link 
-                      key={link.name} 
+                    <HoverImageLink
+                      key={link.name}
                       href={link.href}
+                      label={link.name}
+                      image={link.previewImage}
                       className="group relative text-[10px] uppercase tracking-[0.2em] font-sans font-black text-foreground/50 hover:text-black transition-colors whitespace-nowrap"
-                    >
-                      {link.name}
-                      <span className="absolute -bottom-1 left-0 w-0 h-[1.5px] bg-black transition-all group-hover:w-full" />
-                    </Link>
+                    />
                   ))}
                 </nav>
               )}

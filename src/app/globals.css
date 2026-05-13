@@ -34,6 +34,11 @@
     letter-spacing: -0.02em;
     font-weight: 500;
   }
+
+  /* Global UI Polish: Subtle premium rounded corners */
+  button, input, select, textarea {
+    border-radius: 0.25rem;
+  }
 }
 
 @theme inline {
