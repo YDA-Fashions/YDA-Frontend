@@ -395,7 +395,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
         product={product}
         onAddToCart={() => addItem(product)}
         triggerRef={addToCartRef}
-        isAdded={isAdded}
+        alreadyInCart={isAdded}
       />
 
       <Footer />

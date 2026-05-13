@@ -9,11 +9,12 @@ interface StickyCartBarProps {
   product: Product;
   onAddToCart: () => void;
   triggerRef: React.RefObject<HTMLElement | null>;
-  isAdded: boolean;
+  alreadyInCart: boolean;
 }
 
-const StickyCartBar = ({ product, onAddToCart, triggerRef, isAdded }: StickyCartBarProps) => {
+const StickyCartBar = ({ product, onAddToCart, triggerRef, alreadyInCart }: StickyCartBarProps) => {
   const [isVisible, setIsVisible] = useState(false);
+  const [isRecentlyAdded, setIsRecentlyAdded] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -31,7 +32,7 @@ const StickyCartBar = ({ product, onAddToCart, triggerRef, isAdded }: StickyCart
 
   return (
     <AnimatePresence>
-      {(isVisible && !isAdded) && (
+      {(isVisible && !alreadyInCart && !isRecentlyAdded) && (
         <motion.div
           initial={{ y: 80, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -66,10 +67,21 @@ const StickyCartBar = ({ product, onAddToCart, triggerRef, isAdded }: StickyCart
             {/* CTA Button */}
             <motion.button
               whileTap={{ scale: 0.97 }}
-              onClick={onAddToCart}
-              className="flex-shrink-0 bg-[#FFD700] hover:bg-[#F2CC00] text-black py-2.5 px-6 text-[9px] uppercase tracking-[0.3em] font-black transition-all duration-300"
+              onClick={() => {
+                onAddToCart();
+                setIsRecentlyAdded(true);
+                // The bar will hide because of the condition above, 
+                // but we keep the state for a bit if needed.
+                setTimeout(() => setIsRecentlyAdded(false), 2000);
+              }}
+              disabled={isRecentlyAdded || alreadyInCart}
+              className={`flex-shrink-0 py-2.5 px-6 text-[9px] uppercase tracking-[0.3em] font-black transition-colors duration-300 ${
+                isRecentlyAdded 
+                  ? "bg-green-500 text-white cursor-default" 
+                  : "bg-[#FFD700] hover:bg-[#F2CC00] text-black"
+              }`}
             >
-              Add to Cart
+              {isRecentlyAdded ? "Added!" : "Add to Cart"}
             </motion.button>
           </div>
         </motion.div>
