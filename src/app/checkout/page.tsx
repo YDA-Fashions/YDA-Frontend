@@ -12,6 +12,7 @@ import { useAuthStore } from "@/store/useAuthStore";
 import { useUIStore } from "@/store/useUIStore";
 import { useProductStore } from "@/store/useProductStore";
 import { orderService } from "@/services/orderService";
+import { supabase } from "@/lib/supabase";
 
 declare global {
   interface Window {
@@ -160,6 +161,23 @@ const CheckoutPage = () => {
     }
 
     setIsProcessing(true);
+
+    // Pre-flight Session Check (Force refresh if needed)
+    try {
+      const { data: { user: activeUser }, error: authError } = await supabase.auth.getUser();
+      if (authError || !activeUser) {
+        setErrorModalOpen(true, {
+          title: "Session Expired",
+          subtitle: "Your secure session has expired. Please sign in again to finalize your curation.",
+          buttonText: "Sign In",
+          onAction: () => router.push("/login?redirect=/checkout")
+        });
+        setIsProcessing(false);
+        return;
+      }
+    } catch (err) {
+      console.error("Session check failed:", err);
+    }
 
     try {
       if (paymentMethod === "ONLINE") {

@@ -11,7 +11,14 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
  * a placeholder client is created to avoid fatal errors.
  */
 export const supabase: SupabaseClient = (supabaseUrl && supabaseAnonKey) 
-  ? createClient(supabaseUrl, supabaseAnonKey)
+  ? createClient(supabaseUrl, supabaseAnonKey, {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: true,
+        storageKey: 'yda-studio-auth'
+      }
+    })
   : (null as any); 
 
 if (!supabaseUrl || !supabaseAnonKey) {

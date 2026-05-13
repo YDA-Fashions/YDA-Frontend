@@ -49,10 +49,10 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: "yda-auth-storage",
-      // Only persist user and session info, not the loading transient state
+      // Do not persist user/session to avoid desync.
+      // GlobalInit handles hydration from Supabase.
       partialize: (state) => ({ 
-        user: state.user, 
-        session: state.session 
+        isLoading: state.isLoading 
       }),
     }
   )

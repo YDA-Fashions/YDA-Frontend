@@ -23,15 +23,23 @@ const GlobalInit = () => {
     fetchProducts();
 
     // 2. Hydrate the initial session
-    supabase.auth.getSession().then(({ data: { session } }: any) => {
-      if (session?.user) {
-        setAuth(session.user, session);
-        setCartUserId(session.user.id);
-        syncCart(session.user.id);
-      } else {
-        setLoading(false);
+    const hydrateAuth = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.user) {
+          setAuth(session.user, session);
+          setCartUserId(session.user.id);
+          syncCart(session.user.id);
+        } else {
+          setAuth(null, null); // Strict clear if no session
+        }
+      } catch (err) {
+        console.error("🔐 Auth: Hydration failed", err);
+        setAuth(null, null);
       }
-    });
+    };
+
+    hydrateAuth();
 
     // Listen for auth state changes (login, logout, token refresh)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
