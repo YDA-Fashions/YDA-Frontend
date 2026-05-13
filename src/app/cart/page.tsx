@@ -24,6 +24,7 @@ const CartPage = () => {
 
   const subtotal = getTotalPrice();
   const threshold = 1000;
+  const shippingFee = subtotal >= threshold ? 0 : 100;
   const isFreeGiftEligible = subtotal >= threshold;
   const awayAmount = threshold - subtotal;
 
@@ -157,16 +158,30 @@ const CartPage = () => {
                 <div className="bg-white border border-black/5 p-5 rounded-sm">
                   <div className="mb-4">
                     <div className="flex gap-2 items-start mb-2">
-                      <CheckCircle size={20} className="text-emerald-600 mt-0.5 flex-shrink-0" />
-                      <p className="text-sm font-sans text-emerald-800">
-                        Your order is eligible for FREE Delivery.
-                      </p>
+                      {subtotal >= threshold ? (
+                        <>
+                          <CheckCircle size={20} className="text-emerald-600 mt-0.5 flex-shrink-0" />
+                          <p className="text-sm font-sans text-emerald-800">
+                            Your order is eligible for FREE Delivery.
+                          </p>
+                        </>
+                      ) : (
+                        <>
+                          <Truck size={20} className="text-amber-600 mt-0.5 flex-shrink-0" />
+                          <p className="text-sm font-sans text-amber-800">
+                            Add ₹{awayAmount.toLocaleString()} more for FREE Delivery.
+                          </p>
+                        </>
+                      )}
                     </div>
                   </div>
 
-                  <h2 className="text-lg font-sans mb-5">
+                  <h2 className="text-lg font-sans mb-1">
                     Subtotal ({getTotalItems()} items): <span className="font-bold">₹{subtotal.toLocaleString()}</span>
                   </h2>
+                  <p className="text-xs text-black/60 font-sans mb-5">
+                    Shipping: {shippingFee === 0 ? <span className="text-emerald-700 font-bold uppercase">Free</span> : `₹${shippingFee}`}
+                  </p>
 
                   <button 
                     onClick={handleCheckout}

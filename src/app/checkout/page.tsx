@@ -42,6 +42,9 @@ const CheckoutPage = () => {
     ? buyNowProduct.selling_price * buyNowQty
     : getTotalPrice();
 
+  const shippingFee = activeTotal >= 1000 ? 0 : 100;
+  const finalTotal = activeTotal + shippingFee;
+
   // 2. Structured Form State
   const [formData, setFormData] = useState({
     name: "",
@@ -190,7 +193,7 @@ const CheckoutPage = () => {
 
         const options = {
           key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_placeholder",
-          amount: activeTotal * 100,
+          amount: finalTotal * 100,
           currency: "INR",
           name: "YDA Fashions",
           description: "Artisan Garment Purchase",
@@ -237,7 +240,7 @@ const CheckoutPage = () => {
       const orderData = {
         user_id: user?.id,
         items: activeItems,
-        amount: activeTotal * 100, 
+        amount: finalTotal * 100, 
         customer_name: formData.name.trim(),
         customer_phone: formData.phone.trim(),
         customer_address: fullAddress,
@@ -251,7 +254,7 @@ const CheckoutPage = () => {
 
       setOrderModalOpen(true, {
         productName: activeItems.length === 1 ? activeItems[0].name : `${activeItems.length} Multiple Pieces`,
-        amount: activeTotal
+        amount: finalTotal
       });
       router.push("/");
     } catch (error: any) {
@@ -466,7 +469,7 @@ const CheckoutPage = () => {
                   disabled={isProcessing || (pincodeLoading && !manualMode)}
                   className="w-full bg-black text-white py-6 text-[12px] uppercase tracking-[0.4em] font-black hover:bg-black/90 transition-all flex items-center justify-center gap-4 shadow-2xl disabled:opacity-50"
                 >
-                  {isProcessing ? "Processing Artflow..." : `Fulfill Order - ₹${activeTotal.toLocaleString()}`}
+                  {isProcessing ? "Processing Artflow..." : `Fulfill Order - ₹${finalTotal.toLocaleString()}`}
                 </button>
               </form>
             </div>
@@ -506,11 +509,11 @@ const CheckoutPage = () => {
                   </div>
                   <div className="flex justify-between items-center text-[10px] uppercase tracking-widest font-black text-black/30">
                     <span>Shipping</span>
-                    <span className="text-black">₹0</span>
+                    <span className="text-black">{shippingFee === 0 ? "FREE" : `₹${shippingFee}`}</span>
                   </div>
                   <div className="flex justify-between items-center pt-6">
                     <span className="text-[12px] uppercase tracking-[0.3em] font-black italic">Total Investment</span>
-                    <span className="text-2xl font-black">₹{activeTotal.toLocaleString()}</span>
+                    <span className="text-2xl font-black">₹{finalTotal.toLocaleString()}</span>
                   </div>
                 </div>
 

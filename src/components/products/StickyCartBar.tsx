@@ -70,9 +70,7 @@ const StickyCartBar = ({ product, onAddToCart, triggerRef, alreadyInCart }: Stic
               onClick={() => {
                 onAddToCart();
                 setIsRecentlyAdded(true);
-                // The bar will hide because of the condition above, 
-                // but we keep the state for a bit if needed.
-                setTimeout(() => setIsRecentlyAdded(false), 2000);
+                // Hide effect happens instantly due to !isRecentlyAdded condition
               }}
               disabled={isRecentlyAdded || alreadyInCart}
               className={`flex-shrink-0 py-2.5 px-6 text-[9px] uppercase tracking-[0.3em] font-black transition-colors duration-300 ${
