@@ -19,7 +19,11 @@ export const orderService = {
   }) {
     // 1. Strict Auth Enforcement
     const { data: { user }, error: authError } = await supabase.auth.getUser();
-    if (authError || !user) throw new Error("Identity Required: Log in to finalize your curation.");
+    
+    if (authError || !user) {
+      console.error("❌ Auth Error during Order Creation:", authError?.message || "No user found");
+      throw new Error("Identity Required: Log in to finalize your curation.");
+    }
 
     // 2. STRICTOR VALIDATION (No silent fallbacks)
     if (!orderData.amount || isNaN(orderData.amount) || orderData.amount <= 0) {

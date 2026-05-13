@@ -238,10 +238,16 @@ const CheckoutPage = () => {
       router.push("/");
     } catch (error: any) {
       console.error("❌ Order Finalization Failure:", error.message);
+      
+      const isAuthError = error.message?.includes("Identity Required");
+      
       setErrorModalOpen(true, {
-        title: "Order Fulfillment Error",
-        subtitle: error.message || "We encountered an issue with stock or price verification.",
-        buttonText: "Revise Selection"
+        title: isAuthError ? "Session Expired" : "Order Fulfillment Error",
+        subtitle: isAuthError 
+          ? "Your secure session has expired. Please sign in again to finalize your curation."
+          : (error.message || "We encountered an issue with stock or price verification."),
+        buttonText: isAuthError ? "Sign In" : "Revise Selection",
+        onAction: isAuthError ? () => router.push("/login?redirect=/checkout") : undefined
       });
     } finally {
       setIsProcessing(false);

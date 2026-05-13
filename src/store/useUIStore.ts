@@ -8,6 +8,7 @@ interface ModalData {
   title?: string;
   subtitle?: string;
   buttonText?: string;
+  onAction?: () => void;
 }
 
 interface UIStore {

@@ -114,7 +114,10 @@ const Header = () => {
       {/* Global Branded Modals */}
       <BrandModal 
         isOpen={isAccountModalOpen}
-        onClose={() => setAccountModalOpen(false)}
+        onClose={() => {
+          if (modalData?.onAction) modalData.onAction();
+          setAccountModalOpen(false);
+        }}
         type="account"
         title="Welcome to YDA"
         subtitle="Your account has been created successfully"
@@ -123,7 +126,10 @@ const Header = () => {
 
       <BrandModal 
         isOpen={isOrderModalOpen}
-        onClose={() => setOrderModalOpen(false)}
+        onClose={() => {
+          if (modalData?.onAction) modalData.onAction();
+          setOrderModalOpen(false);
+        }}
         type="order"
         title="Order Confirmed"
         subtitle="Your order has been placed successfully"
@@ -134,7 +140,10 @@ const Header = () => {
 
       <BrandModal 
         isOpen={isErrorModalOpen}
-        onClose={() => setErrorModalOpen(false)}
+        onClose={() => {
+          if (modalData?.onAction) modalData.onAction();
+          setErrorModalOpen(false);
+        }}
         type="error"
         title={modalData?.title || "Encountered an Issue"}
         subtitle={modalData?.subtitle || "Something went wrong. Please try again."}
