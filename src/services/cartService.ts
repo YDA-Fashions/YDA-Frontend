@@ -34,9 +34,9 @@ export const cartService = {
       .from("cart_items")
       .upsert({ 
         user_id: userId, 
-        product_id: productId, 
+        product_code: productId, 
         quantity 
-      }, { onConflict: "user_id,product_id" });
+      }, { onConflict: "user_id,product_code" });
 
     if (error) console.error("🛒 Cart: Sync failed", error.message);
   },
@@ -45,7 +45,7 @@ export const cartService = {
     const { error } = await supabase
       .from("cart_items")
       .delete()
-      .match({ user_id: userId, product_id: productId });
+      .match({ user_id: userId, product_code: productId });
 
     if (error) console.error("🛒 Cart: Removal failed", error.message);
   },

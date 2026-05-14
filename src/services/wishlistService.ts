@@ -28,8 +28,8 @@ export const wishlistService = {
       .from("wishlist")
       .upsert({ 
         user_id: userId, 
-        product_id: productId 
-      }, { onConflict: "user_id,product_id" });
+        product_code: productId 
+      }, { onConflict: "user_id,product_code" });
 
     if (error) console.error("✨ Wishlist: Add failed", error.message);
   },
@@ -38,7 +38,7 @@ export const wishlistService = {
     const { error } = await supabase
       .from("wishlist")
       .delete()
-      .match({ user_id: userId, product_id: productId });
+      .match({ user_id: userId, product_code: productId });
 
     if (error) console.error("✨ Wishlist: Remove failed", error.message);
   }
