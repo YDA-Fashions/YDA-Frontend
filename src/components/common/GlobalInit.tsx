@@ -5,6 +5,7 @@ import { supabase } from "@/lib/supabase";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useCartStore } from "@/store/useCartStore";
 import { useProductStore } from "@/store/useProductStore";
+import { useWishlistStore } from "@/store/useWishlistStore";
 
 /**
  * GlobalInit
@@ -16,6 +17,7 @@ import { useProductStore } from "@/store/useProductStore";
 const GlobalInit = () => {
   const { setAuth, setLoading, signOut } = useAuthStore();
   const { setUserId: setCartUserId, syncCart, clearLocalItems: clearCart } = useCartStore();
+  const { setUserId: setWishlistUserId, syncWishlist, clearWishlist } = useWishlistStore();
   const { fetchProducts } = useProductStore();
 
   useEffect(() => {
@@ -30,6 +32,8 @@ const GlobalInit = () => {
           setAuth(session.user, session);
           setCartUserId(session.user.id);
           syncCart(session.user.id);
+          setWishlistUserId(session.user.id);
+          syncWishlist(session.user.id);
         } else {
           setAuth(null, null); // Strict clear if no session
         }
@@ -49,11 +53,15 @@ const GlobalInit = () => {
             setAuth(session.user, session);
             setCartUserId(session.user.id);
             syncCart(session.user.id);
+            setWishlistUserId(session.user.id);
+            syncWishlist(session.user.id);
           }
         } else if (event === "SIGNED_OUT") {
           signOut();
           setCartUserId(null);
           clearCart();
+          setWishlistUserId(null);
+          clearWishlist();
         }
       }
     );
