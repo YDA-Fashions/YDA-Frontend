@@ -9,6 +9,8 @@ import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import Hero from "@/components/home/Hero";
 import ProductCard from "@/components/products/ProductCard";
+import QuickAddDrawer from "@/components/products/QuickAddDrawer";
+import BrandStory from "@/components/home/BrandStory";
 import { useProductStore } from "@/store/useProductStore";
 import { Product } from "@/data/products";
 
@@ -22,10 +24,20 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
   const [currentReview, setCurrentReview] = useState(0);
   const [showPopup, setShowPopup] = useState(false);
   const [mounted, setMounted] = useState(false);
+  
+  // Quick Add State
+  const [isQuickAddOpen, setIsQuickAddOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  const handleQuickAdd = (product: Product) => {
+    setSelectedProduct(product);
+    setIsQuickAddOpen(true);
+  };
+
 
   const reviews = [
     {
@@ -90,50 +102,6 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
       
       <main className="pt-[90px]">
         <Hero />
-        
-        {/* Promotional Section */}
-        <section className="pt-12 pb-6 md:py-16 bg-background text-center">
-          <div className="container mx-auto px-6">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-            >
-              <h2 className="text-xl md:text-3xl lg:text-5xl font-black text-black uppercase tracking-tight leading-tight mb-2">
-                Shop For ₹1000+ & Get 10% Extra Discount
-              </h2>
-              <h3 className="text-lg md:text-2xl font-black text-black uppercase tracking-tight mb-6">
-                PLUS FREE Gift
-              </h3>
-              <p className="text-xs md:text-base font-black text-emerald-600 uppercase tracking-[0.3em]">
-                Hurry! Limited Time Deal 🔥
-              </p>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Hero CTA */}
-        <section className="pb-12 md:pb-16 bg-background border-b border-border-beige/20">
-          <div className="container mx-auto px-6 flex flex-col md:flex-row items-center justify-center gap-6">
-            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }}>
-              <Link 
-                href="/shop"
-                className="px-12 py-4 bg-foreground text-background text-[11px] uppercase tracking-[0.4em] font-bold transition-all duration-500 hover:bg-accent-dark hover:-translate-y-1 block text-center min-w-[280px] shadow-sm"
-              >
-                Shop Now
-              </Link>
-            </motion.div>
-            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8, delay: 0.1 }}>
-              <Link 
-                href="/sanganeri-gujarati-prints"
-                className="px-12 py-4 border border-foreground text-foreground text-[11px] uppercase tracking-[0.4em] font-bold transition-all duration-500 hover:bg-foreground hover:text-background hover:-translate-y-1 block text-center min-w-[280px]"
-              >
-                View Our Collections
-              </Link>
-            </motion.div>
-          </div>
-        </section>
 
         {/* Visual Navigation */}
         <section className="py-16 md:py-24 container mx-auto px-6">
@@ -167,31 +135,209 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
           </div>
         </section>
 
-        {/* Video Reels Section */}
-        <section className="py-12 md:py-24 bg-white overflow-hidden border-b border-border-beige/20">
-          <div className="container mx-auto px-6 mb-12">
-            <p className="text-[10px] uppercase tracking-[0.4em] font-bold text-accent-dark mb-4 text-center md:text-left">Artistry in Motion</p>
-            <h1 className="text-3xl md:text-5xl font-serif tracking-tight italic text-center md:text-left">Handcrafted Stories</h1>
+        {/* Trust Section - Boutique Style */}
+        <section className="py-24 md:py-32 bg-white border-y border-border-beige/50">
+          <div className="container mx-auto px-6">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+              {[
+                { icon: Truck, title: "Artisan Direct", text: "From Manoj's Studio To Your Door" },
+                { icon: Banknote, title: "Secure COD", text: "Pay At Your Doorstep" },
+                { icon: Star, title: "Prepaid Reward", text: "Extra 5% Off On Prepaid" },
+                { icon: Award, title: "YDA Certified", text: "100% Sanganeri Heritage" },
+              ].map((item, idx) => (
+                <motion.div 
+                  key={idx} 
+                  initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8, delay: idx * 0.1 }}
+                  className="flex flex-col items-center text-center group"
+                >
+                  <div className="w-16 h-16 mb-8 flex items-center justify-center bg-[#F8F8F5] rounded-full group-hover:scale-105 transition-transform duration-500">
+                    <item.icon size={28} strokeWidth={1} className="text-black" />
+                  </div>
+                  <h4 className="text-[10px] uppercase tracking-[0.3em] font-black mb-3 text-black">{item.title}</h4>
+                  <p className="text-[10px] text-black/40 font-sans leading-relaxed px-4 uppercase tracking-wider">{item.text}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Brand Story (Legacy & Craft) */}
+        <BrandStory />
+
+        {/* Studio Live Section (Lililo Style) */}
+        <section className="py-24 md:py-32 bg-white overflow-hidden border-b border-border-beige/20">
+          <div className="container mx-auto px-6 mb-16 flex items-end justify-between">
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                <p className="text-[10px] uppercase tracking-[0.4em] font-black text-black">Studio Live</p>
+              </div>
+              <h2 className="text-4xl md:text-6xl font-serif tracking-tight italic">What's New in the Studio.</h2>
+            </div>
+            <Link 
+              href="/shop"
+              className="hidden md:flex items-center gap-4 text-[10px] uppercase tracking-[0.2em] font-black border-b border-black/10 pb-2 hover:border-black transition-all"
+            >
+              View All Reels
+              <ArrowRight size={16} />
+            </Link>
           </div>
           
-          <div className="flex overflow-x-auto gap-4 md:gap-12 px-6 container mx-auto pb-8 snap-x scrollbar-hide no-scrollbar">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <motion.div 
-                key={i}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: i * 0.1 }}
-                className="flex-shrink-0 w-[160px] md:w-[350px] aspect-[9/16] relative bg-foreground/5 overflow-hidden snap-center rounded-sm shadow-lg md:shadow-2xl hover:scale-[1.02] transition-transform duration-500"
+          <div className="flex overflow-x-auto gap-6 md:gap-10 px-6 md:px-20 pb-12 snap-x scrollbar-hide no-scrollbar cursor-grab active:cursor-grabbing">
+            {[
+              { id: 1, title: "Master Cutting", tag: "@manojtailor" },
+              { id: 2, title: "Sanganeri Detail", tag: "#artisan" },
+              { id: 3, title: "New Tote Arrival", tag: "Collection 24" },
+              { id: 4, title: "Crafting Soul", tag: "@yda_studio" },
+              { id: 5, title: "Heritage Prints", tag: "Jaipur" },
+              { id: 6, title: "Founder's Vision", tag: "Legacy" },
+            ].map((video) => {
+              const VideoCard = ({ video }: { video: any }) => {
+                const videoRef = React.useRef<HTMLVideoElement>(null);
+                const [isPlaying, setIsPlaying] = React.useState(true);
+
+                const togglePlay = () => {
+                  if (videoRef.current) {
+                    if (isPlaying) {
+                      videoRef.current.pause();
+                    } else {
+                      videoRef.current.play();
+                    }
+                    setIsPlaying(!isPlaying);
+                  }
+                };
+
+                return (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8, delay: video.id * 0.1 }}
+                    onClick={togglePlay}
+                    className="flex-shrink-0 w-[240px] md:w-[380px] aspect-[9/16] relative bg-[#F8F8F5] overflow-hidden snap-center group shadow-xl hover:shadow-2xl transition-all duration-700 cursor-pointer"
+                  >
+                    <video 
+                      ref={videoRef}
+                      src="/videos/YDA-VIDEO-1.mp4"
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      className="absolute inset-0 w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-700"
+                    />
+                    
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
+                    
+                    <div className="absolute inset-0 p-8 flex flex-col justify-end">
+                      <span className="text-[10px] uppercase tracking-widest font-black text-white/60 mb-2">{video.tag}</span>
+                      <h4 className="text-xl md:text-2xl font-serif italic text-white group-hover:translate-x-2 transition-transform duration-500">{video.title}</h4>
+                    </div>
+                    
+                    <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full border border-white/20 flex items-center justify-center backdrop-blur-sm transition-all duration-500 ${isPlaying ? "opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100" : "opacity-100 scale-100"}`}>
+                      {isPlaying ? (
+                        <div className="flex gap-1">
+                          <div className="w-1.5 h-6 bg-white" />
+                          <div className="w-1.5 h-6 bg-white" />
+                        </div>
+                      ) : (
+                        <div className="w-0 h-0 border-t-[8px] border-t-transparent border-l-[12px] border-l-white border-b-[8px] border-b-transparent ml-1" />
+                      )}
+                    </div>
+                  </motion.div>
+                );
+              };
+
+              return <VideoCard key={video.id} video={video} />;
+            })}
+          </div>
+        </section>
+
+        {/* Product Selection */}
+        <section className="py-24 md:py-32 bg-white border-t border-border-beige/50 overflow-hidden">
+          <div className="w-full px-6 md:px-20 max-w-[1920px] mx-auto">
+            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }} className="text-center mb-20">
+              <p className="text-[10px] uppercase tracking-[0.5em] font-black text-accent-dark mb-6">Our Selection</p>
+              <h2 className="text-4xl md:text-6xl font-serif tracking-tight mb-6 italic text-foreground">Featured Pieces</h2>
+              <div className="w-12 h-[1px] bg-black/10 mx-auto" />
+            </motion.div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 md:gap-x-20 gap-y-24">
+              {mounted && featuredProducts.map((product) => (
+                <div key={product.id} className="w-full">
+                   <ProductCard product={product} onQuickAdd={handleQuickAdd} />
+                </div>
+              ))}
+            </div>
+            
+            <div className="mt-20 text-center">
+              <Link 
+                href="/shop"
+                className="inline-block px-12 py-5 border border-black/10 text-black text-[10px] uppercase tracking-[0.4em] font-black transition-all hover:bg-black hover:text-white"
               >
-                <video 
-                  src="/videos/YDA-VIDEO-1.mp4"
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  className="absolute inset-0 w-full h-full object-cover"
+                View Full Collection
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Enhanced Review Section (Cinematic Cards) */}
+        <section className="py-24 md:py-32 bg-[#F8F8F5] overflow-hidden border-t border-border-beige/50">
+          <div className="container mx-auto px-6 mb-16 flex items-end justify-between">
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.6em] font-black text-accent-dark mb-4">Client Stories</p>
+              <h2 className="text-4xl md:text-6xl font-serif tracking-tight italic text-foreground">What our collectors say.</h2>
+            </div>
+            <div className="hidden md:flex gap-4">
+              <span className="text-[10px] uppercase tracking-widest font-bold opacity-40 italic">Swipe to explore</span>
+            </div>
+          </div>
+
+          <div className="flex overflow-x-auto gap-6 md:gap-10 px-6 md:px-20 pb-12 snap-x scrollbar-hide no-scrollbar cursor-grab active:cursor-grabbing">
+            {[
+              { id: 1, name: "Shivani Mahata", text: "Amazing quality and finish. The fabric feels premium.", image: "/images/review-image-folder/YDA-review-shivani-mahata.png" },
+              { id: 2, name: "Chhavi Singh", text: "Loved the fabric and print. Truly authentic.", image: "/images/review-image-folder/YDA-review-chhavi-singh.png" },
+              { id: 3, name: "Priya Naiwal", text: "Breathtaking Sanganeri detail. Perfect for my home.", image: "/images/review-image-folder/YDA-review-priya-naiwal.png" },
+              { id: 4, name: "Radhika Kumari", text: "The craftsmanship is unparalleled. Unique Indian art.", image: "/images/review-image-folder/YDA-review-radhika-kumari.png" },
+              { id: 5, name: "Parul Choudhari", text: "Absolutely stunning designs! Vibrant colors.", image: "/images/review-image-folder/YDA-review-parul-choudhari.png" },
+            ].map((review, idx) => (
+              <motion.div 
+                key={idx}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: idx * 0.1 }}
+                className="flex-shrink-0 w-[280px] md:w-[420px] aspect-[9/16] relative bg-white overflow-hidden snap-center group shadow-xl hover:shadow-2xl transition-all duration-700"
+              >
+                <Image
+                  src={review.image}
+                  alt={review.name}
+                  fill
+                  className="object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105"
                 />
+                
+                {/* Overlay Gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
+                
+                {/* Verified Badge */}
+                <div className="absolute top-6 left-6 z-10 flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                  <span className="text-[8px] uppercase tracking-[0.2em] font-black text-white/80">Verified Buyer</span>
+                </div>
+
+                {/* Content Overlay */}
+                <div className="absolute inset-0 p-8 flex flex-col justify-end">
+                  <div className="flex gap-1 mb-4">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} size={10} className="fill-white text-white" />
+                    ))}
+                  </div>
+                  <p className="text-sm md:text-lg font-serif italic text-white mb-6 leading-relaxed">
+                    "{review.text}"
+                  </p>
+                  <div className="pt-6 border-t border-white/20">
+                    <span className="text-[10px] uppercase tracking-[0.3em] font-black text-white/60">{review.name}</span>
+                  </div>
+                </div>
               </motion.div>
             ))}
           </div>
@@ -281,156 +427,13 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
           </motion.div>
         </section>
 
-        {/* Brand Story */}
-        <section className="py-16 md:py-24 bg-white overflow-hidden border-t border-border-beige/50">
-          <div className="container mx-auto px-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-              <motion.div 
-                initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }}
-                className="relative aspect-square bg-border-beige overflow-hidden shadow-md max-w-lg mx-auto lg:mx-0"
-              >
-                <Image 
-                  src="/images/home-page-image/sanganeri-print-1.jpg.png"
-                  alt="Traditional Sanganeri Block Print detail"
-                  fill
-                  className="object-cover hover:scale-105 transition-transform duration-[2s]"
-                />
-              </motion.div>
-              <motion.div 
-                initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8, delay: 0.2 }}
-                className="max-w-md lg:ml-auto text-center lg:text-left"
-              >
-                <p className="text-[10px] uppercase tracking-[0.4em] font-sans font-bold text-accent-dark mb-6">
-                  The Essence of Tradition
-                </p>
-                <h2 className="text-3xl md:text-5xl font-serif italic mb-6 leading-[1.1]">
-                  Rooted in tradition, crafted for modern luxury.
-                </h2>
-                <div className="w-10 h-[1px] bg-accent-dark/30 mx-auto lg:mx-0 mb-6" />
-                <p className="text-foreground/60 text-sm leading-relaxed mb-8">
-                  Heritage Jaipur blocks meticulously handprinted on premium canvas for the discerning wardrobe.
-                </p>
-                <Link href="/story" className="text-[10px] uppercase tracking-[0.2em] font-bold border-b border-foreground/20 pb-1 hover:border-foreground transition-colors">
-                  Read Our Story
-                </Link>
-              </motion.div>
-            </div>
-          </div>
-        </section>
-
-        {/* Product Selection */}
-        <section className="py-16 md:py-24 bg-background border-t border-border-beige/50 overflow-hidden">
-          <div className="w-full px-4 md:px-10 max-w-[1920px] mx-auto">
-            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }} className="text-center mb-16">
-              <p className="text-[10px] uppercase tracking-[0.4em] font-bold text-accent-dark mb-4">Our Selection</p>
-              <h2 className="text-3xl md:text-5xl font-serif tracking-tight mb-4 italic text-foreground">Featured Pieces</h2>
-              <div className="w-8 h-[1px] bg-foreground/20 mx-auto" />
-            </motion.div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 md:gap-x-16 gap-y-24">
-              {mounted && featuredProducts.map((product) => (
-                <div key={product.id} className="w-full">
-                   <ProductCard product={product} />
-                </div>
-              ))}
-            </div>
-            
-            <div className="mt-16 text-center">
-              <Link 
-                href="/shop"
-                className="inline-block px-12 py-4 border border-foreground/20 text-foreground text-[10px] uppercase tracking-[0.4em] font-bold transition-all hover:bg-foreground hover:text-background"
-              >
-                View Full Collection
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* Review Slider */}
-        <section className="bg-white border-t border-border-beige/50 overflow-hidden min-h-[60vh] flex items-center">
-          <div className="w-full h-full relative">
-            <AnimatePresence mode="wait">
-              <motion.div 
-                key={currentReview}
-                initial={{ opacity: 0, transition: { duration: 0.4 } }}
-                animate={{ opacity: 1, transition: { duration: 0.6 } }}
-                exit={{ opacity: 0, transition: { duration: 0.4 } }}
-                className="flex flex-col lg:flex-row items-center w-full h-full"
-              >
-                <div className="relative w-full lg:w-[35%] h-[400px] lg:h-[60vh] overflow-hidden">
-                  <Image
-                    src={reviews[currentReview].image}
-                    alt={reviews[currentReview].name}
-                    fill
-                    className="object-cover object-center"
-                    priority
-                  />
-                </div>
-
-                <div className="flex flex-col justify-center px-10 md:px-20 py-16 lg:w-[65%] lg:pl-10">
-                  <div className="max-w-xl mx-auto lg:mx-0 text-left">
-                    <p className="text-xs uppercase tracking-[0.6em] font-black text-accent-dark mb-8">Client Stories</p>
-                    <div className="flex justify-start gap-1 mb-6">
-                      {[...Array(reviews[currentReview].rating)].map((_, i) => (
-                        <Star key={i} size={16} className="fill-[#D4AF37] text-[#D4AF37]" />
-                      ))}
-                    </div>
-                    <p className="text-base md:text-lg font-sans font-normal mb-8 leading-relaxed text-foreground">
-                      "{reviews[currentReview].text}"
-                    </p>
-                    <div className="flex items-center justify-start gap-6 mt-8 pt-6 border-t border-border-beige/30">
-                      <div className="w-12 h-[1px] bg-accent-dark hidden lg:block" />
-                      <span className="text-xs uppercase tracking-[0.3em] font-black">{reviews[currentReview].name}</span>
-                    </div>
-
-                    <div className="flex justify-start gap-8 mt-12">
-                      <button onClick={prevReview} className="hover:text-accent-dark transition-colors">
-                        <ArrowLeft size={24} strokeWidth={1} />
-                      </button>
-                      <button onClick={nextReview} className="hover:text-accent-dark transition-colors">
-                        <ArrowRight size={24} strokeWidth={1} />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </section>
-
-        {/* Trust Section */}
-        <section className="py-24 md:py-32 bg-background border-y border-border-beige/50">
-          <div className="container mx-auto px-6">
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
-              {[
-                { icon: Truck, title: "Free Shipping", text: "Free Shipping On ₹500+ Order" },
-                { icon: Banknote, title: "Cash On Delivery", text: "COD Option Available" },
-                { icon: Star, title: "Top Ratings", text: "100% Customer Satisfaction" },
-                { icon: Award, title: "Made In India", text: "HANDCRAFTED QUALITY" },
-              ].map((item, idx) => (
-                <motion.div 
-                  key={idx} 
-                  initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8, delay: idx * 0.1 }}
-                  className="flex flex-col items-center text-center group"
-                >
-                  <div className="w-20 h-20 mb-8 flex items-center justify-center bg-white rounded-full shadow-md group-hover:scale-105 transition-transform duration-500 border border-border-beige/10">
-                    <item.icon size={36} strokeWidth={1} className="text-black" />
-                  </div>
-                  <h4 className="text-xs md:text-sm uppercase tracking-[0.2em] font-black mb-3 text-black">{item.title}</h4>
-                  <p className="text-[10px] md:text-[11px] text-black/60 italic font-sans leading-relaxed px-2 uppercase tracking-wider">{item.text}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* Social Connect */}
-        <section className="py-12 md:py-24 bg-[#FBF9F4] border-t border-border-beige/50">
+        <section className="py-24 md:py-32 bg-[#FBF9F4] border-t border-border-beige/50">
           <div className="container mx-auto px-6 text-center">
-            <div className="max-w-5xl mx-auto space-y-12">
+            <div className="max-w-5xl mx-auto space-y-16">
                <div>
-                  <p className="text-[10px] uppercase tracking-[0.5em] font-black text-accent-dark mb-4 text-center">Our Creative Space</p>
-                  <h2 className="text-3xl md:text-5xl font-serif italic text-foreground text-center">The Making of Luxury</h2>
+                  <p className="text-[10px] uppercase tracking-[0.5em] font-black text-accent-dark mb-6 text-center">Artistry in Motion</p>
+                  <h2 className="text-4xl md:text-6xl font-serif italic text-foreground text-center leading-tight">The Making of <br/> Modern Luxury</h2>
                </div>
                
                <div className="relative w-full aspect-video shadow-2xl overflow-hidden rounded-sm border border-border-beige/30">
@@ -447,16 +450,16 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
         </section>
 
         {/* Final CTA */}
-        <section className="py-24 md:py-32 text-center bg-white overflow-hidden">
+        <section className="py-24 md:py-40 text-center bg-white overflow-hidden">
           <div className="container mx-auto px-6">
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }}>
-              <p className="text-[10px] uppercase tracking-[0.4em] font-bold text-accent-dark mb-8">Your Journey Begins Here</p>
-              <h2 className="text-3xl md:text-6xl font-serif italic mb-12 max-w-2xl mx-auto leading-tight">
-                Discover pieces that tell a story.
+              <p className="text-[10px] uppercase tracking-[0.5em] font-black text-accent-dark mb-10 italic">Your Journey Begins Here</p>
+              <h2 className="text-4xl md:text-7xl font-serif italic mb-16 max-w-3xl mx-auto leading-tight">
+                Discover pieces that <br/> tell your story.
               </h2>
               <Link 
                 href="/shop"
-                className="inline-block px-12 py-4 bg-foreground text-background text-[11px] uppercase tracking-[0.4em] font-bold transition-all duration-500 hover:bg-accent-dark hover:-translate-y-1 shadow-xl"
+                className="inline-block px-16 py-6 bg-black text-white text-[11px] uppercase tracking-[0.4em] font-black transition-all duration-700 hover:bg-accent-dark hover:-translate-y-2 shadow-2xl"
               >
                 Shop the selection
               </Link>
@@ -465,7 +468,17 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
         </section>
       </main>
 
+
+
       <Footer />
+
+      {/* Quick Add Drawer */}
+      <QuickAddDrawer 
+        product={selectedProduct} 
+        isOpen={isQuickAddOpen} 
+        onClose={() => setIsQuickAddOpen(false)} 
+      />
+
 
       {/* Promotional Popup */}
       <AnimatePresence>

@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import ProductCard from "@/components/products/ProductCard";
+import QuickAddDrawer from "@/components/products/QuickAddDrawer";
 import { Product } from "@/data/products";
 
 interface ShopClientProps {
@@ -23,9 +24,19 @@ export default function ShopClient({ initialProducts }: ShopClientProps) {
   const [activeSort, setActiveSort] = useState("Recommended");
   const [isSortOpen, setIsSortOpen] = useState(false);
   
+  // Quick Add State
+  const [isQuickAddOpen, setIsQuickAddOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+
+  const handleQuickAdd = (product: Product) => {
+    setSelectedProduct(product);
+    setIsQuickAddOpen(true);
+  };
+
   // New local state for filtering
   const [activeCategory, setActiveCategory] = useState<string>("All");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+
 
   useEffect(() => {
     let result = [...initialProducts];
@@ -164,7 +175,7 @@ export default function ShopClient({ initialProducts }: ShopClientProps) {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-20">
               {filteredProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard key={product.id} product={product} onQuickAdd={handleQuickAdd} />
               ))}
             </div>
           )}
@@ -182,6 +193,14 @@ export default function ShopClient({ initialProducts }: ShopClientProps) {
       </main>
 
       <Footer />
+      
+      {/* Quick Add Drawer */}
+      <QuickAddDrawer 
+        product={selectedProduct} 
+        isOpen={isQuickAddOpen} 
+        onClose={() => setIsQuickAddOpen(false)} 
+      />
     </div>
   );
 }
+

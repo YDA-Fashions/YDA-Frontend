@@ -3,11 +3,13 @@
 import React, { useState, useRef, MouseEvent, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { ShoppingBag, ArrowLeft, ShieldCheck, Truck, RotateCcw, X, Star, ArrowRight } from "lucide-react";
+import { ShoppingBag, ArrowLeft, ShieldCheck, Truck, RotateCcw, X, Star, ArrowRight, Banknote, Award } from "lucide-react";
+
 import { motion, AnimatePresence } from "framer-motion";
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import ProductCard from "@/components/products/ProductCard";
+import QuickAddDrawer from "@/components/products/QuickAddDrawer";
 import StickyCartBar from "@/components/products/StickyCartBar";
 import { useMagneticEffect } from "@/hooks/useMagneticEffect";
 import { Product } from "@/data/products";
@@ -27,6 +29,16 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
   const [quantity, setQuantity] = useState(1);
   const [isZoomModalOpen, setIsZoomModalOpen] = useState(false);
   const [currentReview, setCurrentReview] = useState(0);
+
+  // Quick Add State
+  const [isQuickAddOpen, setIsQuickAddOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+
+  const handleQuickAdd = (product: Product) => {
+    setSelectedProduct(product);
+    setIsQuickAddOpen(true);
+  };
+
 
   const [zoomPos, setZoomPos] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
@@ -274,30 +286,30 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-12 pt-4">
                     <div className="flex items-center gap-4 group">
                       <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-black/40 group-hover:bg-black group-hover:text-white transition-all duration-300">
-                        <ShieldCheck size={18} strokeWidth={1.5} />
+                        <Banknote size={18} strokeWidth={1.5} />
                       </div>
-                      <span className="text-[11px] font-bold uppercase tracking-widest text-black/80">Cash on Delivery Available</span>
+                      <span className="text-[11px] font-bold uppercase tracking-widest text-black/80">Secure COD Available</span>
                     </div>
 
                     <div className="flex items-center gap-4 group">
                       <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-black/40 group-hover:bg-black group-hover:text-white transition-all duration-300">
                         <RotateCcw size={18} strokeWidth={1.5} />
                       </div>
-                      <span className="text-[11px] font-bold uppercase tracking-widest text-black/80">48 Hours Easy Returns</span>
+                      <span className="text-[11px] font-bold uppercase tracking-widest text-black/80">Easy Heritage Exchange</span>
                     </div>
 
                     <div className="flex items-center gap-4 group">
                       <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-black/40 group-hover:bg-black group-hover:text-white transition-all duration-300">
-                        <Star size={18} strokeWidth={1.5} />
+                        <Award size={18} strokeWidth={1.5} />
                       </div>
-                      <span className="text-[11px] font-bold uppercase tracking-widest text-black/80">Made in India & Handmade</span>
+                      <span className="text-[11px] font-bold uppercase tracking-widest text-black/80">Manoj Tailor Certified</span>
                     </div>
 
                     <div className="flex items-center gap-4 group">
                       <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-black/40 group-hover:bg-black group-hover:text-white transition-all duration-300">
                         <Truck size={18} strokeWidth={1.5} />
                       </div>
-                      <span className="text-[11px] font-bold uppercase tracking-widest text-black/80">Free Shipping</span>
+                      <span className="text-[11px] font-bold uppercase tracking-widest text-black/80">Artisan Direct Shipping</span>
                     </div>
                   </div>
                 </div>
@@ -360,13 +372,13 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
               <h3 className="text-[10px] uppercase tracking-[0.4em] font-black text-black mb-12 block font-sans">You May Also Love</h3>
               <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12">
                 {relatedProducts.map((p) => (
-                  <ProductCard key={p.id} product={p} />
+                  <ProductCard key={p.id} product={p} onQuickAdd={handleQuickAdd} />
                 ))}
               </div>
 
               <div className="mt-20 pt-10 flex justify-center">
                 <Link href="/shop" className="group flex items-center gap-5 text-[10px] uppercase tracking-[0.4em] font-black text-black">
-                  Discover More Creations
+                  Explore More Heritage
                   <div className="w-12 h-px bg-black/20 group-hover:w-20 transition-all duration-500" />
                   <ArrowRight size={18} className="transition-transform group-hover:translate-x-2" />
                 </Link>
@@ -399,6 +411,13 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
       />
 
       <Footer />
+
+      {/* Quick Add Drawer */}
+      <QuickAddDrawer 
+        product={selectedProduct} 
+        isOpen={isQuickAddOpen} 
+        onClose={() => setIsQuickAddOpen(false)} 
+      />
     </div>
   );
 }

@@ -10,28 +10,28 @@ const BrandStory = () => {
   const trustItems = [
     { 
       icon: ShieldCheck, 
-      title: "Handcrafted Quality", 
-      desc: "Each piece is meticulously crafted by artisans in Rajasthan and Gujarat."
+      title: "Master's Touch", 
+      desc: "Every piece is designed and cut by Manoj Tailor, a master craftsman with 20+ years of expertise."
     },
     { 
       icon: Package, 
-      title: "Premium Materials", 
-      desc: "We use only the finest cotton and sustainable dyes for our fabrics."
+      title: "Family Legacy", 
+      desc: "YDA (Yashika, Dimple, Avani) is a father's tribute to his daughters and their shared heritage."
     },
     { 
       icon: Truck, 
-      title: "Global Delivery", 
-      desc: "Thoughtfully packaged and shipped to your doorstep worldwide from India."
+      title: "Chapai Culture", 
+      desc: "Bringing the soul of Sanganeri block printing from local clusters to the global stage."
     },
     { 
       icon: RotateCcw, 
-      title: "Easy Exchanges", 
-      desc: "Our commitment to quality means we stand by everything we make."
+      title: "Handcrafted Trust", 
+      desc: "We stand by our craft with easy exchanges and a commitment to timeless quality."
     },
   ];
 
   return (
-    <section className="py-24 md:py-32 bg-background border-t border-border-beige">
+    <section className="py-24 md:py-32 bg-white border-t border-border-beige">
       <div className="container mx-auto px-6">
         {/* Story Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-32 items-center mb-32">
@@ -42,22 +42,27 @@ const BrandStory = () => {
             className="order-2 md:order-1"
           >
             <span className="text-[10px] uppercase tracking-[0.4em] font-sans font-bold text-accent-dark mb-4 block">
-              The YDA Narrative
+              The Heart of YDA
             </span>
             <h2 className="text-4xl md:text-6xl font-serif tracking-tight mb-8">
-              Heritage <span className="italic">Redefined.</span>
+              A Master's <span className="italic">Legacy.</span>
             </h2>
-            <p className="text-foreground/70 text-lg leading-relaxed mb-8">
-              Founded on the principles of preserving Indian textile heritage, YDA Fashion Studio bridges the gap between traditional craftsmanship and modern luxury.
-            </p>
-            <p className="text-foreground/60 text-base leading-relaxed mb-10">
-              Our artisans specialize in centuries-old block printing and embroidery techniques, ensuring that every bag and cushion cover tells a unique story of culture and dedication.
-            </p>
+            <div className="space-y-6 text-foreground/70 text-base md:text-lg leading-relaxed mb-8">
+              <p>
+                For over 20 years, <span className="text-black font-medium font-sans italic">Manoj Tailor</span> has been a guardian of the craft. Born into a family of tailors, his journey began not in a classroom, but in his father's studio, where he learned that every cut tells a story.
+              </p>
+              <p>
+                After years of resilience, <span className="text-black font-medium">YDA Fashion Studio</span> was born—a tribute named after his three daughters: <span className="text-accent-dark font-bold">Yashika, Dimple, and Avani</span>. Today, it is a collaboration of generations, where professional precision meets modern vision.
+              </p>
+              <p>
+                Our mission is to revive the <span className="italic">"Chapai"</span> (printing) culture of Sanganer, bringing these timeless patterns from regional heritage to the global fashion stage.
+              </p>
+            </div>
             <Link 
               href="/story"
               className="inline-block px-10 py-4 border border-foreground/20 text-[10px] uppercase tracking-[0.2em] font-sans font-bold hover:bg-foreground hover:text-background transition-colors"
             >
-              Explore Our Story
+              Discover Our Roots
             </Link>
           </motion.div>
 
@@ -65,16 +70,18 @@ const BrandStory = () => {
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="relative aspect-square md:aspect-[4/5] rounded-none overflow-hidden order-1 md:order-2"
+            className="relative aspect-square md:aspect-[4/5] rounded-none overflow-hidden order-1 md:order-2 shadow-2xl"
           >
             <Image
-              src="/images/artisan-work.jpg"
-              alt="Artisan at work"
+              src="/images/home-page-image/sanganeri-print-1.jpg.png"
+              alt="Manoj Tailor's Craft"
               fill
-              className="object-cover grayscale hover:grayscale-0 transition-all duration-1000"
+              className="object-cover hover:scale-105 transition-all duration-1000"
             />
+            <div className="absolute inset-0 bg-black/5" />
           </motion.div>
         </div>
+
 
         {/* Trust Section */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 pt-24 border-t border-border-beige/40">

@@ -104,8 +104,9 @@ const Header = () => {
     { name: "Small Totes", href: "/small-tote-bags", previewImage: "/images/products/small-tote-bags/YDA-small-tote-primary.jpg" },
     { name: "New Arrivals", href: "/new-arrivals", previewImage: "/images/products/big-tote-bags/YDA-big-tote-primary.jpg" },
     { name: "Cushion Covers", href: "/cushion-covers", previewImage: "/images/products/cushion-covers/YDA-cushion-cover-primary.jpg" },
-    { name: "Sanganeri & Gujarati Prints", href: "/sanganeri-gujarati-prints", previewImage: "/images/products/big-tote-bags/YDA-big-tote-primary.jpg" },
+    { name: "Our Story", href: "/story", previewImage: "/images/home-page-image/sanganeri-print-1.jpg.png" },
   ];
+
 
   return (
     <>
