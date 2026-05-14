@@ -161,8 +161,6 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
           </div>
         </section>
 
-        {/* Brand Story (Legacy & Craft) */}
-        <BrandStory />
 
         {/* Studio Live Section (Lililo Style) */}
         <section className="py-24 md:py-32 bg-white overflow-hidden border-b border-border-beige/20">
@@ -343,6 +341,32 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
           </div>
         </section>
 
+
+        {/* Brand Story (Legacy & Craft) */}
+        <BrandStory />
+
+        {/* Social Connect */}
+        <section className="py-24 md:py-32 bg-[#FBF9F4] border-t border-border-beige/50">
+          <div className="container mx-auto px-6 text-center">
+            <div className="max-w-5xl mx-auto space-y-16">
+               <div>
+                  <p className="text-[10px] uppercase tracking-[0.5em] font-black text-accent-dark mb-6 text-center">Artistry in Motion</p>
+                  <h2 className="text-4xl md:text-6xl font-serif italic text-foreground text-center leading-tight">The Making of <br/> Modern Luxury</h2>
+               </div>
+               
+               <div className="relative w-full aspect-video shadow-2xl overflow-hidden rounded-sm border border-border-beige/30">
+                 <iframe 
+                   src="https://www.youtube.com/embed/Bt0S0hqjVX4"
+                   title="YDA Luxury Handcrafted Fashion"
+                   className="absolute inset-0 w-full h-full"
+                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                   allowFullScreen
+                 />
+               </div>
+            </div>
+          </div>
+        </section>
+
         {/* Featured Collections */}
         <section className="w-full bg-black overflow-hidden">
           {/* Sanganeri Collection */}
@@ -425,28 +449,6 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
               </motion.div>
             </div>
           </motion.div>
-        </section>
-
-        {/* Social Connect */}
-        <section className="py-24 md:py-32 bg-[#FBF9F4] border-t border-border-beige/50">
-          <div className="container mx-auto px-6 text-center">
-            <div className="max-w-5xl mx-auto space-y-16">
-               <div>
-                  <p className="text-[10px] uppercase tracking-[0.5em] font-black text-accent-dark mb-6 text-center">Artistry in Motion</p>
-                  <h2 className="text-4xl md:text-6xl font-serif italic text-foreground text-center leading-tight">The Making of <br/> Modern Luxury</h2>
-               </div>
-               
-               <div className="relative w-full aspect-video shadow-2xl overflow-hidden rounded-sm border border-border-beige/30">
-                 <iframe 
-                   src="https://www.youtube.com/embed/Bt0S0hqjVX4"
-                   title="YDA Luxury Handcrafted Fashion"
-                   className="absolute inset-0 w-full h-full"
-                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                   allowFullScreen
-                 />
-               </div>
-            </div>
-          </div>
         </section>
 
         {/* Final CTA */}

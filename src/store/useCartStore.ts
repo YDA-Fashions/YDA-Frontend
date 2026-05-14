@@ -48,9 +48,28 @@ export const useCartStore = create<CartStore>()(
       setUserId: (id) => set({ userId: id }),
 
       syncCart: async (userId) => {
-        // Backend sync disabled per current architecture (strictly local)
-        set({ userId });
-        console.log("🛒 Cart: Session linked (Offline Mode).");
+        set({ userId, isLoading: true } as any);
+        try {
+          const backendItems = await cartService.getCart(userId);
+          
+          if (backendItems && backendItems.length > 0) {
+            console.log(`🛒 Cart: Syncing ${backendItems.length} items from cloud.`);
+            set({ items: backendItems });
+          } else {
+            // If backend is empty but we have local items, sync local to backend
+            const { items } = get();
+            if (items.length > 0) {
+              console.log("🛒 Cart: Pushing local selection to cloud.");
+              for (const item of items) {
+                await cartService.syncItem(userId, item.id, item.quantity);
+              }
+            }
+          }
+        } catch (err) {
+          console.error("🛒 Cart: Sync failed", err);
+        } finally {
+          set({ isLoading: false } as any);
+        }
       },
 
       clearLocalItems: () => {
