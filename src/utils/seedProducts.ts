@@ -23,7 +23,7 @@ export const seedProducts = async () => {
       original_price: p.original_price,
       size: p.size,
       featured: p.isFeatured,
-      colors: p.colors // PRESERVE FULL COLOR DATA
+      colors: p.colors // PRESERVE COLOR VARIATIONS
     }
   }));
 

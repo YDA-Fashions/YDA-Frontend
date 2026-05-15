@@ -439,18 +439,17 @@ const AdminPage = () => {
                           value={order.status}
                           onChange={async (e) => {
                             const newStatus = e.target.value;
-                            // Optimistic UI update
-                            setOrders(prev => prev.map(o => o.id === order.id ? {...o, status: newStatus} : o));
-                            
+                            // Optimistic Update for UI snappiness
+                            setOrders(prev => prev.map(o => o.id === order.id ? { ...o, status: newStatus } : o));
                             try {
                               await orderService.updateOrderStatus(order.id, newStatus);
-                              // No need to reload everything, we already updated local state
+                              // Silence fetch to avoid flicker if DB is fast
                             } catch (err) {
-                              alert("Failed to update status in database. Reverting UI.");
+                              alert("Failed to update status");
                               loadOrders(); // Revert on failure
                             }
                           }}
-                          className={`text-[9px] uppercase tracking-widest font-black px-3 py-1.5 rounded-sm shadow-sm border-0 cursor-pointer appearance-none text-center transition-colors duration-300 ${
+                          className={`text-[9px] uppercase tracking-widest font-black px-3 py-1.5 rounded-sm shadow-sm border-0 cursor-pointer appearance-none text-center ${
                             order.status === 'paid' ? 'bg-green-600 text-white' : 
                             order.status === 'delivered' ? 'bg-emerald-100 text-emerald-700' :
                             'bg-orange-500 text-white'

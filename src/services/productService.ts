@@ -16,27 +16,22 @@ export const productService = {
     if (error) throw error;
     
     // Map database structure back to UI structure
-    return (data || []).map(product => {
-      const metadata = product.metadata || {};
-      return {
-        ...product,
-        id: product.id, // Keep internal UUID for refs
-        real_id: product.id,
-        product_code: product.product_code,
-        selling_price: (product.base_price || 0) / 100,
-        original_price: metadata.original_price || 0,
-        stock: product.stock_quantity,
-        colors: metadata.colors || [
-          {
-            name: "Default",
-            images: product.images || []
-          }
-        ],
-        type: metadata.type || product.category,
-        size: metadata.size,
-        isFeatured: metadata.featured
-      };
-    });
+    return (data || []).map(product => ({
+      ...product,
+      id: product.product_code,
+      selling_price: (product.base_price || 0) / 100,
+      original_price: product.metadata?.original_price || 0,
+      stock: product.stock_quantity,
+      colors: product.metadata?.colors || [
+        {
+          name: "Default",
+          images: product.images || []
+        }
+      ],
+      type: product.metadata?.type || product.category,
+      size: product.metadata?.size,
+      isFeatured: product.metadata?.featured
+    }));
   },
 
   async createProduct(productData: any) {
@@ -53,8 +48,7 @@ export const productService = {
         type: productData.type,
         original_price: productData.original_price,
         size: productData.size,
-        featured: productData.featured,
-        colors: productData.colors || []
+        featured: productData.featured
       }
     };
 
@@ -80,8 +74,7 @@ export const productService = {
         type: productData.type,
         original_price: productData.original_price,
         size: productData.size,
-        featured: productData.featured,
-        colors: productData.colors || []
+        featured: productData.featured
       }
     };
 
