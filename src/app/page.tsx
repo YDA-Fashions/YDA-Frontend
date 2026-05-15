@@ -17,12 +17,12 @@ export const metadata: Metadata = {
 
 export default async function Home() {
   // Fetch live products from Supabase
-  let featuredProducts = [];
+  let allProducts = [];
   try {
-    featuredProducts = await productService.getProducts();
+    allProducts = await productService.getProducts();
   } catch (error) {
     console.error("Failed to fetch products for Home:", error);
   }
 
-  return <HomeClient initialProducts={featuredProducts} />;
+  return <HomeClient initialProducts={allProducts} />;
 }

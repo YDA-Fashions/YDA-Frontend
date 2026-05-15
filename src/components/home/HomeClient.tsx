@@ -19,13 +19,8 @@ interface HomeClientProps {
 }
 
 export default function HomeClient({ initialProducts }: HomeClientProps) {
-  const products = initialProducts;
-  let featuredProducts = products.filter(p => p.isFeatured).slice(0, 10);
-  
-  // Backup: If no products are featured, show newest 10 items instead of nothing
-  if (featuredProducts.length === 0 && products.length > 0) {
-    featuredProducts = products.slice(0, 10);
-  }
+  // Show latest 12 products from Supabase (same as shop page)
+  const latestProducts = initialProducts.slice(0, 12);
   const [currentReview, setCurrentReview] = useState(0);
   const [showPopup, setShowPopup] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -255,25 +250,35 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
           </div>
         </section>
 
-        {/* Product Selection */}
+        {/* Live Products from Shop */}
         <section className="py-24 md:py-32 bg-white border-t border-border-beige/50 overflow-hidden">
           <div className="w-full px-6 md:px-20 max-w-[1920px] mx-auto">
-            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }} className="text-center mb-20">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8 }}
+              className="text-center mb-20"
+            >
               <p className="text-[10px] uppercase tracking-[0.5em] font-black text-accent-dark mb-6">Our Selection</p>
-              <h2 className="text-4xl md:text-6xl font-serif tracking-tight mb-6 italic text-foreground">Featured Pieces</h2>
+              <h2 className="text-4xl md:text-6xl font-serif tracking-tight mb-6 italic text-foreground">Latest Pieces</h2>
               <div className="w-12 h-[1px] bg-black/10 mx-auto" />
             </motion.div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 md:gap-x-20 gap-y-24">
-              {mounted && featuredProducts.map((product) => (
-                <div key={product.id} className="w-full">
-                   <ProductCard product={product} onQuickAdd={handleQuickAdd} />
-                </div>
-              ))}
-            </div>
-            
+
+            {latestProducts.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 md:gap-x-20 gap-y-24">
+                {latestProducts.map((product) => (
+                  <div key={product.id} className="w-full">
+                    <ProductCard product={product} onQuickAdd={handleQuickAdd} />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-center text-sm text-foreground/40 uppercase tracking-widest">Loading products...</p>
+            )}
+
             <div className="mt-20 text-center">
-              <Link 
+              <Link
                 href="/shop"
                 className="inline-block px-12 py-5 border border-black/10 text-black text-[10px] uppercase tracking-[0.4em] font-black transition-all hover:bg-black hover:text-white"
               >
