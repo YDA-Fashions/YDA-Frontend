@@ -128,5 +128,15 @@ export const orderService = {
         } : null
       }))
     }));
+  },
+
+  async updateOrderStatus(orderId: string, status: string) {
+    const { error } = await supabase
+      .from("orders")
+      .update({ status })
+      .eq("id", orderId);
+
+    if (error) throw error;
+    return true;
   }
 };

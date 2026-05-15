@@ -435,13 +435,27 @@ const AdminPage = () => {
                         ₹{order.total_amount.toLocaleString()}
                       </td>
                       <td className="px-6 py-6 text-center">
-                        <span className={`text-[9px] uppercase tracking-widest font-black px-3 py-1.5 rounded-sm shadow-sm ${
-                          order.status === 'paid' ? 'bg-green-600 text-white' : 
-                          order.status === 'delivered' ? 'bg-emerald-100 text-emerald-700' :
-                          'bg-orange-500 text-white'
-                        }`}>
-                          {order.status}
-                        </span>
+                        <select 
+                          value={order.status}
+                          onChange={async (e) => {
+                            const newStatus = e.target.value;
+                            try {
+                              await orderService.updateOrderStatus(order.id, newStatus);
+                              loadOrders(); // Refresh list
+                            } catch (err) {
+                              alert("Failed to update status");
+                            }
+                          }}
+                          className={`text-[9px] uppercase tracking-widest font-black px-3 py-1.5 rounded-sm shadow-sm border-0 cursor-pointer appearance-none text-center ${
+                            order.status === 'paid' ? 'bg-green-600 text-white' : 
+                            order.status === 'delivered' ? 'bg-emerald-100 text-emerald-700' :
+                            'bg-orange-500 text-white'
+                          }`}
+                        >
+                          <option value="pending" className="bg-white text-black">Pending</option>
+                          <option value="paid" className="bg-white text-black">Paid</option>
+                          <option value="delivered" className="bg-white text-black">Delivered</option>
+                        </select>
                       </td>
                     </tr>
                   ))}
