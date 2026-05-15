@@ -120,9 +120,8 @@ const OrdersPage = () => {
                         </p>
                       </div>
                       <div className="space-y-1">
-                        <p className="text-[10px] uppercase tracking-widest font-black text-black/40">Total Value</p>
                         <p className="text-sm font-sans font-semibold text-emerald-800">
-                          ₹{(order.total_amount / 100).toLocaleString()}
+                          ₹{order.total_amount.toLocaleString()}
                         </p>
                       </div>
                       <div className="space-y-1 col-span-2 md:col-span-1">
@@ -174,7 +173,7 @@ const OrdersPage = () => {
                                   Quantity: <span className="font-bold text-black">{item.quantity}</span>
                                 </p>
                                 <p className="text-lg font-sans font-bold text-black">
-                                  ₹{(item.price_at_purchase / 100).toLocaleString()} <span className="text-xs font-normal text-black/40">(per item)</span>
+                                  ₹{item.price_at_purchase.toLocaleString()} <span className="text-xs font-normal text-black/40">(per item)</span>
                                 </p>
                               </div>
 

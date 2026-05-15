@@ -256,6 +256,9 @@ const AdminPage = () => {
 
       {/* Main Content */}
       <main className="flex-1 p-8 lg:p-12 overflow-y-auto">
+        <div className="bg-red-600 text-white text-center py-2 text-[10px] font-black uppercase tracking-[0.5em] mb-8 rounded-sm">
+          🚀 Admin Panel V2 - Latest Options Enabled (Size & Featured)
+        </div>
         <div className="flex justify-between items-center mb-12">
           <div>
             <div className="flex items-center gap-3 mb-2">
