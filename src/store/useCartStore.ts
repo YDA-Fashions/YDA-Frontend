@@ -73,9 +73,18 @@ export const useCartStore = create<CartStore>()(
         const { userId, items } = get();
         
         // 🛑 AUTH LOCK: No guest additions
+        // Try fallback to useAuthStore if userId is missing
         if (!userId) {
-          alert("Identification Required: Please log in to add this masterpiece to your curation.");
-          return;
+          const { useAuthStore } = require("./useAuthStore");
+          const authUser = useAuthStore.getState().user;
+          
+          if (!authUser) {
+            alert("Identification Required: Please log in to add this masterpiece to your curation.");
+            return;
+          }
+          
+          // Auto-sync if found in fallback
+          set({ userId: authUser.id });
         }
 
         console.log("🛒 Cart: Adding", product.name);

@@ -82,13 +82,21 @@ const Header = () => {
   }, [announcements.length, lastScrollY]);
 
   useEffect(() => {
-    if (isSearchOpen || isMobileMenuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
     return () => { document.body.style.overflow = "unset"; };
   }, [isSearchOpen, isMobileMenuOpen]);
+
+  // SYNC AUTH WITH CART
+  const setUserId = useCartStore((state) => state.setUserId);
+  const syncCart = useCartStore((state) => state.syncCart);
+
+  useEffect(() => {
+    if (user?.id) {
+      setUserId(user.id);
+      syncCart(user.id);
+    } else {
+      setUserId(null);
+    }
+  }, [user, setUserId, syncCart]);
 
   // Search Logic
   const filteredResults = searchQuery.trim() === "" 
