@@ -352,49 +352,57 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
           </div>
 
           <div className="w-full space-y-24">
-            {/* Reviews Section */}
-            <div className="pt-12 border-t border-black/5">
+            {/* Cinematic Review Showcase */}
+            <div className="pt-24 border-t border-black/5">
               <h3 className="text-[10px] uppercase tracking-[0.4em] font-black text-black mb-12 block font-sans">Client Stories</h3>
-              <div className="w-full bg-[#FCFBFA] border border-black/5 p-8 md:p-16 rounded-sm overflow-hidden min-h-[400px] relative">
+              <div className="relative bg-[#FBF9F4] p-10 md:p-20 overflow-hidden rounded-sm group">
+                <div className="absolute top-0 right-0 w-96 h-96 bg-white/40 blur-[100px] -mr-48 -mt-48 rounded-full" />
+                <div className="absolute bottom-0 left-0 w-96 h-96 bg-black/[0.02] blur-[80px] -ml-48 -mb-48 rounded-full" />
+                
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={currentReview}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    className="flex flex-col lg:flex-row items-center gap-10 md:gap-20 h-full"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    className="flex flex-col lg:flex-row items-center gap-12 md:gap-24 relative z-10"
                   >
-                    <div className="relative w-full lg:w-[40%] aspect-square lg:aspect-auto lg:h-[350px] rounded-sm overflow-hidden grayscale">
+                    <div className="relative w-full lg:w-[45%] aspect-square lg:aspect-auto lg:h-[450px] rounded-sm overflow-hidden shadow-2xl">
                       <Image
                         src={reviews[currentReview].image}
                         alt={reviews[currentReview].name}
                         fill
-                        className="object-cover"
+                        className="object-cover group-hover:scale-105 transition-transform duration-[2s]"
                       />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                     </div>
 
-                    <div className="flex-grow flex flex-col justify-center">
+                    <div className="flex-grow flex flex-col justify-center max-w-xl">
                       <div className="flex gap-1 mb-8">
-                        {[...Array(reviews[currentReview].rating)].map((_, i) => (
-                          <Star key={i} size={16} className="fill-black text-black" />
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} size={18} className="fill-yellow-400 text-yellow-400" />
                         ))}
                       </div>
-                      <p className="text-xl md:text-2xl font-serif italic text-black/80 leading-relaxed mb-10">
+                      <p className="text-2xl md:text-4xl font-serif italic text-black/90 leading-[1.3] mb-12">
                         "{reviews[currentReview].text}"
                       </p>
-                      <div className="flex items-center gap-4">
-                        <div className="w-8 h-[1px] bg-black/20" />
-                        <span className="text-xs uppercase tracking-widest font-black text-black">{reviews[currentReview].name}</span>
+                      <div className="flex items-center gap-6">
+                        <div className="w-12 h-[1px] bg-black/20" />
+                        <div className="flex flex-col">
+                          <span className="text-xs uppercase tracking-[0.4em] font-black text-black mb-1">{reviews[currentReview].name}</span>
+                          <span className="text-[9px] uppercase tracking-[0.2em] text-black/30 font-bold">Verified Collector</span>
+                        </div>
                       </div>
                     </div>
                   </motion.div>
                 </AnimatePresence>
 
-                <div className="absolute bottom-8 right-8 md:bottom-16 md:right-16 flex gap-6">
-                  <button onClick={prevReview} className="p-3 hover:bg-black/5 transition-colors border border-black/10 rounded-full">
+                <div className="absolute bottom-8 left-10 md:bottom-20 md:left-20 flex gap-6 z-20">
+                  <button onClick={prevReview} className="w-14 h-14 flex items-center justify-center hover:bg-black hover:text-white transition-all border border-black/10 rounded-full">
                     <ArrowLeft size={20} strokeWidth={1} />
                   </button>
-                  <button onClick={nextReview} className="p-3 hover:bg-black/5 transition-colors border border-black/10 rounded-full">
+                  <button onClick={nextReview} className="w-14 h-14 flex items-center justify-center hover:bg-black hover:text-white transition-all border border-black/10 rounded-full">
                     <ArrowRight size={20} strokeWidth={1} />
                   </button>
                 </div>

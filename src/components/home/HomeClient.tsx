@@ -18,6 +18,61 @@ interface HomeClientProps {
   initialProducts: Product[];
 }
 
+const VideoCard = ({ video }: { video: any }) => {
+  const videoRef = React.useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = React.useState(true);
+
+  const togglePlay = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8, delay: video.id * 0.1 }}
+      onClick={togglePlay}
+      className="flex-shrink-0 w-[240px] md:w-[380px] aspect-[9/16] relative bg-[#F8F8F5] overflow-hidden snap-center group shadow-xl hover:shadow-2xl transition-all duration-700 cursor-pointer"
+    >
+      <video
+        ref={videoRef}
+        src="/videos/YDA-VIDEO-1.mp4"
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-[2s]"
+      />
+
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
+
+      <div className="absolute inset-0 p-8 flex flex-col justify-end">
+        <span className="text-[10px] uppercase tracking-widest font-black text-white/60 mb-2">{video.tag}</span>
+        <h4 className="text-xl md:text-2xl font-serif italic text-white group-hover:translate-x-2 transition-transform duration-500">{video.title}</h4>
+      </div>
+
+      <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full border border-white/20 flex items-center justify-center backdrop-blur-sm transition-all duration-500 ${isPlaying ? "opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100" : "opacity-100 scale-100"}`}>
+        {isPlaying ? (
+          <div className="flex gap-1">
+            <div className="w-1.5 h-6 bg-white" />
+            <div className="w-1.5 h-6 bg-white" />
+          </div>
+        ) : (
+          <div className="w-0 h-0 border-t-[8px] border-t-transparent border-l-[12px] border-l-white border-b-[8px] border-b-transparent ml-1" />
+        )}
+      </div>
+    </motion.div>
+  );
+};
+
 export default function HomeClient({ initialProducts }: HomeClientProps) {
   // Show latest 12 products from Supabase (same as shop page)
   const latestProducts = initialProducts.slice(0, 12);
@@ -189,64 +244,9 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
               { id: 4, title: "Crafting Soul", tag: "@yda_studio" },
               { id: 5, title: "Heritage Prints", tag: "Jaipur" },
               { id: 6, title: "Founder's Vision", tag: "Legacy" },
-            ].map((video) => {
-              const VideoCard = ({ video }: { video: any }) => {
-                const videoRef = React.useRef<HTMLVideoElement>(null);
-                const [isPlaying, setIsPlaying] = React.useState(true);
-
-                const togglePlay = () => {
-                  if (videoRef.current) {
-                    if (isPlaying) {
-                      videoRef.current.pause();
-                    } else {
-                      videoRef.current.play();
-                    }
-                    setIsPlaying(!isPlaying);
-                  }
-                };
-
-                return (
-                  <motion.div 
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8, delay: video.id * 0.1 }}
-                    onClick={togglePlay}
-                    className="flex-shrink-0 w-[240px] md:w-[380px] aspect-[9/16] relative bg-[#F8F8F5] overflow-hidden snap-center group shadow-xl hover:shadow-2xl transition-all duration-700 cursor-pointer"
-                  >
-                    <video 
-                      ref={videoRef}
-                      src="/videos/YDA-VIDEO-1.mp4"
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-[2s]"
-                    />
-                    
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
-                    
-                    <div className="absolute inset-0 p-8 flex flex-col justify-end">
-                      <span className="text-[10px] uppercase tracking-widest font-black text-white/60 mb-2">{video.tag}</span>
-                      <h4 className="text-xl md:text-2xl font-serif italic text-white group-hover:translate-x-2 transition-transform duration-500">{video.title}</h4>
-                    </div>
-                    
-                    <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full border border-white/20 flex items-center justify-center backdrop-blur-sm transition-all duration-500 ${isPlaying ? "opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100" : "opacity-100 scale-100"}`}>
-                      {isPlaying ? (
-                        <div className="flex gap-1">
-                          <div className="w-1.5 h-6 bg-white" />
-                          <div className="w-1.5 h-6 bg-white" />
-                        </div>
-                      ) : (
-                        <div className="w-0 h-0 border-t-[8px] border-t-transparent border-l-[12px] border-l-white border-b-[8px] border-b-transparent ml-1" />
-                      )}
-                    </div>
-                  </motion.div>
-                );
-              };
-
-              return <VideoCard key={video.id} video={video} />;
-            })}
+            ].map((video) => (
+              <VideoCard key={video.id} video={video} />
+            ))}
           </div>
         </section>
 

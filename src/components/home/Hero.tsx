@@ -59,94 +59,125 @@ const Hero = () => {
   const bannerImage = isMobile ? currentBanner.mobileImage : currentBanner.image;
 
   return (
-    <section className="relative h-[80vh] md:h-[95vh] w-full overflow-hidden bg-black">
-      {/* Background Slider */}
+    <section className="relative h-[85vh] md:h-[98vh] w-full overflow-hidden bg-black">
+      {/* Background Cinematic Layers */}
       <div className="absolute inset-0 z-0">
-        <AnimatePresence initial={false}>
+        <AnimatePresence initial={false} mode="popLayout">
           <motion.div
             key={currentIndex}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1.5, ease: "easeInOut" }}
+            initial={{ opacity: 0, scale: 1.2, filter: "blur(20px)" }}
+            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+            exit={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
+            transition={{ duration: 1.8, ease: [0.19, 1, 0.22, 1] }}
             className="absolute inset-0"
           >
+            <Image
+              src={bannerImage}
+              alt={currentBanner.title}
+              fill
+              priority
+              className="object-cover brightness-[0.65]"
+              sizes="100vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-tr from-black/80 via-black/20 to-transparent" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.4)_100%)]" />
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      {/* Floating UI Elements */}
+      <div className="absolute inset-0 z-10 container mx-auto px-6 flex flex-col justify-center">
+        <div className="max-w-6xl w-full">
+          <AnimatePresence mode="wait">
             <motion.div
-              initial={{ scale: 1 }}
-              animate={{ scale: 1.1 }}
-              transition={{ duration: 8, ease: "linear" }}
-              className="absolute inset-0"
+              key={currentIndex}
+              className="relative"
             >
-              <Image
-                src={bannerImage}
-                alt={currentBanner.title}
-                fill
-                priority
-                className="object-cover brightness-[0.7]"
-                sizes="100vw"
-              />
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 50 }}
+                transition={{ duration: 1, ease: [0.19, 1, 0.22, 1] }}
+              >
+                <p className="text-[10px] md:text-xs uppercase tracking-[1em] text-white/40 mb-8 font-sans font-black flex items-center gap-4">
+                  <span className="w-12 h-[1px] bg-white/20" />
+                  Masterpiece {currentIndex + 1} / {BANNERS.length}
+                </p>
+                
+                <h1 className="text-6xl md:text-8xl lg:text-[12rem] font-serif italic text-white leading-[0.85] mb-12 tracking-tighter drop-shadow-2xl">
+                  {currentBanner.title.split(' ').map((word, i) => (
+                    <motion.span 
+                      key={i}
+                      initial={{ opacity: 0, rotateX: 90 }}
+                      animate={{ opacity: 1, rotateX: 0 }}
+                      transition={{ delay: 0.2 + (i * 0.1), duration: 0.8 }}
+                      className="inline-block mr-6 last:mr-0"
+                    >
+                      {word}
+                    </motion.span>
+                  ))}
+                </h1>
+
+                <div className="flex flex-col md:flex-row md:items-end gap-12">
+                   <div className="bg-white/5 backdrop-blur-xl border border-white/10 p-8 md:p-12 max-w-md rounded-sm">
+                      <p className="text-xs md:text-sm text-white/60 leading-relaxed uppercase tracking-widest font-sans mb-8 italic">
+                        {currentBanner.subtitle}
+                      </p>
+                      <Link 
+                        href="/shop"
+                        className="group flex items-center gap-6 text-[10px] uppercase tracking-[0.4em] font-black text-white hover:text-white/60 transition-all"
+                      >
+                        Explore Curation
+                        <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all">
+                          <ArrowRight size={18} />
+                        </div>
+                      </Link>
+                   </div>
+
+                   <div className="hidden lg:flex items-center gap-12 pb-4">
+                      <div className="text-left">
+                        <p className="text-[8px] uppercase tracking-widest text-white/30 mb-2">Technique</p>
+                        <p className="text-[10px] uppercase tracking-widest font-bold text-white">Traditional Chapa</p>
+                      </div>
+                      <div className="w-[1px] h-8 bg-white/10" />
+                      <div className="text-left">
+                        <p className="text-[8px] uppercase tracking-widest text-white/30 mb-2">Artisan</p>
+                        <p className="text-[10px] uppercase tracking-widest font-bold text-white">Manoj Tailor</p>
+                      </div>
+                   </div>
+                </div>
+              </motion.div>
             </motion.div>
-            <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40" />
-          </motion.div>
-        </AnimatePresence>
+          </AnimatePresence>
+        </div>
       </div>
 
-      {/* Text Overlay */}
-      <div className="absolute inset-0 z-10 flex items-center justify-center text-center px-6">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentIndex}
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -30 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="max-w-4xl"
-          >
-            <p className="text-[10px] md:text-xs uppercase tracking-[0.6em] text-white/60 mb-6 font-sans">
-              Handcrafted Heritage Since 2004
-            </p>
-            <h1 className="text-5xl md:text-8xl lg:text-[10rem] font-serif italic text-white leading-[1.0] mb-10 tracking-tighter">
-              {BANNERS[currentIndex].title}
-            </h1>
-            <p className="text-xs md:text-base uppercase tracking-[0.4em] text-white/40 mb-12 font-sans font-black">
-              {BANNERS[currentIndex].subtitle}
-            </p>
-            <Link 
-              href="/shop"
-              className="inline-block px-12 py-5 bg-white text-black text-[10px] uppercase tracking-[0.4em] font-black transition-all hover:bg-black hover:text-white shadow-2xl"
+      {/* Modern Navigation */}
+      <div className="absolute bottom-12 left-6 right-6 md:left-12 md:right-12 z-30 flex items-end justify-between">
+        <div className="flex gap-4">
+          {BANNERS.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentIndex(index)}
+              className="relative w-12 h-1 bg-white/10 overflow-hidden rounded-full transition-all"
             >
-              Explore the selection
-            </Link>
-          </motion.div>
-        </AnimatePresence>
-      </div>
+              {currentIndex === index && (
+                <motion.div 
+                  initial={{ x: "-100%" }}
+                  animate={{ x: "0%" }}
+                  transition={{ duration: 6, ease: "linear" }}
+                  className="absolute inset-0 bg-white"
+                />
+              )}
+            </button>
+          ))}
+        </div>
 
-      {/* Slider Indicators */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 flex items-center gap-6">
-        {BANNERS.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrentIndex(index)}
-            className="group relative py-4"
-            aria-label={`Go to slide ${index + 1}`}
-          >
-            <div className={`h-[2px] transition-all duration-700 ${
-              currentIndex === index ? "w-12 bg-white" : "w-6 bg-white/20 group-hover:bg-white/40"
-            }`} />
-          </button>
-        ))}
+        <div className="flex flex-col items-end gap-4">
+           <p className="text-[9px] uppercase tracking-[0.5em] text-white/20 font-black">Scroll for Journey</p>
+           <div className="w-px h-16 bg-gradient-to-b from-white/40 to-transparent" />
+        </div>
       </div>
-
-      {/* Scroll Indicator */}
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2, duration: 1 }}
-        className="absolute bottom-12 right-12 z-20 hidden lg:flex flex-col items-center gap-6"
-      >
-        <span className="text-[9px] uppercase tracking-[0.5em] text-white/30 font-sans vertical-text">Scroll</span>
-        <div className="w-[1px] h-16 bg-gradient-to-b from-white/30 to-transparent" />
-      </motion.div>
     </section>
   );
 };
