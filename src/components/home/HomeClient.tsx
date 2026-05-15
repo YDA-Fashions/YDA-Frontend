@@ -221,7 +221,7 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
                       muted
                       loop
                       playsInline
-                      className="absolute inset-0 w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-700"
+                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-[2s]"
                     />
                     
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
@@ -320,7 +320,7 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
                   src={review.image}
                   alt={review.name}
                   fill
-                  className="object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105"
+                  className="object-cover transition-all duration-1000 group-hover:scale-110"
                 />
                 
                 {/* Overlay Gradient */}
@@ -333,17 +333,19 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
                 </div>
 
                 {/* Content Overlay */}
-                <div className="absolute inset-0 p-8 flex flex-col justify-end">
-                  <div className="flex gap-1 mb-4">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} size={10} className="fill-white text-white" />
-                    ))}
-                  </div>
-                  <p className="text-sm md:text-lg font-serif italic text-white mb-6 leading-relaxed">
-                    "{review.text}"
-                  </p>
-                  <div className="pt-6 border-t border-white/20">
-                    <span className="text-[10px] uppercase tracking-[0.3em] font-black text-white/60">{review.name}</span>
+                <div className="absolute inset-0 p-8 flex flex-col justify-end bg-gradient-to-t from-black/90 via-black/30 to-transparent">
+                  <div className="bg-white/10 backdrop-blur-md p-6 rounded-sm border border-white/10 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-700">
+                    <div className="flex gap-1 mb-4">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} size={10} className="fill-yellow-400 text-yellow-400" />
+                      ))}
+                    </div>
+                    <p className="text-sm md:text-base font-serif italic text-white mb-6 leading-relaxed">
+                      "{review.text}"
+                    </p>
+                    <div className="pt-4 border-t border-white/10">
+                      <span className="text-[10px] uppercase tracking-[0.3em] font-black text-white/80">{review.name}</span>
+                    </div>
                   </div>
                 </div>
               </motion.div>

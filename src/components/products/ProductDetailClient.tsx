@@ -261,7 +261,14 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                          Hurry up! Only {product.stock} pieces left in stock.
                        </p>
                     </div>
-                  ) : null}
+                  ) : (
+                    <div className="bg-emerald-50 border border-emerald-100 p-4 mb-2">
+                       <p className="text-[10px] uppercase tracking-widest font-black text-emerald-600 flex items-center gap-2">
+                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
+                         In Stock: {product.stock} units available
+                       </p>
+                    </div>
+                  )}
 
                   {/* Magnetic Add to Cart */}
                   <motion.button

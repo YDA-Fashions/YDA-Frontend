@@ -385,33 +385,74 @@ const AdminPage = () => {
 
         {activeTab === "orders" && (
           <div className="bg-white border border-border-beige overflow-hidden">
-            <table className="w-full text-left">
-              <thead>
-                <tr className="bg-accent/10 border-b border-border-beige">
-                  <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-foreground/40">Order ID</th>
-                  <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-foreground/40">Customer Status</th>
-                  <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-foreground/40 text-center">Items</th>
-                  <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-foreground/40 text-center">Total</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border-beige/40">
-                {orders.map((order) => (
-                  <tr key={order.id} className="hover:bg-accent/5 transition-colors text-sm">
-                    <td className="px-6 py-4 font-mono text-[10px]">{order.id}</td>
-                    <td className="px-6 py-4">
-                      <span className={`text-[9px] uppercase tracking-widest font-black px-3 py-1 rounded-full ${order.status === 'paid' ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700'}`}>
-                        {order.status}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 text-center">{order.order_items?.length || 0}</td>
-                    <td className="px-6 py-4 text-center font-bold">₹{order.total_amount.toLocaleString()}</td>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left min-w-[1000px]">
+                <thead>
+                  <tr className="bg-accent/10 border-b border-border-beige">
+                    <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-foreground/40">Reference & Date</th>
+                    <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-foreground/40">Customer Details</th>
+                    <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-foreground/40">Ordered Masterpieces</th>
+                    <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-foreground/40 text-right">Total Amount</th>
+                    <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-foreground/40 text-center">Status</th>
                   </tr>
-                ))}
-                {orders.length === 0 && !isLoadingOrders && (
-                  <tr><td colSpan={4} className="px-6 py-20 text-center text-foreground/40 italic">No orders recorded yet.</td></tr>
-                )}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-border-beige/40">
+                  {orders.map((order) => (
+                    <tr key={order.id} className="hover:bg-accent/5 transition-colors text-xs align-top">
+                      <td className="px-6 py-6">
+                        <p className="font-mono text-[10px] text-black mb-1">#{order.id.slice(0, 12).toUpperCase()}</p>
+                        <p className="text-[10px] text-foreground/40">
+                          {new Date(order.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                          <br />
+                          {new Date(order.created_at).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
+                        </p>
+                      </td>
+                      <td className="px-6 py-6">
+                        <p className="font-bold text-black uppercase mb-1">{order.customer_name || 'Anonymous'}</p>
+                        <p className="text-[10px] text-foreground/60 mb-2">{order.customer_phone ? `+91 ${order.customer_phone}` : 'No Phone'}</p>
+                        <div className="max-w-[200px] p-2 bg-[#F5F5F0] rounded-sm text-[9px] text-foreground/60 leading-relaxed italic border border-black/5">
+                          {order.shipping_address}
+                        </div>
+                      </td>
+                      <td className="px-6 py-6">
+                        <div className="space-y-3">
+                          {order.order_items?.map((item: any, i: number) => (
+                            <div key={i} className="flex items-center gap-3 group">
+                              <div className="relative w-10 h-10 bg-white border border-black/5 rounded-sm overflow-hidden flex-shrink-0">
+                                <img 
+                                  src={item.products?.images?.[0] || "/images/placeholder.jpg"} 
+                                  alt={item.products?.name}
+                                  className="w-full h-full object-contain p-1"
+                                />
+                              </div>
+                              <div className="overflow-hidden">
+                                <p className="text-[10px] font-bold text-black uppercase truncate">{item.products?.name}</p>
+                                <p className="text-[9px] text-foreground/40 font-mono">QTY: {item.quantity} × ₹{item.price_at_purchase?.toLocaleString()}</p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </td>
+                      <td className="px-6 py-6 text-right font-black text-emerald-800">
+                        ₹{order.total_amount.toLocaleString()}
+                      </td>
+                      <td className="px-6 py-6 text-center">
+                        <span className={`text-[9px] uppercase tracking-widest font-black px-3 py-1.5 rounded-sm shadow-sm ${
+                          order.status === 'paid' ? 'bg-green-600 text-white' : 
+                          order.status === 'delivered' ? 'bg-emerald-100 text-emerald-700' :
+                          'bg-orange-500 text-white'
+                        }`}>
+                          {order.status}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                  {orders.length === 0 && !isLoadingOrders && (
+                    <tr><td colSpan={5} className="px-6 py-24 text-center text-foreground/40 italic uppercase tracking-[0.2em] text-[10px]">No orders recorded in the archives yet.</td></tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
 
