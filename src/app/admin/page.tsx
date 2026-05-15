@@ -110,11 +110,8 @@ const AdminPage = () => {
       description: "",
       selling_price: 0,
       original_price: 0,
-      stock: 0,
-      category: "bags",
-      type: "",
-      size: "small",
-      isFeatured: false
+      isFeatured: false,
+      images: []
     });
     setSelectedFiles(null);
     setIsAddingProduct(true);
@@ -132,7 +129,8 @@ const AdminPage = () => {
       category: product.category as any,
       type: product.type || "",
       size: product.size || "small",
-      isFeatured: product.isFeatured || false
+      isFeatured: product.isFeatured || false,
+      images: product.images || []
     });
     setSelectedFiles(null);
     setIsAddingProduct(true);
@@ -142,15 +140,15 @@ const AdminPage = () => {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      let imageUrls = editingProduct?.images || [];
+      let currentImages = [...(formData.images || [])];
       
       // 1. Upload new images if selected
       if (selectedFiles && selectedFiles.length > 0) {
         const newUrls = await productService.uploadImages(Array.from(selectedFiles));
-        imageUrls = [...imageUrls, ...newUrls];
+        currentImages = [...currentImages, ...newUrls];
       }
       
-      if (imageUrls.length === 0) {
+      if (currentImages.length === 0) {
         alert("Please select at least one image");
         setIsSubmitting(false);
         return;
@@ -158,7 +156,7 @@ const AdminPage = () => {
       
       const payload = { 
         ...formData, 
-        images: imageUrls,
+        images: currentImages,
         featured: formData.isFeatured // Map UI to metadata
       };
 
@@ -536,15 +534,39 @@ const AdminPage = () => {
                 </div>
 
                 <div>
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-foreground/40 mb-2 block">
-                    Images {editingProduct ? "(Add more)" : "(Upload Selection)"}
+                  <label className="text-[10px] uppercase tracking-widest font-black text-foreground/40 mb-4 block">
+                    Product Masterpieces (Images)
                   </label>
-                  <div className="relative border-2 border-dashed border-border-beige p-8 text-center hover:border-accent-dark transition-colors cursor-pointer group">
+                  
+                  {/* Current Images Manager */}
+                  {formData.images && formData.images.length > 0 && (
+                    <div className="grid grid-cols-4 md:grid-cols-5 gap-4 mb-8">
+                      {formData.images.map((img, idx) => (
+                        <div key={idx} className="relative aspect-square bg-[#F5F5F0] border border-black/5 rounded-sm group overflow-hidden">
+                          <img src={img} alt="Product" className="w-full h-full object-cover" />
+                          <button 
+                            type="button"
+                            onClick={() => {
+                              const newImgs = [...formData.images];
+                              newImgs.splice(idx, 1);
+                              setFormData({...formData, images: newImgs});
+                            }}
+                            className="absolute top-1 right-1 p-1.5 bg-red-600 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+                          >
+                            <X size={10} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  <div className="relative border-2 border-dashed border-border-beige p-10 text-center hover:border-accent-dark transition-all cursor-pointer group bg-accent/5">
                     <input type="file" multiple onChange={e => setSelectedFiles(e.target.files)} className="absolute inset-0 opacity-0 cursor-pointer" />
-                    <Upload size={24} className="mx-auto mb-2 text-foreground/20 group-hover:text-accent-dark transition-colors" />
-                    <p className="text-[10px] uppercase tracking-widest font-bold text-foreground/40 italic">
-                      {selectedFiles ? `${selectedFiles.length} files selected` : "Select Art Assets (JPG/PNG)"}
+                    <Upload size={32} className="mx-auto mb-4 text-foreground/20 group-hover:text-accent-dark transition-all" />
+                    <p className="text-[10px] uppercase tracking-widest font-black text-foreground/40 italic">
+                      {selectedFiles ? `${selectedFiles.length} new files ready` : "Drag & Drop New Art Assets"}
                     </p>
+                    <p className="text-[8px] text-foreground/20 mt-2 uppercase tracking-widest">JPG, PNG up to 5MB</p>
                   </div>
                 </div>
 

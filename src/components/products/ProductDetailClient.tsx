@@ -399,7 +399,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                   </motion.div>
                 </AnimatePresence>
 
-                <div className="absolute bottom-8 left-10 md:bottom-20 md:left-20 flex gap-6 z-20">
+                <div className="absolute bottom-8 right-10 md:bottom-20 md:right-20 flex gap-6 z-20">
                   <button onClick={prevReview} className="w-14 h-14 flex items-center justify-center bg-white/50 backdrop-blur-sm hover:bg-black hover:text-white transition-all border border-black/10 rounded-full">
                     <ArrowLeft size={20} strokeWidth={1} />
                   </button>
