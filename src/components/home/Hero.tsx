@@ -38,89 +38,78 @@ export default function Hero() {
     return () => clearInterval(timer);
   }, []);
 
-  if (!isMounted) return <div className="h-[90vh] md:h-screen w-full bg-[#111]" />;
+  // Use a simple div if not mounted to ensure something is there
+  if (!isMounted) {
+    return (
+      <div className="w-full h-[70vh] md:h-screen bg-neutral-900 flex items-center justify-center">
+        <span className="text-white/20 uppercase tracking-[1em] text-[10px]">YDA Loading...</span>
+      </div>
+    );
+  }
 
   return (
-    <section className="relative h-[90vh] md:h-screen w-full bg-black overflow-hidden group">
-      <AnimatePresence initial={false}>
+    <section className="relative w-full h-[70vh] md:h-screen bg-black overflow-hidden">
+      <AnimatePresence mode="wait" initial={false}>
         <motion.div
           key={current}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 1.5, ease: "easeInOut" }}
+          transition={{ duration: 1, ease: "easeInOut" }}
           className="absolute inset-0"
         >
-          {/* Background Image with subtle zoom (Ken Burns effect) */}
-          <motion.div
-            initial={{ scale: 1.05 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 6, ease: "linear" }}
-            className="w-full h-full relative"
-          >
+          {/* Background Layer */}
+          <div className="relative w-full h-full">
             <Image
               src={BANNERS[current].image}
               alt={BANNERS[current].title}
               fill
-              className="object-cover"
+              className="object-cover opacity-80"
               priority
+              quality={90}
             />
-            {/* Dark overlay for text readability */}
-            <div className="absolute inset-0 bg-black/30" />
-          </motion.div>
+            {/* Dark Gradient Overlay for Manglam Style */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/40 to-black/60" />
+          </div>
 
-          {/* Centered Text Content - Manglam Style */}
+          {/* Content Layer */}
           <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 z-20">
             <motion.div
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.5, duration: 1 }}
-              className="flex flex-col items-center"
+              transition={{ delay: 0.3, duration: 0.8 }}
+              className="max-w-5xl"
             >
-              <h2 className="text-white text-[10px] md:text-[12px] uppercase tracking-[0.4em] mb-4 md:mb-6 font-medium">
+              <h2 className="text-white text-[10px] md:text-xs uppercase tracking-[0.6em] font-black mb-8 drop-shadow-lg opacity-80">
                 {BANNERS[current].subtitle}
               </h2>
-              <h1 className="text-white text-4xl md:text-6xl lg:text-7xl font-serif tracking-wide mb-8 md:mb-12">
+              <h1 className="text-white text-5xl md:text-8xl lg:text-[120px] font-serif leading-none tracking-tight mb-12 drop-shadow-2xl">
                 {BANNERS[current].title}
               </h1>
               <Link 
                 href="/shop"
-                className="text-white border border-white px-8 md:px-12 py-3 md:py-4 text-[10px] md:text-xs uppercase tracking-widest hover:bg-white hover:text-black transition-colors duration-300"
+                className="inline-block border border-white text-white px-12 py-5 text-[10px] uppercase tracking-[0.4em] font-black hover:bg-white hover:text-black transition-all duration-500"
               >
-                View Collection
+                Shop Selection
               </Link>
             </motion.div>
           </div>
         </motion.div>
       </AnimatePresence>
 
-      {/* Slide Indicators */}
-      <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-3 z-30">
+      {/* Navigation Indicators */}
+      <div className="absolute bottom-12 left-0 right-0 flex justify-center gap-4 z-30">
         {BANNERS.map((_, idx) => (
           <button
             key={idx}
             onClick={() => setCurrent(idx)}
             className={`w-2 h-2 rounded-full transition-all duration-500 ${
-              current === idx ? "bg-white scale-125" : "bg-white/40 hover:bg-white/70"
+              current === idx ? "bg-white scale-125" : "bg-white/20 hover:bg-white/50"
             }`}
             aria-label={`Go to slide ${idx + 1}`}
           />
         ))}
       </div>
-      
-      {/* Optional Side Arrows (appear on hover) */}
-      <button 
-        onClick={() => setCurrent((prev) => (prev - 1 + BANNERS.length) % BANNERS.length)}
-        className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-white/50 hover:text-white opacity-0 group-hover:opacity-100 transition-opacity z-30"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-      </button>
-      <button 
-        onClick={() => setCurrent((prev) => (prev + 1) % BANNERS.length)}
-        className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-white/50 hover:text-white opacity-0 group-hover:opacity-100 transition-opacity z-30"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-      </button>
     </section>
   );
 }
