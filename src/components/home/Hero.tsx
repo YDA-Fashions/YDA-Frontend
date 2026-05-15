@@ -88,6 +88,7 @@ const Hero = () => {
               />
             </motion.div>
             <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60" />
+            <div className="absolute inset-0 bg-gradient-to-tr from-black/80 via-transparent to-transparent opacity-80" />
           </motion.div>
         </AnimatePresence>
       </div>
