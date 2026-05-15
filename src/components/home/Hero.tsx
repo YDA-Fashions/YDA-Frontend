@@ -63,57 +63,36 @@ const Hero = () => {
     <section className="relative h-[85vh] md:h-[95vh] w-full overflow-hidden bg-black">
       {/* Background Section */}
       <div className="absolute inset-0 z-0">
-        {isMobile ? (
-          /* Mobile Professional Collage Background */
-          <div className="relative w-full h-full bg-black">
-            <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 gap-[1px] opacity-40">
-              <div className="relative overflow-hidden">
-                <Image src={BANNERS[0].mobileImage} alt="Heritage" fill className="object-cover brightness-50" />
-              </div>
-              <div className="relative overflow-hidden">
-                <Image src={BANNERS[1].mobileImage} alt="Craft" fill className="object-cover brightness-50" />
-              </div>
-              <div className="relative overflow-hidden">
-                <Image src={BANNERS[2].mobileImage} alt="Art" fill className="object-cover brightness-50" />
-              </div>
-              <div className="relative overflow-hidden">
-                <Image src={BANNERS[3].mobileImage} alt="Selection" fill className="object-cover brightness-50" />
-              </div>
-            </div>
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-black/40" />
-            <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px]" />
-          </div>
-        ) : (
-          /* Desktop Background Slider */
-          <AnimatePresence initial={false}>
+        <AnimatePresence initial={false}>
+          <motion.div
+            key={currentIndex}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.5, ease: "easeInOut" }}
+            className="absolute inset-0"
+          >
             <motion.div
-              key={currentIndex}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1.5, ease: "easeInOut" }}
+              initial={{ scale: 1.1 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 8, ease: "easeOut" }}
               className="absolute inset-0"
             >
-              <motion.div
-                initial={{ scale: 1.1 }}
-                animate={{ scale: 1 }}
-                transition={{ duration: 8, ease: "easeOut" }}
-                className="absolute inset-0"
-              >
-                <Image
-                  src={bannerImage}
-                  alt={currentBanner.title}
-                  fill
-                  priority
-                  className="object-cover brightness-[0.75]"
-                  sizes="100vw"
-                />
-              </motion.div>
-              <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60" />
-              <div className="absolute inset-0 bg-gradient-to-tr from-black/80 via-transparent to-transparent opacity-80" />
+              <Image
+                src={bannerImage}
+                alt={currentBanner.title}
+                fill
+                priority
+                className="object-cover brightness-[0.6]"
+                sizes="100vw"
+              />
             </motion.div>
-          </AnimatePresence>
-        )}
+            {/* Global Overlays for better contrast */}
+            <div className="absolute inset-0 bg-black/40 md:bg-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/20 md:bg-gradient-to-b md:from-black/30 md:via-transparent md:to-black/60" />
+            <div className="absolute inset-0 bg-gradient-to-tr from-black/80 via-transparent to-transparent opacity-80" />
+          </motion.div>
+        </AnimatePresence>
       </div>
 
       {/* Text Overlay - Premium Brand Style (Bottom-Left Aligned) */}

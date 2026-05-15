@@ -38,18 +38,18 @@ export default function StoryPage() {
               whileInView={{ opacity: 1, scale: 1 }} 
               viewport={{ once: true }} 
               transition={{ duration: 1 }} 
-              className="lg:col-span-6 relative aspect-[4/5] bg-border-beige overflow-hidden shadow-2xl"
+              className="lg:col-span-6 relative aspect-[4/5] bg-border-beige overflow-hidden shadow-2xl rounded-sm"
             >
               <Image 
-                src="/images/home-page-image/sanganeri-print-1.jpg.png"
-                alt="Manoj Tailor Workshop"
+                src="/images/story/manoj-tailor-heritage.jpg"
+                alt="Manoj Tailor - The Visionary"
                 fill
-                className="object-cover grayscale hover:grayscale-0 transition-all duration-[2s]"
+                className="object-cover hover:scale-105 transition-all duration-[2s]"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
               <div className="absolute bottom-10 left-10 text-white">
-                <p className="text-[10px] uppercase tracking-[0.4em] font-black mb-2 text-white/60">Founded 2004</p>
-                <p className="text-2xl font-serif italic">Manoj Tailor</p>
+                <p className="text-[10px] uppercase tracking-[0.4em] font-black mb-2 text-white/60">The Mastermind</p>
+                <p className="text-3xl font-serif italic drop-shadow-lg">Manoj Tailor</p>
               </div>
             </motion.div>
             
