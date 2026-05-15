@@ -41,7 +41,7 @@ export default function StoryPage() {
               className="lg:col-span-6 relative aspect-[4/5] bg-border-beige overflow-hidden shadow-2xl rounded-sm"
             >
               <Image 
-                src="/images/story/manoj-tailor-heritage.jpg"
+                src="/images/brand-story-image-1.png"
                 alt="Manoj Tailor - The Visionary"
                 fill
                 className="object-cover hover:scale-105 transition-all duration-[2s]"
