@@ -214,42 +214,44 @@ const AdminPage = () => {
 
   return (
     <div className="min-h-screen bg-[#FDFBF7] flex">
-      {/* Sidebar */}
-      <aside className="w-64 bg-white border-r border-border-beige p-6 space-y-12 hidden lg:flex flex-col">
-        <Logo variant="horizontal" theme="dark" />
+      {/* Sidebar - Responsive */}
+      <aside className="w-full lg:w-64 bg-white border-b lg:border-b-0 lg:border-r border-border-beige p-4 lg:p-8 flex-shrink-0 z-20 flex lg:flex-col lg:space-y-12">
+        <div className="hidden lg:block">
+          <Logo variant="horizontal" theme="dark" />
+        </div>
         
-        <nav className="space-y-4">
+        <nav className="flex lg:flex-col gap-2 w-full overflow-x-auto lg:overflow-visible">
           <button 
             onClick={() => setActiveTab("dashboard")}
-            className={`w-full flex items-center gap-4 px-4 py-3 text-[10px] tracking-widest font-bold uppercase transition-colors ${
+            className={`flex-1 lg:w-full flex items-center justify-center lg:justify-start gap-4 px-4 py-3 text-[10px] tracking-widest font-bold uppercase transition-colors whitespace-nowrap ${
               activeTab === "dashboard" ? "bg-foreground text-background" : "text-foreground/40 hover:bg-accent/10"
             }`}
           >
-            <LayoutDashboard size={18} /> Dashboard
+            <LayoutDashboard size={18} /> <span className="hidden sm:inline">Dashboard</span>
           </button>
           <button 
             onClick={() => setActiveTab("products")}
-            className={`w-full flex items-center gap-4 px-4 py-3 text-[10px] tracking-widest font-bold uppercase transition-colors ${
+            className={`flex-1 lg:w-full flex items-center justify-center lg:justify-start gap-4 px-4 py-3 text-[10px] tracking-widest font-bold uppercase transition-colors whitespace-nowrap ${
               activeTab === "products" ? "bg-foreground text-background" : "text-foreground/40 hover:bg-accent/10"
             }`}
           >
-            <Package size={18} /> Products
+            <Package size={18} /> <span className="hidden sm:inline">Products</span>
           </button>
           <button 
             onClick={() => setActiveTab("orders")}
-            className={`w-full flex items-center gap-4 px-4 py-3 text-[10px] tracking-widest font-bold uppercase transition-colors ${
+            className={`flex-1 lg:w-full flex items-center justify-center lg:justify-start gap-4 px-4 py-3 text-[10px] tracking-widest font-bold uppercase transition-colors whitespace-nowrap ${
               activeTab === "orders" ? "bg-foreground text-background" : "text-foreground/40 hover:bg-accent/10"
             }`}
           >
-            <ShoppingCart size={18} /> Orders
+            <ShoppingCart size={18} /> <span className="hidden sm:inline">Orders</span>
           </button>
           <button 
             onClick={() => setActiveTab("coupons")}
-            className={`w-full flex items-center gap-4 px-4 py-3 text-[10px] tracking-widest font-bold uppercase transition-colors ${
+            className={`flex-1 lg:w-full flex items-center justify-center lg:justify-start gap-4 px-4 py-3 text-[10px] tracking-widest font-bold uppercase transition-colors whitespace-nowrap ${
               activeTab === "coupons" ? "bg-foreground text-background" : "text-foreground/40 hover:bg-accent/10"
             }`}
           >
-            <Banknote size={18} /> Coupons
+            <Banknote size={18} /> <span className="hidden sm:inline">Coupons</span>
           </button>
         </nav>
       </aside>
@@ -366,7 +368,12 @@ const AdminPage = () => {
                     </td>
                     <td className="px-6 py-4 text-center">
                       <div className="flex justify-center gap-4">
-                        <button onClick={() => handleOpenEdit(product)} className="p-2 text-foreground/40 hover:text-foreground transition-colors"><Edit2 size={16} /></button>
+                        <button 
+                          onClick={() => handleOpenEdit(product)} 
+                          className="flex items-center gap-2 px-3 py-1 bg-black text-white text-[10px] font-black uppercase tracking-widest rounded-sm hover:bg-accent-dark transition-all"
+                        >
+                          <Edit2 size={12} /> Edit
+                        </button>
                         <button onClick={() => handleDeleteProduct(product.id)} className="p-2 text-foreground/40 hover:text-red-400 transition-colors"><Trash2 size={16} /></button>
                       </div>
                     </td>
