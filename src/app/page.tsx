@@ -1,7 +1,7 @@
 import React from "react";
 import { Metadata } from "next";
 import HomeClient from "@/components/home/HomeClient";
-import { PRODUCTS } from "@/data/products";
+import { productService } from "@/services/productService";
 
 export const metadata: Metadata = {
   title: "YDA | Premium Sanganeri & Gujarati Handcrafted Bags",
@@ -13,10 +13,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Home() {
-  // Pass products to client component
-  // In a real app, this might be a server-side fetch from a database
-  const featuredProducts = PRODUCTS;
+export default async function Home() {
+  // Fetch live products from Supabase
+  let featuredProducts = [];
+  try {
+    featuredProducts = await productService.getProducts();
+  } catch (error) {
+    console.error("Failed to fetch products for Home:", error);
+  }
 
   return <HomeClient initialProducts={featuredProducts} />;
 }

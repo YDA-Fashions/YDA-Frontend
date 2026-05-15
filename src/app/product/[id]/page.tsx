@@ -1,7 +1,4 @@
-import React from "react";
-import { Metadata, ResolvingMetadata } from "next";
-import { notFound } from "next/navigation";
-import { PRODUCTS, Product } from "@/data/products";
+import { productService } from "@/services/productService";
 import ProductDetailClient from "@/components/products/ProductDetailClient";
 import JsonLd from "@/components/common/JsonLd";
 
@@ -19,7 +16,8 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const id = (await params).id;
-  const product = PRODUCTS.find((p) => p.id === id || p.product_code === id);
+  const allProducts = await productService.getProducts();
+  const product = allProducts.find((p) => p.id === id || p.product_code === id);
 
   if (!product) {
     return {
@@ -56,17 +54,18 @@ export async function generateMetadata(
 
 export default async function ProductPage({ params }: Props) {
   const id = (await params).id;
-  const product = PRODUCTS.find((p) => p.id === id || p.product_code === id);
+  const allProducts = await productService.getProducts();
+  const product = allProducts.find((p) => p.id === id || p.product_code === id);
 
   if (!product) {
     notFound();
   }
 
   // Get related products (same logic as before but on server)
-  const sameCategory = PRODUCTS.filter(
+  const sameCategory = allProducts.filter(
     (p) => p.id !== product.id && p.category === product.category
   ).slice(0, 8);
-  const otherCategory = PRODUCTS.filter(
+  const otherCategory = allProducts.filter(
     (p) => p.id !== product.id && p.category !== product.category
   ).slice(0, 7);
   const relatedProducts = [...sameCategory, ...otherCategory];
@@ -167,7 +166,8 @@ export default async function ProductPage({ params }: Props) {
  * Allows Next.js to statically generate these pages at build time.
  */
 export async function generateStaticParams() {
-  return PRODUCTS.map((product) => ({
+  const products = await productService.getProducts();
+  return products.map((product) => ({
     id: product.id,
   }));
 }

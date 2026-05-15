@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import { Metadata } from "next";
 import ShopClient from "@/components/shop/ShopClient";
-import { PRODUCTS } from "@/data/products";
+import { productService } from "@/services/productService";
 
 export const metadata: Metadata = {
   title: "Shop All Collections | YDA Premium Handcrafted Bags",
@@ -13,8 +13,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ShopPage() {
-  const allProducts = PRODUCTS;
+export default async function ShopPage() {
+  let allProducts = [];
+  try {
+    allProducts = await productService.getProducts();
+  } catch (error) {
+    console.error("Failed to fetch products for Shop:", error);
+  }
 
   return (
     <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-background text-foreground uppercase tracking-widest text-xs font-bold">Loading...</div>}>
