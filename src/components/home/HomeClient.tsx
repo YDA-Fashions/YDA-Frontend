@@ -20,7 +20,12 @@ interface HomeClientProps {
 
 export default function HomeClient({ initialProducts }: HomeClientProps) {
   const products = initialProducts;
-  const featuredProducts = products.filter(p => p.isFeatured).slice(0, 10);
+  let featuredProducts = products.filter(p => p.isFeatured).slice(0, 10);
+  
+  // Backup: If no products are featured, show newest 10 items instead of nothing
+  if (featuredProducts.length === 0 && products.length > 0) {
+    featuredProducts = products.slice(0, 10);
+  }
   const [currentReview, setCurrentReview] = useState(0);
   const [showPopup, setShowPopup] = useState(false);
   const [mounted, setMounted] = useState(false);

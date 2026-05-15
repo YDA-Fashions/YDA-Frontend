@@ -38,7 +38,8 @@ const AdminPage = () => {
     original_price: 0,
     stock: 0,
     category: "bags",
-    type: ""
+    type: "",
+    isFeatured: false
   });
   const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
 
@@ -110,7 +111,8 @@ const AdminPage = () => {
       original_price: 0,
       stock: 0,
       category: "bags",
-      type: ""
+      type: "",
+      isFeatured: false
     });
     setSelectedFiles(null);
     setIsAddingProduct(true);
@@ -126,7 +128,8 @@ const AdminPage = () => {
       original_price: product.original_price || 0,
       stock: product.stock,
       category: product.category as any,
-      type: product.type || ""
+      type: product.type || "",
+      isFeatured: product.isFeatured || false
     });
     setSelectedFiles(null);
     setIsAddingProduct(true);
@@ -150,7 +153,11 @@ const AdminPage = () => {
         return;
       }
       
-      const payload = { ...formData, images: imageUrls };
+      const payload = { 
+        ...formData, 
+        images: imageUrls,
+        featured: formData.isFeatured // Map UI to metadata
+      };
 
       // 2. Create or Update
       if (editingProduct) {
@@ -432,10 +439,23 @@ const AdminPage = () => {
                       <option value="cushions">Cushions</option>
                     </select>
                   </div>
-                  <div>
-                    <label className="text-[10px] uppercase tracking-widest font-bold text-foreground/40 mb-2 block">Type (Floral, Tote, etc.)</label>
-                    <input type="text" value={formData.type} onChange={e => setFormData({...formData, type: e.target.value})} className="w-full bg-[#F5F5F0] border-0 p-4 text-sm focus:ring-1 ring-accent-dark outline-none" />
+                  <div className="flex flex-col">
+                    <label className="text-[10px] uppercase tracking-widest font-bold text-foreground/40 mb-2 block">Featured Piece?</label>
+                    <div className="flex-1 flex items-center bg-[#F5F5F0] px-4">
+                      <input 
+                        type="checkbox" 
+                        checked={formData.isFeatured} 
+                        onChange={e => setFormData({...formData, isFeatured: e.target.checked})} 
+                        className="w-4 h-4 text-accent-dark focus:ring-0 border-0 rounded-none" 
+                      />
+                      <span className="ml-3 text-[10px] uppercase tracking-widest font-bold text-foreground/40">Show on Homepage</span>
+                    </div>
                   </div>
+                </div>
+
+                <div>
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-foreground/40 mb-2 block">Type (Floral, Tote, etc.)</label>
+                  <input type="text" value={formData.type} onChange={e => setFormData({...formData, type: e.target.value})} className="w-full bg-[#F5F5F0] border-0 p-4 text-sm focus:ring-1 ring-accent-dark outline-none" />
                 </div>
 
                 <div>

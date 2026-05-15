@@ -47,7 +47,8 @@ export const productService = {
       metadata: { 
         type: productData.type,
         original_price: productData.original_price,
-        size: productData.size
+        size: productData.size,
+        featured: productData.featured
       }
     };
 
@@ -72,7 +73,8 @@ export const productService = {
       metadata: { 
         type: productData.type,
         original_price: productData.original_price,
-        size: productData.size
+        size: productData.size,
+        featured: productData.featured
       }
     };
 
