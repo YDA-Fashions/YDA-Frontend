@@ -66,22 +66,22 @@ const Hero = () => {
         {isMobile ? (
           /* Mobile Professional Collage Background */
           <div className="relative w-full h-full bg-black">
-            <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 gap-[1px] opacity-70">
+            <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 gap-[1px] opacity-40">
               <div className="relative overflow-hidden">
-                <Image src={BANNERS[0].mobileImage} alt="Heritage" fill className="object-cover" />
+                <Image src={BANNERS[0].mobileImage} alt="Heritage" fill className="object-cover brightness-50" />
               </div>
               <div className="relative overflow-hidden">
-                <Image src={BANNERS[1].mobileImage} alt="Craft" fill className="object-cover" />
+                <Image src={BANNERS[1].mobileImage} alt="Craft" fill className="object-cover brightness-50" />
               </div>
               <div className="relative overflow-hidden">
-                <Image src={BANNERS[2].mobileImage} alt="Art" fill className="object-cover" />
+                <Image src={BANNERS[2].mobileImage} alt="Art" fill className="object-cover brightness-50" />
               </div>
               <div className="relative overflow-hidden">
-                <Image src={BANNERS[3].mobileImage} alt="Selection" fill className="object-cover" />
+                <Image src={BANNERS[3].mobileImage} alt="Selection" fill className="object-cover brightness-50" />
               </div>
             </div>
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
-            <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px]" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-black/40" />
+            <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px]" />
           </div>
         ) : (
           /* Desktop Background Slider */
