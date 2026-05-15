@@ -92,15 +92,15 @@ const Hero = () => {
         </AnimatePresence>
       </div>
 
-      {/* Text Overlay - Premium Brand Style (Right Aligned) */}
-      <div className="absolute inset-0 z-10 flex items-center justify-end text-right px-10 md:px-24">
+      {/* Text Overlay - Premium Brand Style (Bottom-Left Aligned) */}
+      <div className="absolute inset-0 z-10 flex items-end justify-start text-left px-10 md:px-24 pb-32 md:pb-48">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentIndex}
             className="max-w-4xl"
           >
             <motion.p 
-              initial={{ opacity: 0, x: 20 }}
+              initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1, delay: 0.2 }}
               className="text-xs md:text-sm uppercase text-white tracking-[0.8em] mb-8 font-black drop-shadow-lg"
@@ -109,9 +109,9 @@ const Hero = () => {
             </motion.p>
             
             <motion.h1 
-              initial={{ opacity: 0, x: 40 }}
+              initial={{ opacity: 0, x: -40 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -40 }}
+              exit={{ opacity: 0, x: 40 }}
               transition={{ duration: 1, ease: [0.19, 1, 0.22, 1] }}
               className="text-5xl md:text-[8rem] font-serif italic text-white leading-[0.85] mb-12 tracking-tighter font-black drop-shadow-2xl"
             >
@@ -122,7 +122,7 @@ const Hero = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5, duration: 1 }}
-              className="text-xs md:text-base uppercase tracking-[0.3em] text-white/90 mb-14 font-black max-w-xl ml-auto leading-relaxed drop-shadow-md"
+              className="text-xs md:text-base uppercase tracking-[0.3em] text-white/90 mb-14 font-black max-w-xl leading-relaxed drop-shadow-md"
             >
               {currentBanner.subtitle}
             </motion.p>
