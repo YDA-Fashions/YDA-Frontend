@@ -8,180 +8,155 @@ import { ArrowRight } from "lucide-react";
 
 const BANNERS = [
   {
-    image: "/images/Slider-image-C/Slider-image-C1.jpg",
-    mobileImage: "/images/mobile-slider-/mobile-slider-1.jpg",
-    title: "Hand-Block Heritage",
-    subtitle: "Jaipur's soul in every stitch."
+    id: 1,
+    title: "Heritage",
+    subtitle: "Spring/Summer Collection",
+    description: "Discover the intersection of ancient craftsmanship and modern silhouettes. Handcrafted by master artisans in the heart of Sanganer.",
+    image: "/images/banner-image/YDA-Home-hero-Banner-1.jpg",
   },
   {
-    image: "/images/Slider-image-C/Slider-image-C2.jpg",
-    mobileImage: "/images/mobile-slider-/mobile-slider-2.jpg",
-    title: "Manoj's Mastery",
-    subtitle: "20 years of tailoring excellence."
+    id: 2,
+    title: "Artistry",
+    subtitle: "The Canvas Series",
+    description: "Every stitch tells a story of generation-old secrets. Our latest totes are designed for the modern collector of fine arts.",
+    image: "/images/banner-image/YDA-Home-hero-Banner-2.jpg",
   },
   {
-    image: "/images/Slider-image-C/Slider-image-C3.jpg",
-    mobileImage: "/images/mobile-slider-/mobile-slider-3.jpg",
-    title: "The Art of Detail",
-    subtitle: "Reviving Sanganeri Chapai Culture."
-  },
-  {
-    image: "/images/Slider-image-C/Slider-image-C4.jpg",
-    mobileImage: "/images/mobile-slider-/mobile-slider-4.jpg",
-    title: "Timeless Luxury",
-    subtitle: "Crafted for the modern wardrobe."
-  },
+    id: 3,
+    title: "Legacy",
+    subtitle: "New Living Archives",
+    description: "Transform your sanctuary with our Heritage Garden series. Hand-printed floral motifs that breathe life into your home.",
+    image: "/images/banner-image/YDA-Home-hero-Banner-3.jpg",
+  }
 ];
 
-const Hero = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isMounted, setIsMounted] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+export default function Hero() {
+  const [current, setCurrent] = useState(0);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    setIsMounted(true);
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-
     const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % BANNERS.length);
-    }, 6000);
-
-    return () => {
-      window.removeEventListener("resize", checkMobile);
-      clearInterval(timer);
-    };
+      setProgress((prev) => {
+        if (prev >= 100) {
+          setCurrent((curr) => (curr + 1) % BANNERS.length);
+          return 0;
+        }
+        return prev + 0.4;
+      });
+    }, 40);
+    return () => clearInterval(timer);
   }, []);
 
-  if (!isMounted) return <div className="h-[95vh] bg-black" />;
+  const nextSlide = () => {
+    setCurrent((prev) => (prev + 1) % BANNERS.length);
+    setProgress(0);
+  };
 
-  const currentBanner = BANNERS[currentIndex];
-  const bannerImage = isMobile ? currentBanner.mobileImage : currentBanner.image;
+  const prevSlide = () => {
+    setCurrent((prev) => (prev - 1 + BANNERS.length) % BANNERS.length);
+    setProgress(0);
+  };
 
   return (
-    <section className="relative h-[85vh] md:h-[98vh] w-full overflow-hidden bg-black">
-      {/* Background Cinematic Layers */}
-      <div className="absolute inset-0 z-0">
-        <AnimatePresence initial={false} mode="popLayout">
-          <motion.div
-            key={currentIndex}
-            initial={{ opacity: 0, scale: 1.2, filter: "blur(20px)" }}
-            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-            exit={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
-            transition={{ duration: 1.8, ease: [0.19, 1, 0.22, 1] }}
-            className="absolute inset-0"
-          >
-            <Image
-              src={bannerImage}
-              alt={currentBanner.title}
-              fill
-              priority
-              className="object-cover brightness-[0.65]"
-              sizes="100vw"
-            />
-            <div className="absolute inset-0 bg-gradient-to-tr from-black/80 via-black/20 to-transparent" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.4)_100%)]" />
-          </motion.div>
-        </AnimatePresence>
-      </div>
-
-      {/* Floating UI Elements */}
-      <div className="absolute inset-0 z-10 container mx-auto px-6 flex flex-col justify-center">
-        <div className="max-w-6xl w-full">
-          <AnimatePresence mode="wait">
+    <section className="relative h-[90vh] md:h-screen w-full bg-[#FDFBF7] overflow-hidden">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={current}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          className="absolute inset-0 flex flex-col lg:flex-row"
+        >
+          {/* Text Content - Left Side */}
+          <div className="w-full lg:w-[45%] h-full flex flex-col justify-center px-8 md:px-20 lg:px-32 relative z-20">
             <motion.div
-              key={currentIndex}
-              className="relative"
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.3, duration: 0.8 }}
             >
-              <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 50 }}
-                transition={{ duration: 1, ease: [0.19, 1, 0.22, 1] }}
-              >
-                <p className="text-[10px] md:text-xs uppercase tracking-[1em] text-white/40 mb-8 font-sans font-black flex items-center gap-4">
-                  <span className="w-12 h-[1px] bg-white/20" />
-                  Masterpiece {currentIndex + 1} / {BANNERS.length}
-                </p>
-                
-                <h1 className="text-6xl md:text-8xl lg:text-[12rem] font-serif italic text-white leading-[0.85] mb-12 tracking-tighter drop-shadow-2xl">
-                  {currentBanner.title.split(' ').map((word, i) => (
-                    <motion.span 
-                      key={i}
-                      initial={{ opacity: 0, rotateX: 90 }}
-                      animate={{ opacity: 1, rotateX: 0 }}
-                      transition={{ delay: 0.2 + (i * 0.1), duration: 0.8 }}
-                      className="inline-block mr-6 last:mr-0"
-                    >
-                      {word}
-                    </motion.span>
-                  ))}
-                </h1>
-
-                <div className="flex flex-col md:flex-row md:items-end gap-12">
-                   <div className="bg-white/5 backdrop-blur-xl border border-white/10 p-8 md:p-12 max-w-md rounded-sm">
-                      <p className="text-xs md:text-sm text-white/60 leading-relaxed uppercase tracking-widest font-sans mb-8 italic">
-                        {currentBanner.subtitle}
-                      </p>
-                      <Link 
-                        href="/shop"
-                        className="group flex items-center gap-6 text-[10px] uppercase tracking-[0.4em] font-black text-white hover:text-white/60 transition-all"
-                      >
-                        Explore Curation
-                        <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all">
-                          <ArrowRight size={18} />
-                        </div>
-                      </Link>
-                   </div>
-
-                   <div className="hidden lg:flex items-center gap-12 pb-4">
-                      <div className="text-left">
-                        <p className="text-[8px] uppercase tracking-widest text-white/30 mb-2">Technique</p>
-                        <p className="text-[10px] uppercase tracking-widest font-bold text-white">Traditional Chapa</p>
-                      </div>
-                      <div className="w-[1px] h-8 bg-white/10" />
-                      <div className="text-left">
-                        <p className="text-[8px] uppercase tracking-widest text-white/30 mb-2">Artisan</p>
-                        <p className="text-[10px] uppercase tracking-widest font-bold text-white">Manoj Tailor</p>
-                      </div>
-                   </div>
+              <span className="text-[10px] uppercase tracking-[0.5em] font-black text-black/40 mb-6 block">
+                {BANNERS[current].subtitle}
+              </span>
+              <h1 className="text-[80px] md:text-[120px] lg:text-[180px] font-serif leading-[0.8] tracking-tighter text-black mb-10">
+                {BANNERS[current].title}
+              </h1>
+              <p className="text-sm md:text-base text-black/60 max-w-sm leading-relaxed mb-12 font-sans">
+                {BANNERS[current].description}
+              </p>
+              
+              <Link href="/shop" className="group inline-flex items-center gap-6">
+                <span className="text-[10px] uppercase tracking-[0.4em] font-black text-black">Explore Collection</span>
+                <div className="w-12 h-12 rounded-full border border-black/10 flex items-center justify-center group-hover:bg-black group-hover:text-white transition-all duration-500">
+                  <ArrowRight size={18} strokeWidth={1} />
                 </div>
-              </motion.div>
+              </Link>
             </motion.div>
-          </AnimatePresence>
-        </div>
-      </div>
+          </div>
 
-      {/* Modern Navigation */}
-      <div className="absolute bottom-12 left-6 right-6 md:left-12 md:right-12 z-30 flex items-end justify-between">
-        <div className="flex gap-4">
-          {BANNERS.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentIndex(index)}
-              className="relative w-12 h-1 bg-white/10 overflow-hidden rounded-full transition-all"
+          {/* Image Content - Right Side */}
+          <div className="w-full lg:w-[55%] h-full relative overflow-hidden">
+            <motion.div
+              initial={{ scale: 1.1, x: 50 }}
+              animate={{ scale: 1, x: 0 }}
+              transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
+              className="w-full h-full"
             >
-              {currentIndex === index && (
-                <motion.div 
-                  initial={{ x: "-100%" }}
-                  animate={{ x: "0%" }}
-                  transition={{ duration: 6, ease: "linear" }}
-                  className="absolute inset-0 bg-white"
-                />
-              )}
-            </button>
-          ))}
+              <Image
+                src={BANNERS[current].image}
+                alt={BANNERS[current].title}
+                fill
+                className="object-cover"
+                priority
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#FDFBF7] via-transparent to-transparent hidden lg:block" />
+            </motion.div>
+
+            {/* Subtle Float Number */}
+            <div className="absolute top-20 right-20 hidden lg:block overflow-hidden">
+              <motion.div
+                key={current}
+                initial={{ y: "100%" }}
+                animate={{ y: 0 }}
+                className="text-[200px] font-serif italic text-black/5 font-black leading-none"
+              >
+                0{current + 1}
+              </motion.div>
+            </div>
+          </div>
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Navigation Controls */}
+      <div className="absolute bottom-12 left-8 md:left-20 lg:left-32 right-8 md:right-20 lg:right-32 flex items-end justify-between z-30">
+        <div className="flex gap-12 items-center">
+          <div className="flex gap-6">
+            <button onClick={prevSlide} className="text-black/30 hover:text-black transition-colors uppercase text-[9px] font-black tracking-widest">Prev</button>
+            <div className="w-px h-3 bg-black/10 self-center" />
+            <button onClick={nextSlide} className="text-black/30 hover:text-black transition-colors uppercase text-[9px] font-black tracking-widest">Next</button>
+          </div>
+          
+          <div className="hidden md:flex gap-4">
+            {BANNERS.map((_, idx) => (
+              <div key={idx} className="h-[2px] w-12 bg-black/5 relative overflow-hidden">
+                {current === idx && (
+                  <motion.div 
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: 1 }}
+                    className="absolute inset-0 bg-black origin-left"
+                    style={{ scaleX: progress / 100 }}
+                  />
+                )}
+              </div>
+            ))}
+          </div>
         </div>
 
-        <div className="flex flex-col items-end gap-4">
-           <p className="text-[9px] uppercase tracking-[0.5em] text-white/20 font-black">Scroll for Journey</p>
-           <div className="w-px h-16 bg-gradient-to-b from-white/40 to-transparent" />
+        <div className="flex flex-col items-end">
+          <span className="text-[10px] font-black uppercase tracking-widest text-black/20 mb-1">Curation</span>
+          <span className="text-[9px] font-black uppercase tracking-[0.3em] text-black">Artisan Handcrafted</span>
         </div>
       </div>
     </section>
   );
-};
-
-
-export default Hero;
+}
