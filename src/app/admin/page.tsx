@@ -213,7 +213,7 @@ const AdminPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#FDFBF7] flex">
+    <div className="min-h-screen bg-[#FDFBF7] flex flex-col lg:flex-row">
       {/* Sidebar - Responsive */}
       <aside className="w-full lg:w-64 bg-white border-b lg:border-b-0 lg:border-r border-border-beige p-4 lg:p-8 flex-shrink-0 z-20 flex lg:flex-col lg:space-y-12">
         <div className="hidden lg:block">
