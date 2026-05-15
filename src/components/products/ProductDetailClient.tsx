@@ -246,6 +246,16 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
 
                 {/* Ref here so StickyCartBar knows when this leaves the viewport */}
                 <div ref={addToCartRef} className="grid grid-cols-1 gap-4">
+                  {/* Stock Status Badge */}
+                  {product.stock <= 0 && (
+                    <div className="bg-red-50 border border-red-100 p-4 mb-2">
+                       <p className="text-[10px] uppercase tracking-widest font-black text-red-600 flex items-center gap-2">
+                         <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse" />
+                         Currently Sold Out
+                       </p>
+                    </div>
+                  )}
+
                   {/* Magnetic Add to Cart */}
                   <motion.button
                     ref={addMagnetic.ref as React.RefObject<HTMLButtonElement>}
@@ -253,11 +263,16 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                     onMouseLeave={addMagnetic.onMouseLeave}
                     animate={{ x: addMagnetic.offset.x, y: addMagnetic.offset.y }}
                     transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => addItem(product)}
-                    className="w-full bg-[#FFD700] hover:bg-[#F2CC00] text-black py-5 text-[11px] uppercase tracking-[0.4em] font-black transition-colors duration-300 shadow-lg"
+                    whileTap={product.stock > 0 ? { scale: 0.98 } : {}}
+                    onClick={product.stock > 0 ? () => addItem(product) : undefined}
+                    disabled={product.stock <= 0}
+                    className={`w-full py-5 text-[11px] uppercase tracking-[0.4em] font-black transition-colors duration-300 shadow-lg ${
+                      product.stock <= 0 
+                        ? "bg-black/10 text-black/40 cursor-not-allowed shadow-none" 
+                        : "bg-[#FFD700] hover:bg-[#F2CC00] text-black"
+                    }`}
                   >
-                    Add to Selection
+                    {product.stock <= 0 ? "Sold Out" : "Add to Selection"}
                   </motion.button>
 
                   {/* Magnetic Buy Now */}
@@ -267,11 +282,16 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                     onMouseLeave={buyMagnetic.onMouseLeave}
                     animate={{ x: buyMagnetic.offset.x, y: buyMagnetic.offset.y }}
                     transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={handleBuyNow}
-                    className="flex-grow bg-[#1a1a1a] text-white py-6 uppercase tracking-[0.4em] text-[12px] font-sans font-black hover:bg-black transition-colors flex items-center justify-center gap-4 shadow-2xl"
+                    whileTap={product.stock > 0 ? { scale: 0.98 } : {}}
+                    onClick={product.stock > 0 ? handleBuyNow : undefined}
+                    disabled={product.stock <= 0}
+                    className={`flex-grow py-6 uppercase tracking-[0.4em] text-[12px] font-sans font-black transition-colors flex items-center justify-center gap-4 shadow-2xl ${
+                      product.stock <= 0 
+                        ? "bg-black/5 text-black/20 cursor-not-allowed shadow-none" 
+                        : "bg-[#1a1a1a] text-white hover:bg-black"
+                    }`}
                   >
-                    Buy Now <ArrowRight size={18} />
+                    {product.stock <= 0 ? "Out of Stock" : <>Buy Now <ArrowRight size={18} /></>}
                   </motion.button>
                 </div>
               </div>

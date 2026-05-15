@@ -39,6 +39,7 @@ const AdminPage = () => {
     stock: 0,
     category: "bags",
     type: "",
+    size: "small",
     isFeatured: false
   });
   const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
@@ -112,6 +113,7 @@ const AdminPage = () => {
       stock: 0,
       category: "bags",
       type: "",
+      size: "small",
       isFeatured: false
     });
     setSelectedFiles(null);
@@ -129,6 +131,7 @@ const AdminPage = () => {
       stock: product.stock,
       category: product.category as any,
       type: product.type || "",
+      size: product.size || "small",
       isFeatured: product.isFeatured || false
     });
     setSelectedFiles(null);
@@ -445,6 +448,15 @@ const AdminPage = () => {
                       <option value="cushions">Cushions</option>
                     </select>
                   </div>
+                  {formData.category === "bags" && (
+                    <div>
+                      <label className="text-[10px] uppercase tracking-widest font-bold text-foreground/40 mb-2 block">Size (for Totes)</label>
+                      <select value={formData.size} onChange={e => setFormData({...formData, size: e.target.value})} className="w-full bg-[#F5F5F0] border-0 p-4 text-sm focus:ring-1 ring-accent-dark outline-none appearance-none">
+                        <option value="small">Small</option>
+                        <option value="large">Large</option>
+                      </select>
+                    </div>
+                  )}
                   <div className="flex flex-col">
                     <label className="text-[10px] uppercase tracking-widest font-bold text-foreground/40 mb-2 block">Featured Piece?</label>
                     <div className="flex-1 flex items-center bg-[#F5F5F0] px-4">

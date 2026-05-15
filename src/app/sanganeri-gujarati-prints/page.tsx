@@ -1,29 +1,32 @@
-"use client";
-
 import React from "react";
-import { motion } from "framer-motion";
-import Image from "next/image";
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
+import ProductCard from "@/components/products/ProductCard";
+import { productService } from "@/services/productService";
 
-const SanganeriGujaratiShowcase = () => {
-  const scrollFadeIn: any = {
-    initial: { opacity: 0, y: 30 },
-    whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true, margin: "-100px" },
-    transition: { duration: 0.8 }
-  };
+export default async function SanganeriGujaratiPrintsPage() {
+  let products = [];
+  try {
+    const allProducts = await productService.getProducts();
+    // Filter for products that have Sanganeri or Gujarati in their type or name
+    products = allProducts.filter(
+      (p) => 
+        p.type?.toLowerCase().includes("sanganeri") || 
+        p.type?.toLowerCase().includes("gujarati") ||
+        p.name.toLowerCase().includes("sanganeri") ||
+        p.name.toLowerCase().includes("gujarati")
+    );
+  } catch (error) {
+    console.error("Failed to fetch prints collection:", error);
+  }
 
   return (
-    <div className="min-h-screen bg-[#FDFDFB] text-foreground font-sans overflow-x-hidden">
-      <title>Sanganeri & Gujarati Prints | Heritage Showcase | YDA</title>
-      <meta name="description" content="Discover the timeless artistry of Sanganeri and Gujarati prints. An editorial showcase of traditional print heritage, handcrafted fabrics, and cultural narratives." />
+    <div className="min-h-screen bg-background text-foreground">
+      <title>Sanganeri & Gujarati Block Prints | Handcrafted Heritage | YDA</title>
+      <meta name="description" content="Explore our collection featuring authentic Sanganeri floral and Gujarati traditional motifs. Hand-blocked luxury bags and home decor with deep Indian roots." />
       
       <Header />
       
-      <main>
-        {/* 1. Hero Section */}
-        <section className="relative h-screen flex items-center justify-center overflow-hidden">
           <Image 
             src="/images/cushions/floral/YDA-CC-001-red-1.jpg"
             alt="Heritage Bloom Backdrop"

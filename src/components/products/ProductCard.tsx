@@ -34,14 +34,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickAdd }) => {
 
 
   const discount = Math.round(((product.original_price - product.selling_price) / product.original_price) * 100);
+  const isSoldOut = product.stock <= 0;
 
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -4 }}
+      whileHover={!isSoldOut ? { y: -4 } : {}}
       viewport={{ once: true }}
-      className="group bg-white transition-all duration-500 hover:shadow-[0_12px_40px_rgba(0,0,0,0.04)] overflow-hidden border border-black/[0.03]"
+      className={`group bg-white transition-all duration-500 hover:shadow-[0_12px_40px_rgba(0,0,0,0.04)] overflow-hidden border border-black/[0.03] ${isSoldOut ? "opacity-75" : ""}`}
     >
       <div className="relative overflow-hidden">
         <Link href={`/product/${product.id}`} className="block">
@@ -51,12 +52,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickAdd }) => {
               src={product.colors?.[0]?.images?.[0] || "/images/placeholder.jpg"}
               alt={product.name}
               fill
-              className="object-cover transition-opacity duration-700 ease-in-out group-hover:opacity-0"
+              className={`object-cover transition-opacity duration-700 ease-in-out ${!isSoldOut ? "group-hover:opacity-0" : ""}`}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
             />
             
             {/* Hover Image */}
-            {product.colors?.[0]?.images?.[1] && (
+            {product.colors?.[0]?.images?.[1] && !isSoldOut && (
               <Image
                 src={product.colors[0].images[1]}
                 alt={`${product.name} alternate view`}
@@ -67,10 +68,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickAdd }) => {
             )}
             
             {/* Heritage Badge */}
-            <div className="absolute top-4 left-4 z-10">
-              <span className="text-[8px] uppercase tracking-[0.2em] font-bold bg-white/90 backdrop-blur-md text-black px-3 py-1.5 shadow-sm">
+            <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
+              <span className="text-[8px] uppercase tracking-[0.2em] font-bold bg-white/90 backdrop-blur-md text-black px-3 py-1.5 shadow-sm w-fit">
                 Jaipur Heritage
               </span>
+              {isSoldOut && (
+                <span className="text-[8px] uppercase tracking-[0.2em] font-black bg-red-600 text-white px-3 py-1.5 shadow-sm w-fit">
+                  Sold Out
+                </span>
+              )}
             </div>
           </div>
 
@@ -101,12 +107,23 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickAdd }) => {
         {/* Action Button */}
         <div className="px-5 pb-6">
           <motion.button 
-            whileTap={{ scale: 0.98 }}
-            onClick={handleAddToCart}
-            className="w-full bg-black text-white py-4 text-[9px] tracking-[0.3em] font-black uppercase transition-all hover:bg-accent-dark flex items-center justify-center gap-2 group/btn"
+            whileTap={!isSoldOut ? { scale: 0.98 } : {}}
+            onClick={!isSoldOut ? handleAddToCart : undefined}
+            disabled={isSoldOut}
+            className={`w-full py-4 text-[9px] tracking-[0.3em] font-black uppercase transition-all flex items-center justify-center gap-2 group/btn ${
+              isSoldOut 
+                ? "bg-black/10 text-black/40 cursor-not-allowed" 
+                : "bg-black text-white hover:bg-accent-dark"
+            }`}
           >
-            <ShoppingBag size={12} strokeWidth={2} className="group-hover/btn:scale-110 transition-transform" />
-            Add to Selection
+            {isSoldOut ? (
+              "Sold Out"
+            ) : (
+              <>
+                <ShoppingBag size={12} strokeWidth={2} className="group-hover/btn:scale-110 transition-transform" />
+                Add to Selection
+              </>
+            )}
           </motion.button>
         </div>
       </div>

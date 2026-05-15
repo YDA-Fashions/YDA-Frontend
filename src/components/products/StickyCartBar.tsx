@@ -66,20 +66,23 @@ const StickyCartBar = ({ product, onAddToCart, triggerRef, alreadyInCart }: Stic
 
             {/* CTA Button */}
             <motion.button
-              whileTap={{ scale: 0.97 }}
+              whileTap={product.stock > 0 && !isRecentlyAdded && !alreadyInCart ? { scale: 0.97 } : {}}
               onClick={() => {
-                onAddToCart();
-                setIsRecentlyAdded(true);
-                // Hide effect happens instantly due to !isRecentlyAdded condition
+                if (product.stock > 0) {
+                  onAddToCart();
+                  setIsRecentlyAdded(true);
+                }
               }}
-              disabled={isRecentlyAdded || alreadyInCart}
+              disabled={isRecentlyAdded || alreadyInCart || product.stock <= 0}
               className={`flex-shrink-0 py-2.5 px-6 text-[9px] uppercase tracking-[0.3em] font-black transition-colors duration-300 ${
                 isRecentlyAdded 
                   ? "bg-green-500 text-white cursor-default" 
-                  : "bg-[#FFD700] hover:bg-[#F2CC00] text-black"
+                  : product.stock <= 0
+                    ? "bg-black/10 text-black/40 cursor-not-allowed"
+                    : "bg-[#FFD700] hover:bg-[#F2CC00] text-black"
               }`}
             >
-              {isRecentlyAdded ? "Added!" : "Add to Cart"}
+              {isRecentlyAdded ? "Added!" : product.stock <= 0 ? "Sold Out" : "Add to Cart"}
             </motion.button>
           </div>
         </motion.div>
