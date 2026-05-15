@@ -93,7 +93,7 @@ const Hero = () => {
       </div>
 
       {/* Text Overlay - Premium Brand Style (Bottom-Left Aligned) */}
-      <div className="absolute inset-0 z-10 flex items-end justify-start text-left px-10 md:px-24 pb-32 md:pb-48">
+      <div className="absolute inset-0 z-10 flex items-end justify-start text-left px-8 md:px-24 pb-24 md:pb-48">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentIndex}
@@ -103,7 +103,7 @@ const Hero = () => {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1, delay: 0.2 }}
-              className="text-xs md:text-sm uppercase text-white tracking-[0.8em] mb-8 font-black drop-shadow-lg"
+              className="text-[10px] md:text-sm uppercase text-white tracking-[0.6em] md:tracking-[0.8em] mb-4 md:mb-8 font-black drop-shadow-lg"
             >
               Handcrafted Heritage
             </motion.p>
@@ -113,7 +113,7 @@ const Hero = () => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 40 }}
               transition={{ duration: 1, ease: [0.19, 1, 0.22, 1] }}
-              className="text-5xl md:text-[8rem] font-serif italic text-white leading-[0.85] mb-12 tracking-tighter font-black drop-shadow-2xl"
+              className="text-4xl md:text-[8rem] font-serif italic text-white leading-[0.9] mb-6 md:mb-12 tracking-tighter font-black drop-shadow-2xl"
             >
               {currentBanner.title}
             </motion.h1>
@@ -122,7 +122,7 @@ const Hero = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5, duration: 1 }}
-              className="text-xs md:text-base uppercase tracking-[0.3em] text-white/90 mb-14 font-black max-w-xl leading-relaxed drop-shadow-md"
+              className="text-[10px] md:text-base uppercase tracking-[0.2em] md:tracking-[0.3em] text-white/90 mb-10 md:mb-14 font-black max-w-xl leading-relaxed drop-shadow-md"
             >
               {currentBanner.subtitle}
             </motion.p>
