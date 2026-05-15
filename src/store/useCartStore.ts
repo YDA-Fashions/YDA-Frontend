@@ -69,22 +69,22 @@ export const useCartStore = create<CartStore>()(
         }
       },
 
-      addItem: (product) => {
-        const { userId, items } = get();
+      addItem: async (product) => {
+        let { userId, items } = get();
         
         // 🛑 AUTH LOCK: No guest additions
-        // Try fallback to useAuthStore if userId is missing
         if (!userId) {
-          const { useAuthStore } = require("./useAuthStore");
-          const authUser = useAuthStore.getState().user;
+          const { supabase } = await import("@/lib/supabase");
+          const { data: { session } } = await supabase.auth.getSession();
           
-          if (!authUser) {
+          if (session?.user) {
+            userId = session.user.id;
+            set({ userId });
+            get().syncCart(userId); // Sync in background
+          } else {
             alert("Identification Required: Please log in to add this masterpiece to your curation.");
             return;
           }
-          
-          // Auto-sync if found in fallback
-          set({ userId: authUser.id });
         }
 
         console.log("🛒 Cart: Adding", product.name);
