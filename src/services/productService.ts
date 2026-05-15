@@ -79,7 +79,7 @@ export const productService = {
     const { data, error } = await supabase
       .from("products")
       .update(dbData)
-      .eq("id", id)
+      .eq("product_code", id)
       .select()
       .single();
 
@@ -91,7 +91,7 @@ export const productService = {
     const { error } = await supabase
       .from("products")
       .delete()
-      .eq("id", id);
+      .eq("product_code", id);
 
     if (error) throw error;
   },
