@@ -201,9 +201,8 @@ const AdminPage = () => {
     setIsSyncing(false);
   };
 
-  const totalRevenuePaise = orders.reduce((sum, order) => sum + (order.total_amount || 0), 0);
-  const totalRevenue = totalRevenuePaise / 100; // Convert Paise to Rupees
-  const totalCustomers = new Set(orders.map(o => o.user_id)).size;
+  const totalRevenue = orders.reduce((sum, order) => sum + (order.total_amount || 0), 0);
+  const totalCustomers = new Set(orders.map(o => o.user_id || o.customer_email || o.customer_name)).size;
 
   const stats = [
     { label: "Total Revenue", value: `₹${totalRevenue.toLocaleString()}`, change: "Live", color: "text-green-500" },
@@ -442,15 +441,15 @@ const AdminPage = () => {
                 <div className="grid grid-cols-3 gap-6">
                   <div>
                     <label className="text-[10px] uppercase tracking-widest font-bold text-foreground/40 mb-2 block">Price (₹)</label>
-                    <input required type="number" value={formData.selling_price} onChange={e => setFormData({...formData, selling_price: parseFloat(e.target.value)})} className="w-full bg-[#F5F5F0] border-0 p-4 text-sm focus:ring-1 ring-accent-dark outline-none" />
+                    <input required type="number" value={formData.selling_price || ""} onChange={e => setFormData({...formData, selling_price: parseFloat(e.target.value) || 0})} className="w-full bg-[#F5F5F0] border-0 p-4 text-sm focus:ring-1 ring-accent-dark outline-none" />
                   </div>
                   <div>
                     <label className="text-[10px] uppercase tracking-widest font-bold text-foreground/40 mb-2 block">Old Price (₹)</label>
-                    <input type="number" value={formData.original_price} onChange={e => setFormData({...formData, original_price: parseFloat(e.target.value)})} className="w-full bg-[#F5F5F0] border-0 p-4 text-sm focus:ring-1 ring-accent-dark outline-none" />
+                    <input type="number" value={formData.original_price || ""} onChange={e => setFormData({...formData, original_price: parseFloat(e.target.value) || 0})} className="w-full bg-[#F5F5F0] border-0 p-4 text-sm focus:ring-1 ring-accent-dark outline-none" />
                   </div>
                   <div>
                     <label className="text-[10px] uppercase tracking-widest font-bold text-foreground/40 mb-2 block">Stock</label>
-                    <input required type="number" value={formData.stock} onChange={e => setFormData({...formData, stock: parseInt(e.target.value)})} className="w-full bg-[#F5F5F0] border-0 p-4 text-sm focus:ring-1 ring-accent-dark outline-none" />
+                    <input required type="number" value={formData.stock || 0} onChange={e => setFormData({...formData, stock: parseInt(e.target.value) || 0})} className="w-full bg-[#F5F5F0] border-0 p-4 text-sm focus:ring-1 ring-accent-dark outline-none" />
                   </div>
                 </div>
 

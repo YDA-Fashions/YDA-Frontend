@@ -247,14 +247,21 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                 {/* Ref here so StickyCartBar knows when this leaves the viewport */}
                 <div ref={addToCartRef} className="grid grid-cols-1 gap-4">
                   {/* Stock Status Badge */}
-                  {product.stock <= 0 && (
+                  {product.stock <= 0 ? (
                     <div className="bg-red-50 border border-red-100 p-4 mb-2">
                        <p className="text-[10px] uppercase tracking-widest font-black text-red-600 flex items-center gap-2">
                          <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse" />
                          Currently Sold Out
                        </p>
                     </div>
-                  )}
+                  ) : product.stock < 4 ? (
+                    <div className="bg-orange-50 border border-orange-100 p-4 mb-2">
+                       <p className="text-[10px] uppercase tracking-widest font-black text-orange-600 flex items-center gap-2 italic">
+                         <span className="w-1.5 h-1.5 rounded-full bg-orange-600 animate-bounce" />
+                         Hurry up! Only {product.stock} pieces left in stock.
+                       </p>
+                    </div>
+                  ) : null}
 
                   {/* Magnetic Add to Cart */}
                   <motion.button

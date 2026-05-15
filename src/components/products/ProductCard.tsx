@@ -72,11 +72,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickAdd }) => {
               <span className="text-[8px] uppercase tracking-[0.2em] font-bold bg-white/90 backdrop-blur-md text-black px-3 py-1.5 shadow-sm w-fit">
                 Jaipur Heritage
               </span>
-              {isSoldOut && (
+              {isSoldOut ? (
                 <span className="text-[8px] uppercase tracking-[0.2em] font-black bg-red-600 text-white px-3 py-1.5 shadow-sm w-fit">
                   Sold Out
                 </span>
-              )}
+              ) : product.stock < 4 ? (
+                <span className="text-[8px] uppercase tracking-[0.2em] font-black bg-orange-500 text-white px-3 py-1.5 shadow-sm w-fit animate-pulse">
+                  Only {product.stock} Left!
+                </span>
+              ) : null}
             </div>
           </div>
 
