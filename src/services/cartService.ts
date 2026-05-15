@@ -24,16 +24,17 @@ export const cartService = {
 
       return {
         ...product,
-        id: product.product_code, // Use business ID
-        selling_price: (product.base_price || 0) / 100, // Convert Paise to Rupees
-        original_price: (product.metadata?.original_price || 0),
-        // Map simple image array to the expected colors structure
-        colors: [
+        id: product.product_code,
+        selling_price: (product.base_price || 0) / 100,
+        original_price: product.metadata?.original_price || 0,
+        colors: product.metadata?.colors || [
           {
             name: "Default",
             images: product.images || []
           }
         ],
+        type: product.metadata?.type || product.category,
+        size: product.metadata?.size,
         quantity: item.quantity,
         db_item_id: item.id
       };
