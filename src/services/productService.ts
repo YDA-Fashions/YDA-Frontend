@@ -14,7 +14,24 @@ export const productService = {
       .order("created_at", { ascending: false });
 
     if (error) throw error;
-    return data || [];
+    
+    // Map database structure back to UI structure
+    return (data || []).map(product => ({
+      ...product,
+      id: product.product_code,
+      selling_price: (product.base_price || 0) / 100,
+      original_price: product.metadata?.original_price || 0,
+      stock: product.stock_quantity,
+      colors: [
+        {
+          name: "Default",
+          images: product.images || []
+        }
+      ],
+      type: product.metadata?.type || product.category,
+      size: product.metadata?.size,
+      isFeatured: product.metadata?.featured
+    }));
   },
 
   async createProduct(productData: any) {

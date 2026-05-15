@@ -18,11 +18,26 @@ export const cartService = {
     }
     
     // Map database structure to Store structure
-    return data.map(item => ({
-      ...item.products,
-      quantity: item.quantity,
-      db_item_id: item.id
-    }));
+    return data.map(item => {
+      const product = item.products;
+      if (!product) return null;
+
+      return {
+        ...product,
+        id: product.product_code, // Use business ID
+        selling_price: (product.base_price || 0) / 100, // Convert Paise to Rupees
+        original_price: (product.metadata?.original_price || 0),
+        // Map simple image array to the expected colors structure
+        colors: [
+          {
+            name: "Default",
+            images: product.images || []
+          }
+        ],
+        quantity: item.quantity,
+        db_item_id: item.id
+      };
+    }).filter(Boolean);
   },
 
   async syncItem(userId: string, productId: string, quantity: number) {

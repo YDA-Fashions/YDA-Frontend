@@ -2,10 +2,11 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { Edit2, Trash2, LayoutDashboard, Package, ShoppingCart, Users, ArrowUpRight, X, Upload, Loader2, Plus } from "lucide-react";
+import { Edit2, Trash2, LayoutDashboard, Package, ShoppingCart, Users, ArrowUpRight, X, Upload, Loader2, Plus, Banknote } from "lucide-react";
 import { useProductStore } from "@/store/useProductStore";
 import { productService } from "@/services/productService";
 import { orderService } from "@/services/orderService";
+import { couponService } from "@/services/couponService";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useRouter } from "next/navigation";
 import Logo from "@/components/common/Logo";
@@ -21,6 +22,9 @@ const AdminPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [orders, setOrders] = useState<any[]>([]);
   const [isLoadingOrders, setIsLoadingOrders] = useState(false);
+  const [coupons, setCoupons] = useState<any[]>([]);
+  const [isAddingCoupon, setIsAddingCoupon] = useState(false);
+  const [newCoupon, setNewCoupon] = useState({ code: "", percent: 10 });
   
   const products = useProductStore((state) => state.products);
   const fetchProducts = useProductStore((state) => state.fetchProducts);
@@ -41,16 +45,48 @@ const AdminPage = () => {
   React.useEffect(() => {
     if (!isAuthLoading && !user) {
       router.push("/login?redirect=/admin");
+      return;
     }
     
-    if (activeTab === "orders") {
-      loadOrders();
+    // Load ALL data on mount to ensure stats are real
+    loadOrders();
+    loadCoupons();
+    fetchProducts();
+  }, [user, isAuthLoading, router]);
+
+  const loadCoupons = async () => {
+    try {
+      const data = await couponService.getAllCoupons();
+      setCoupons(data);
+    } catch (err) {
+      console.error("Failed to load coupons:", err);
     }
-    
-    if (activeTab === "products") {
-       fetchProducts();
+  };
+
+  const handleAddCoupon = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await couponService.createCoupon({
+        code: newCoupon.code,
+        discount_percent: newCoupon.percent
+      });
+      setIsAddingCoupon(false);
+      setNewCoupon({ code: "", percent: 10 });
+      loadCoupons();
+    } catch (err: any) {
+      alert("Failed to create coupon: " + err.message);
     }
-  }, [user, isAuthLoading, activeTab, router]);
+  };
+
+  const handleDeleteCoupon = async (id: string) => {
+    if (!confirm("Delete this Artflow Code?")) return;
+    try {
+      await couponService.deleteCoupon(id);
+      loadCoupons();
+    } catch (err: any) {
+      alert("Failed to delete coupon: " + err.message);
+    }
+  };
 
   const loadOrders = async () => {
     setIsLoadingOrders(true);
@@ -155,11 +191,15 @@ const AdminPage = () => {
     setIsSyncing(false);
   };
 
+  const totalRevenuePaise = orders.reduce((sum, order) => sum + (order.total_amount || 0), 0);
+  const totalRevenue = totalRevenuePaise / 100; // Convert Paise to Rupees
+  const totalCustomers = new Set(orders.map(o => o.user_id)).size;
+
   const stats = [
-    { label: "Total Revenue", value: "₹24,50,000", change: "+12.5%", color: "text-green-500" },
-    { label: "Active Orders", value: "142", icon: ShoppingCart },
-    { label: "Total Products", value: products.length, icon: Package },
-    { label: "Customers", value: "1,200", icon: Users },
+    { label: "Total Revenue", value: `₹${totalRevenue.toLocaleString()}`, change: "Live", color: "text-green-500" },
+    { label: "Active Orders", value: orders.length.toString(), icon: ShoppingCart },
+    { label: "Total Products", value: products.length.toString(), icon: Package },
+    { label: "Customers", value: totalCustomers.toString(), icon: Users },
   ];
 
   return (
@@ -192,6 +232,14 @@ const AdminPage = () => {
             }`}
           >
             <ShoppingCart size={18} /> Orders
+          </button>
+          <button 
+            onClick={() => setActiveTab("coupons")}
+            className={`w-full flex items-center gap-4 px-4 py-3 text-[10px] tracking-widest font-bold uppercase transition-colors ${
+              activeTab === "coupons" ? "bg-foreground text-background" : "text-foreground/40 hover:bg-accent/10"
+            }`}
+          >
+            <Banknote size={18} /> Coupons
           </button>
         </nav>
       </aside>
@@ -235,6 +283,34 @@ const AdminPage = () => {
             </div>
           ))}
         </div>
+
+        {activeTab === "dashboard" && (
+          <div className="grid grid-cols-1 gap-8">
+            <div className="bg-white border border-border-beige p-8">
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-sm font-bold uppercase tracking-widest">Recent Activity</h3>
+                <button onClick={() => setActiveTab("orders")} className="text-[10px] uppercase font-bold text-accent-dark hover:underline">View All</button>
+              </div>
+              <div className="space-y-4">
+                {orders.slice(0, 5).map((order) => (
+                  <div key={order.id} className="flex justify-between items-center py-3 border-b border-border-beige last:border-0">
+                    <div className="flex flex-col">
+                      <span className="text-[10px] font-mono text-foreground/40">{order.id}</span>
+                      <span className="text-sm font-bold">{order.customer_name || "Unknown Guest"}</span>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-sm font-bold">₹{order.total_amount.toLocaleString()}</div>
+                      <div className="text-[9px] uppercase tracking-tighter text-foreground/40">{new Date(order.created_at).toLocaleDateString()}</div>
+                    </div>
+                  </div>
+                ))}
+                {orders.length === 0 && (
+                  <p className="text-center py-8 text-foreground/40 italic">No recent transactions recorded.</p>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
 
         {activeTab === "products" && (
           <div className="bg-white border border-border-beige overflow-hidden">
@@ -394,6 +470,51 @@ const AdminPage = () => {
                   </button>
                 </div>
               </form>
+            </div>
+          </div>
+        )}
+
+        {activeTab === "coupons" && (
+          <div className="space-y-8">
+            <div className="bg-white border border-border-beige p-8">
+              <h3 className="text-sm font-bold uppercase tracking-widest mb-6">Create New Artflow Code</h3>
+              <form onSubmit={handleAddCoupon} className="flex flex-wrap gap-4 items-end">
+                <div className="flex-1 min-w-[200px]">
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-foreground/40 mb-2 block">Code</label>
+                  <input required type="text" placeholder="e.g. FESTIVE50" value={newCoupon.code} onChange={e => setNewCoupon({...newCoupon, code: e.target.value.toUpperCase()})} className="w-full bg-[#F5F5F0] border-0 p-4 text-sm focus:ring-1 ring-accent-dark outline-none" />
+                </div>
+                <div className="w-32">
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-foreground/40 mb-2 block">Discount %</label>
+                  <input required type="number" value={newCoupon.percent} onChange={e => setNewCoupon({...newCoupon, percent: parseInt(e.target.value)})} className="w-full bg-[#F5F5F0] border-0 p-4 text-sm focus:ring-1 ring-accent-dark outline-none" />
+                </div>
+                <button type="submit" className="bg-foreground text-white px-8 py-4 text-[10px] uppercase tracking-widest font-bold hover:bg-accent-dark transition-colors">Generate Code</button>
+              </form>
+            </div>
+
+            <div className="bg-white border border-border-beige overflow-hidden">
+              <table className="w-full text-left">
+                <thead>
+                  <tr className="bg-accent/10 border-b border-border-beige">
+                    <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-foreground/40">Active Code</th>
+                    <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-foreground/40 text-center">Value</th>
+                    <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-foreground/40 text-center">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border-beige/40">
+                  {coupons.map((coupon) => (
+                    <tr key={coupon.id} className="hover:bg-accent/5 transition-colors">
+                      <td className="px-6 py-4 font-bold tracking-widest">{coupon.code}</td>
+                      <td className="px-6 py-4 text-center font-sans">{coupon.discount_percent}% OFF</td>
+                      <td className="px-6 py-4 text-center">
+                        <button onClick={() => handleDeleteCoupon(coupon.id)} className="p-2 text-foreground/40 hover:text-red-400 transition-colors"><Trash2 size={16} /></button>
+                      </td>
+                    </tr>
+                  ))}
+                  {coupons.length === 0 && (
+                    <tr><td colSpan={3} className="px-6 py-12 text-center text-foreground/40 italic">No active coupons. Create one above.</td></tr>
+                  )}
+                </tbody>
+              </table>
             </div>
           </div>
         )}

@@ -11,7 +11,9 @@ import { useCartStore } from "@/store/useCartStore";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useUIStore } from "@/store/useUIStore";
 import { useProductStore } from "@/store/useProductStore";
+import { addressService } from "@/services/addressService";
 import { orderService } from "@/services/orderService";
+import { couponService } from "@/services/couponService";
 import { supabase } from "@/lib/supabase";
 
 declare global {
@@ -43,7 +45,15 @@ const CheckoutPage = () => {
     : getTotalPrice();
 
   const shippingFee = activeTotal >= 1000 ? 0 : 100;
-  const finalTotal = activeTotal + shippingFee;
+  
+  // Coupon State
+  const [couponCode, setCouponCode] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState<{ code: string; percent: number } | null>(null);
+  const [couponError, setCouponError] = useState("");
+  const [isValidatingCoupon, setIsValidatingCoupon] = useState(false);
+
+  const discountAmount = appliedCoupon ? Math.floor((activeTotal * appliedCoupon.percent) / 100) : 0;
+  const finalTotal = activeTotal + shippingFee - discountAmount;
 
   // 2. Structured Form State
   const [formData, setFormData] = useState({
@@ -117,6 +127,22 @@ const CheckoutPage = () => {
       router.push("/cart");
     }
   }, [activeItems.length, router, isAuthLoading]);
+
+  const handleApplyCoupon = async () => {
+    if (!couponCode.trim()) return;
+    setIsValidatingCoupon(true);
+    setCouponError("");
+    try {
+      const coupon = await couponService.validateCoupon(couponCode);
+      setAppliedCoupon({ code: coupon.code, percent: coupon.discount_percent });
+      setCouponCode("");
+    } catch (err: any) {
+      setCouponError(err.message);
+      setAppliedCoupon(null);
+    } finally {
+      setIsValidatingCoupon(false);
+    }
+  };
 
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -251,6 +277,19 @@ const CheckoutPage = () => {
       await orderService.createOrder(orderData);
       
       if (!buyNowId) clearCart();
+
+      // 2. Save to Address Book automatically
+      if (user?.id) {
+        addressService.saveAddress(user.id, {
+          full_name: formData.name.trim(),
+          phone: formData.phone.trim(),
+          street_address: `${formData.house}${formData.area ? ', ' + formData.area : ''}${formData.landmark ? ', ' + formData.landmark : ''}`,
+          city: formData.city.trim(),
+          state: formData.state.trim(),
+          pincode: formData.pincode.trim(),
+          name: "Last Used"
+        }).catch(err => console.error("Failed to save address to book:", err));
+      }
 
       setOrderModalOpen(true, {
         productName: activeItems.length === 1 ? activeItems[0].name : `${activeItems.length} Multiple Pieces`,
@@ -507,11 +546,49 @@ const CheckoutPage = () => {
                     <span>Subtotal</span>
                     <span className="text-black">₹{activeTotal.toLocaleString()}</span>
                   </div>
+                  {appliedCoupon && (
+                    <div className="flex justify-between items-center text-[10px] uppercase tracking-widest font-black text-emerald-600">
+                      <span>Artflow Discount ({appliedCoupon.percent}%)</span>
+                      <span>- ₹{discountAmount.toLocaleString()}</span>
+                    </div>
+                  )}
                   <div className="flex justify-between items-center text-[10px] uppercase tracking-widest font-black text-black/30">
                     <span>Shipping</span>
                     <span className="text-black">{shippingFee === 0 ? "FREE" : `₹${shippingFee}`}</span>
                   </div>
-                  <div className="flex justify-between items-center pt-6">
+
+                  {/* --- COUPON SECTION START --- */}
+                  <div className="pt-6 border-t border-black/10 mt-6">
+                    <div className="flex gap-2">
+                      <input 
+                        type="text" 
+                        placeholder="ENTER COUPON CODE" 
+                        value={couponCode}
+                        onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                        className="flex-grow bg-[#F5F5F0] border border-black/5 p-3 text-[10px] tracking-widest font-bold focus:ring-1 ring-black outline-none uppercase"
+                      />
+                      <button 
+                        type="button"
+                        onClick={handleApplyCoupon}
+                        disabled={isValidatingCoupon || !couponCode}
+                        className="bg-black text-white px-6 py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-black/80 disabled:opacity-50 min-w-[80px]"
+                      >
+                        {isValidatingCoupon ? "..." : "APPLY"}
+                      </button>
+                    </div>
+                    {couponError && (
+                      <p className="text-[10px] text-red-500 mt-2 font-bold uppercase tracking-widest">{couponError}</p>
+                    )}
+                    {appliedCoupon && (
+                      <div className="flex justify-between items-center mt-3 bg-emerald-50 p-2 rounded-sm border border-emerald-100">
+                        <p className="text-[10px] text-emerald-700 font-bold uppercase tracking-widest">Applied: {appliedCoupon.code}</p>
+                        <button onClick={() => setAppliedCoupon(null)} className="text-[9px] text-emerald-700 underline font-bold uppercase">Remove</button>
+                      </div>
+                    )}
+                  </div>
+                  {/* --- COUPON SECTION END --- */}
+
+                  <div className="flex justify-between items-center pt-8 border-t border-black/5 mt-4">
                     <span className="text-[12px] uppercase tracking-[0.3em] font-black italic">Total Investment</span>
                     <span className="text-2xl font-black">₹{finalTotal.toLocaleString()}</span>
                   </div>

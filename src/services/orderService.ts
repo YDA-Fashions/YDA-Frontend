@@ -84,7 +84,21 @@ export const orderService = {
       .order("created_at", { ascending: false });
 
     if (error) throw error;
-    return data || [];
+    
+    // Map items to include correct price and image structure
+    return (data || []).map(order => ({
+      ...order,
+      total_amount: order.total_amount / 100, // Paise to Rupee
+      order_items: (order.order_items || []).map((item: any) => ({
+        ...item,
+        price_at_purchase: item.price_at_purchase / 100,
+        products: item.products ? {
+          ...item.products,
+          selling_price: item.products.base_price / 100,
+          colors: [{ name: "Default", images: item.products.images || [] }]
+        } : null
+      }))
+    }));
   },
 
   async getAllOrders() {
@@ -100,6 +114,19 @@ export const orderService = {
       .order("created_at", { ascending: false });
 
     if (error) throw error;
-    return data || [];
+    
+    return (data || []).map(order => ({
+      ...order,
+      total_amount: order.total_amount / 100,
+      order_items: (order.order_items || []).map((item: any) => ({
+        ...item,
+        price_at_purchase: item.price_at_purchase / 100,
+        products: item.products ? {
+          ...item.products,
+          selling_price: item.products.base_price / 100,
+          colors: [{ name: "Default", images: item.products.images || [] }]
+        } : null
+      }))
+    }));
   }
 };

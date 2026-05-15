@@ -51,19 +51,9 @@ export const useCartStore = create<CartStore>()(
         set({ userId, isLoading: true } as any);
         try {
           const backendItems = await cartService.getCart(userId);
-          
-          if (backendItems && backendItems.length > 0) {
-            console.log(`🛒 Cart: Syncing ${backendItems.length} items from cloud.`);
+          // ALWAYS take backend data if it exists to ensure cross-device sync
+          if (backendItems) {
             set({ items: backendItems });
-          } else {
-            // If backend is empty but we have local items, sync local to backend
-            const { items } = get();
-            if (items.length > 0) {
-              console.log("🛒 Cart: Pushing local selection to cloud.");
-              for (const item of items) {
-                await cartService.syncItem(userId, item.id, item.quantity);
-              }
-            }
           }
         } catch (err) {
           console.error("🛒 Cart: Sync failed", err);
@@ -74,17 +64,21 @@ export const useCartStore = create<CartStore>()(
 
       clearLocalItems: () => {
         set({ items: [], userId: null });
-        // Also clear storage to be safe
         if (typeof window !== 'undefined') {
           localStorage.removeItem('cart-storage');
         }
-        console.log("🧹 Cart: Session state wiped.");
       },
 
       addItem: (product) => {
         const { userId, items } = get();
-        console.log("🛒 Cart: Adding", product.name);
+        
+        // 🛑 AUTH LOCK: No guest additions
+        if (!userId) {
+          alert("Identification Required: Please log in to add this masterpiece to your curation.");
+          return;
+        }
 
+        console.log("🛒 Cart: Adding", product.name);
         const existingIndex = items.findIndex((item) => item.id === product.id);
         let updatedItems = [...items];
         let newQuantity = 1;
@@ -102,37 +96,30 @@ export const useCartStore = create<CartStore>()(
           isCartToastOpen: true 
         });
 
-        // Sync to backend ONLY if logged in
-        if (userId) {
-          cartService.syncItem(userId, product.id, newQuantity).catch(err => {
-             console.error("❌ Cart: Failed to sync addition:", err);
-          });
-        }
+        // Sync to backend
+        cartService.syncItem(userId, product.id, newQuantity).catch(console.error);
 
         setTimeout(() => set({ isCartToastOpen: false }), 3000);
       },
 
       removeItem: (productId) => {
         const { userId, items } = get();
+        if (!userId) return;
+
         set({ items: items.filter((item) => item.id !== productId) });
-        
-        if (userId) {
-          cartService.removeItem(userId, productId).catch(console.error);
-        }
+        cartService.removeItem(userId, productId).catch(console.error);
       },
 
       updateQuantity: (productId, quantity) => {
         if (quantity < 1) return;
         const { userId, items } = get();
+        if (!userId) return;
         
         const updatedItems = items.map((item) =>
           item.id === productId ? { ...item, quantity } : item
         );
         set({ items: updatedItems });
-
-        if (userId) {
-          cartService.syncItem(userId, productId, quantity).catch(console.error);
-        }
+        cartService.syncItem(userId, productId, quantity).catch(console.error);
       },
 
       clearCart: () => {

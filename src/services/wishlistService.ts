@@ -17,10 +17,23 @@ export const wishlistService = {
       return [];
     }
 
-    return data.map(item => ({
-      ...item.products,
-      wishlist_id: item.id
-    }));
+    return data.map(item => {
+      const product = item.products;
+      if (!product) return null;
+      return {
+        ...product,
+        id: product.product_code,
+        selling_price: (product.base_price || 0) / 100,
+        original_price: product.metadata?.original_price || 0,
+        colors: [
+          {
+            name: "Default",
+            images: product.images || []
+          }
+        ],
+        wishlist_id: item.id
+      };
+    }).filter(Boolean);
   },
 
   async addToWishlist(userId: string, productId: string) {
