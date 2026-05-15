@@ -368,12 +368,13 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                     transition={{ duration: 0.8, ease: "easeOut" }}
                     className="flex flex-col lg:flex-row items-center gap-12 md:gap-24 relative z-10"
                   >
-                    <div className="relative w-full lg:w-[45%] aspect-square lg:aspect-auto lg:h-[450px] rounded-sm overflow-hidden shadow-2xl">
+                    <div className="relative w-full lg:w-[45%] aspect-square lg:aspect-auto lg:h-[450px] rounded-sm overflow-hidden shadow-2xl bg-white">
                       <Image
                         src={reviews[currentReview].image}
                         alt={reviews[currentReview].name}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-[2s]"
+                        sizes="(max-width: 1024px) 100vw, 45vw"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                     </div>
@@ -399,10 +400,10 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                 </AnimatePresence>
 
                 <div className="absolute bottom-8 left-10 md:bottom-20 md:left-20 flex gap-6 z-20">
-                  <button onClick={prevReview} className="w-14 h-14 flex items-center justify-center hover:bg-black hover:text-white transition-all border border-black/10 rounded-full">
+                  <button onClick={prevReview} className="w-14 h-14 flex items-center justify-center bg-white/50 backdrop-blur-sm hover:bg-black hover:text-white transition-all border border-black/10 rounded-full">
                     <ArrowLeft size={20} strokeWidth={1} />
                   </button>
-                  <button onClick={nextReview} className="w-14 h-14 flex items-center justify-center hover:bg-black hover:text-white transition-all border border-black/10 rounded-full">
+                  <button onClick={nextReview} className="w-14 h-14 flex items-center justify-center bg-white/50 backdrop-blur-sm hover:bg-black hover:text-white transition-all border border-black/10 rounded-full">
                     <ArrowRight size={20} strokeWidth={1} />
                   </button>
                 </div>
