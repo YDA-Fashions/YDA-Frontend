@@ -108,13 +108,13 @@ export const productService = {
       const filePath = `products/${fileName}`;
 
       const { error: uploadError } = await supabase.storage
-        .from("product-images")
+        .from("product_images")
         .upload(filePath, file);
 
       if (uploadError) throw uploadError;
 
       const { data } = supabase.storage
-        .from("product-images")
+        .from("product_images")
         .getPublicUrl(filePath);
 
       return data.publicUrl;
