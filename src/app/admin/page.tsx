@@ -262,7 +262,7 @@ const AdminPage = () => {
               <h1 className="text-3xl font-serif tracking-tight uppercase">Studio Control</h1>
               <div className="flex items-center gap-2 px-3 py-1 bg-green-50 border border-green-100 rounded-full">
                 <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                <span className="text-[8px] uppercase tracking-widest font-black text-green-700">Database Live</span>
+                <span className="text-[8px] uppercase tracking-widest font-black text-green-700">Database Live - V2</span>
               </div>
             </div>
             <p className="text-[10px] uppercase tracking-[0.4em] font-sans font-bold text-foreground/40">
@@ -335,6 +335,7 @@ const AdminPage = () => {
                 <tr className="bg-accent/10 border-b border-border-beige">
                   <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-foreground/40">Product</th>
                   <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-foreground/40 text-center">Stock</th>
+                  <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-foreground/40 text-center">Size</th>
                   <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-foreground/40 text-center">Price</th>
                   <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-foreground/40 text-center">Actions</th>
                 </tr>
@@ -353,6 +354,9 @@ const AdminPage = () => {
                     </td>
                     <td className="px-6 py-4 text-center text-sm font-sans">
                       {product.stock_quantity ?? "—"}
+                    </td>
+                    <td className="px-6 py-4 text-center text-[10px] font-bold uppercase tracking-widest text-foreground/60">
+                      {product.size || "—"}
                     </td>
                     <td className="px-6 py-4 text-center text-sm font-sans font-bold">
                       ₹{product.selling_price.toLocaleString()}
