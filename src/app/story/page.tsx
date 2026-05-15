@@ -153,7 +153,7 @@ export default function StoryPage() {
               className="order-1 lg:order-2 relative aspect-square"
             >
               <Image 
-                src="/images/home-page-image/big-tote.jpg"
+                src="/images/brand-story-image-2.png"
                 alt="YDA Craftsmanship"
                 fill
                 className="object-cover rounded-sm shadow-2xl"
