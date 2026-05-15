@@ -255,7 +255,13 @@ const AdminPage = () => {
       <main className="flex-1 p-8 lg:p-12 overflow-y-auto">
         <div className="flex justify-between items-center mb-12">
           <div>
-            <h1 className="text-3xl font-serif tracking-tight mb-2 uppercase">Studio Control</h1>
+            <div className="flex items-center gap-3 mb-2">
+              <h1 className="text-3xl font-serif tracking-tight uppercase">Studio Control</h1>
+              <div className="flex items-center gap-2 px-3 py-1 bg-green-50 border border-green-100 rounded-full">
+                <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                <span className="text-[8px] uppercase tracking-widest font-black text-green-700">Database Live</span>
+              </div>
+            </div>
             <p className="text-[10px] uppercase tracking-[0.4em] font-sans font-bold text-foreground/40">
               {activeTab} Management
             </p>
