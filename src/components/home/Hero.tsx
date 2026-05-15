@@ -92,28 +92,28 @@ const Hero = () => {
         </AnimatePresence>
       </div>
 
-      {/* Text Overlay - Premium Brand Style */}
-      <div className="absolute inset-0 z-10 flex items-center justify-center text-center px-6">
+      {/* Text Overlay - Premium Brand Style (Right Aligned) */}
+      <div className="absolute inset-0 z-10 flex items-center justify-end text-right px-10 md:px-24">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentIndex}
-            className="max-w-5xl"
+            className="max-w-4xl"
           >
             <motion.p 
-              initial={{ opacity: 0, letterSpacing: "0.2em" }}
-              animate={{ opacity: 1, letterSpacing: "0.6em" }}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1, delay: 0.2 }}
-              className="text-[10px] md:text-xs uppercase text-white/60 mb-8 font-sans font-black"
+              className="text-xs md:text-sm uppercase text-white tracking-[0.8em] mb-8 font-black drop-shadow-lg"
             >
-              Handcrafted Heritage Since 2004
+              Handcrafted Heritage
             </motion.p>
             
             <motion.h1 
-              initial={{ opacity: 0, y: 40, skewY: 2 }}
-              animate={{ opacity: 1, y: 0, skewY: 0 }}
-              exit={{ opacity: 0, y: -40 }}
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -40 }}
               transition={{ duration: 1, ease: [0.19, 1, 0.22, 1] }}
-              className="text-6xl md:text-[9rem] font-serif italic text-white leading-[0.9] mb-12 tracking-tighter"
+              className="text-5xl md:text-[8rem] font-serif italic text-white leading-[0.85] mb-12 tracking-tighter font-black drop-shadow-2xl"
             >
               {currentBanner.title}
             </motion.h1>
@@ -122,7 +122,7 @@ const Hero = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5, duration: 1 }}
-              className="text-[10px] md:text-sm uppercase tracking-[0.4em] text-white/40 mb-14 font-sans font-black max-w-2xl mx-auto leading-relaxed"
+              className="text-xs md:text-base uppercase tracking-[0.3em] text-white/90 mb-14 font-black max-w-xl ml-auto leading-relaxed drop-shadow-md"
             >
               {currentBanner.subtitle}
             </motion.p>
@@ -134,9 +134,9 @@ const Hero = () => {
             >
               <Link 
                 href="/shop"
-                className="inline-block px-14 py-6 bg-white text-black text-[10px] uppercase tracking-[0.4em] font-black transition-all hover:bg-black hover:text-white hover:scale-105 active:scale-95 shadow-2xl"
+                className="inline-block px-16 py-7 bg-white text-black text-[11px] uppercase tracking-[0.5em] font-black transition-all hover:bg-black hover:text-white hover:scale-105 active:scale-95 shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
               >
-                Explore the selection
+                Explore Collection
               </Link>
             </motion.div>
           </motion.div>
