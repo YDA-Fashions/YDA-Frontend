@@ -32,7 +32,7 @@ const StickyCartBar = ({ product, onAddToCart, triggerRef, alreadyInCart }: Stic
 
   return (
     <AnimatePresence>
-      {(isVisible && !alreadyInCart && !isRecentlyAdded) && (
+      {isVisible && (
         <motion.div
           initial={{ y: 80, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -65,25 +65,32 @@ const StickyCartBar = ({ product, onAddToCart, triggerRef, alreadyInCart }: Stic
             </p>
 
             {/* CTA Button */}
-            <motion.button
-              whileTap={product.stock > 0 && !isRecentlyAdded && !alreadyInCart ? { scale: 0.97 } : {}}
-              onClick={() => {
-                if (product.stock > 0) {
-                  onAddToCart();
-                  setIsRecentlyAdded(true);
-                }
-              }}
-              disabled={isRecentlyAdded || alreadyInCart || product.stock <= 0}
-              className={`flex-shrink-0 py-2.5 px-6 text-[9px] uppercase tracking-[0.3em] font-black transition-colors duration-300 ${
-                isRecentlyAdded 
-                  ? "bg-green-500 text-white cursor-default" 
-                  : product.stock <= 0
-                    ? "bg-black/10 text-black/40 cursor-not-allowed"
+            {alreadyInCart || isRecentlyAdded ? (
+              <a 
+                href="/cart"
+                className="flex-shrink-0 py-2.5 px-6 text-[9px] uppercase tracking-[0.3em] font-black transition-colors duration-300 bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm flex items-center gap-2"
+              >
+                Go to Cart
+              </a>
+            ) : (
+              <motion.button
+                whileTap={product.stock > 0 ? { scale: 0.97 } : {}}
+                onClick={() => {
+                  if (product.stock > 0) {
+                    onAddToCart();
+                    setIsRecentlyAdded(true);
+                  }
+                }}
+                disabled={product.stock <= 0}
+                className={`flex-shrink-0 py-2.5 px-6 text-[9px] uppercase tracking-[0.3em] font-black transition-colors duration-300 shadow-sm ${
+                  product.stock <= 0
+                    ? "bg-black/10 text-black/40 cursor-not-allowed shadow-none"
                     : "bg-[#FFD700] hover:bg-[#F2CC00] text-black"
-              }`}
-            >
-              {isRecentlyAdded ? "Added!" : product.stock <= 0 ? "Sold Out" : "Add to Cart"}
-            </motion.button>
+                }`}
+              >
+                {product.stock <= 0 ? "Sold Out" : "Add to Cart"}
+              </motion.button>
+            )}
           </div>
         </motion.div>
       )}

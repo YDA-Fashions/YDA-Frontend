@@ -3,7 +3,7 @@
 import React, { useState, useRef, MouseEvent, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { ShoppingBag, ArrowLeft, ShieldCheck, Truck, RotateCcw, X, Star, ArrowRight, Banknote, Award } from "lucide-react";
+import { ShoppingBag, ArrowLeft, ShieldCheck, Truck, RotateCcw, X, Star, ArrowRight, Banknote, Award, CheckCircle } from "lucide-react";
 
 import { motion, AnimatePresence } from "framer-motion";
 import Header from "@/components/common/Header";
@@ -271,23 +271,37 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                   )}
 
                   {/* Magnetic Add to Cart */}
-                  <motion.button
-                    ref={addMagnetic.ref as React.RefObject<HTMLButtonElement>}
-                    onMouseMove={addMagnetic.onMouseMove}
-                    onMouseLeave={addMagnetic.onMouseLeave}
-                    animate={{ x: addMagnetic.offset.x, y: addMagnetic.offset.y }}
-                    transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                    whileTap={product.stock > 0 ? { scale: 0.98 } : {}}
-                    onClick={product.stock > 0 ? () => addItem(product) : undefined}
-                    disabled={product.stock <= 0}
-                    className={`w-full py-5 text-[11px] uppercase tracking-[0.4em] font-black transition-colors duration-300 shadow-lg ${
-                      product.stock <= 0 
-                        ? "bg-black/10 text-black/40 cursor-not-allowed shadow-none" 
-                        : "bg-[#FFD700] hover:bg-[#F2CC00] text-black"
-                    }`}
-                  >
-                    {product.stock <= 0 ? "Sold Out" : "Add to Selection"}
-                  </motion.button>
+                  {isAdded ? (
+                    <motion.a
+                      ref={addMagnetic.ref as React.RefObject<HTMLAnchorElement>}
+                      onMouseMove={addMagnetic.onMouseMove}
+                      onMouseLeave={addMagnetic.onMouseLeave}
+                      animate={{ x: addMagnetic.offset.x, y: addMagnetic.offset.y }}
+                      transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                      href="/cart"
+                      className="w-full py-5 text-[11px] uppercase tracking-[0.4em] font-black transition-colors duration-300 shadow-lg bg-emerald-600 text-white hover:bg-emerald-700 flex items-center justify-center gap-3"
+                    >
+                      <CheckCircle size={16} /> Go to Cart
+                    </motion.a>
+                  ) : (
+                    <motion.button
+                      ref={addMagnetic.ref as React.RefObject<HTMLButtonElement>}
+                      onMouseMove={addMagnetic.onMouseMove}
+                      onMouseLeave={addMagnetic.onMouseLeave}
+                      animate={{ x: addMagnetic.offset.x, y: addMagnetic.offset.y }}
+                      transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                      whileTap={product.stock > 0 ? { scale: 0.98 } : {}}
+                      onClick={product.stock > 0 ? () => addItem(product) : undefined}
+                      disabled={product.stock <= 0}
+                      className={`w-full py-5 text-[11px] uppercase tracking-[0.4em] font-black transition-colors duration-300 shadow-lg ${
+                        product.stock <= 0 
+                          ? "bg-black/10 text-black/40 cursor-not-allowed shadow-none" 
+                          : "bg-[#FFD700] hover:bg-[#F2CC00] text-black"
+                      }`}
+                    >
+                      {product.stock <= 0 ? "Sold Out" : "Add to Selection"}
+                    </motion.button>
+                  )}
 
                   {/* Magnetic Buy Now */}
                   <motion.button
