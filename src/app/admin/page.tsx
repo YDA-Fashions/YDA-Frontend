@@ -40,7 +40,8 @@ const AdminPage = () => {
     category: "bags",
     type: "",
     size: "small",
-    isFeatured: false
+    isFeatured: false,
+    images: [] as string[]
   });
   const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
 
@@ -110,6 +111,10 @@ const AdminPage = () => {
       description: "",
       selling_price: 0,
       original_price: 0,
+      stock: 0,
+      category: "bags",
+      type: "",
+      size: "small",
       isFeatured: false,
       images: []
     });
