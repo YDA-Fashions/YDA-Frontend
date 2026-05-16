@@ -185,6 +185,8 @@ const CheckoutPage = () => {
         user_id: user?.id,
         items: activeItems,
         amount: finalTotal * 100, 
+        discount: discountAmount * 100, // NEW: In Paise
+        shipping: shippingFee * 100,    // NEW: In Paise
         customer_name: formData.name.trim(),
         customer_phone: formData.phone.trim(),
         customer_address: fullAddress,

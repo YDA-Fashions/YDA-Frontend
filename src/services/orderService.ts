@@ -10,7 +10,9 @@ export const orderService = {
   async createOrder(orderData: {
     user_id?: string;
     items: any[];
-    amount: number; // Expected in Paise (Ruprees * 100)
+    amount: number; // Expected in Paise (Total after discount & shipping)
+    discount?: number; // In Paise
+    shipping?: number; // In Paise
     customer_name: string;
     customer_phone: string;
     customer_address: string;
@@ -53,10 +55,12 @@ export const orderService = {
     const { data: orderId, error: rpcError } = await supabase.rpc("create_order_v4", {
       p_user_id: user.id,
       p_total: orderData.amount, 
+      p_discount: orderData.discount || 0, // NEW
+      p_shipping: orderData.shipping || 0, // NEW
       p_payment: orderData.payment_method === "COD" ? "COD" : "Razorpay",
       p_address: orderData.customer_address,
-      p_name: orderData.customer_name,   // Added
-      p_phone: orderData.customer_phone, // Added
+      p_name: orderData.customer_name,
+      p_phone: orderData.customer_phone,
       p_items
     });
 
