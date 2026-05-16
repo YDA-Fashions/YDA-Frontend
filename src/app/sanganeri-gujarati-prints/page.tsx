@@ -1,26 +1,35 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import ProductCard from "@/components/products/ProductCard";
 import { productService } from "@/services/productService";
+import { Product } from "@/data/products";
 
-export default async function SanganeriGujaratiPrintsPage() {
-  let products = [];
-  try {
-    const allProducts = await productService.getProducts();
-    // Filter for products that have Sanganeri or Gujarati in their type or name
-    products = allProducts.filter(
-      (p) => 
-        p.type?.toLowerCase().includes("sanganeri") || 
-        p.type?.toLowerCase().includes("gujarati") ||
-        p.name.toLowerCase().includes("sanganeri") ||
-        p.name.toLowerCase().includes("gujarati")
-    );
-  } catch (error) {
-    console.error("Failed to fetch prints collection:", error);
-  }
+export default function SanganeriGujaratiPrintsPage() {
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    const fetchCollection = async () => {
+      try {
+        const allProducts = await productService.getProducts();
+        const filtered = allProducts.filter(
+          (p) => 
+            p.type?.toLowerCase().includes("sanganeri") || 
+            p.type?.toLowerCase().includes("gujarati") ||
+            p.name.toLowerCase().includes("sanganeri") ||
+            p.name.toLowerCase().includes("gujarati")
+        );
+        setProducts(filtered);
+      } catch (error) {
+        console.error("Failed to fetch prints collection:", error);
+      }
+    };
+    fetchCollection();
+  }, []);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
