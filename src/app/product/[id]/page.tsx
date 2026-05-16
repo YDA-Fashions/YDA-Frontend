@@ -1,4 +1,5 @@
 import { Metadata, ResolvingMetadata } from "next";
+import { notFound } from "next/navigation";
 import { productService } from "@/services/productService";
 import ProductDetailClient from "@/components/products/ProductDetailClient";
 import JsonLd from "@/components/common/JsonLd";
