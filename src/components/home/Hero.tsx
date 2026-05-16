@@ -83,20 +83,20 @@ const Hero = () => {
                 alt={currentBanner.title}
                 fill
                 priority
-                className="object-cover brightness-[0.6]"
+                className="object-cover brightness-[0.75]"
                 sizes="100vw"
               />
             </motion.div>
             {/* Global Overlays for better contrast */}
-            <div className="absolute inset-0 bg-black/40 md:bg-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/20 md:bg-gradient-to-b md:from-black/30 md:via-transparent md:to-black/60" />
-            <div className="absolute inset-0 bg-gradient-to-tr from-black/80 via-transparent to-transparent opacity-80" />
+            <div className="absolute inset-0 bg-black/30 md:bg-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20 md:bg-gradient-to-b md:from-black/30 md:via-transparent md:to-black/60" />
+            <div className="absolute inset-0 bg-gradient-to-tr from-black/60 via-transparent to-transparent opacity-60" />
           </motion.div>
         </AnimatePresence>
       </div>
 
       {/* Text Overlay - Premium Brand Style (Bottom-Left Aligned) */}
-      <div className="absolute inset-0 z-10 flex items-end justify-start text-left px-8 md:px-24 pb-24 md:pb-48">
+      <div className="absolute inset-0 z-10 flex items-end justify-start text-left px-6 md:px-24 pb-20 md:pb-48">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentIndex}
@@ -106,7 +106,7 @@ const Hero = () => {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1, delay: 0.2 }}
-              className="text-[10px] md:text-sm uppercase text-white tracking-[0.6em] md:tracking-[0.8em] mb-4 md:mb-8 font-black drop-shadow-lg"
+              className="text-[8px] md:text-sm uppercase text-white tracking-[0.6em] md:tracking-[0.8em] mb-4 md:mb-8 font-black drop-shadow-lg"
             >
               Handcrafted Heritage
             </motion.p>
@@ -125,7 +125,7 @@ const Hero = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5, duration: 1 }}
-              className="text-[10px] md:text-base uppercase tracking-[0.2em] md:tracking-[0.3em] text-white/90 mb-10 md:mb-14 font-black max-w-xl leading-relaxed drop-shadow-md"
+              className="text-[9px] md:text-base uppercase tracking-[0.2em] md:tracking-[0.3em] text-white/90 mb-8 md:mb-14 font-black max-w-xl leading-relaxed drop-shadow-md"
             >
               {currentBanner.subtitle}
             </motion.p>
@@ -137,9 +137,9 @@ const Hero = () => {
             >
               <Link 
                 href="/shop"
-                className="inline-block px-16 py-7 bg-white text-black text-[11px] uppercase tracking-[0.5em] font-black transition-all hover:bg-black hover:text-white hover:scale-105 active:scale-95 shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
+                className="inline-block px-8 md:px-16 py-4 md:py-7 bg-white text-black text-[9px] md:text-[11px] uppercase tracking-[0.4em] md:tracking-[0.5em] font-black rounded-full md:rounded-none transition-all hover:bg-black hover:text-white hover:scale-105 active:scale-95 shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
               >
-                Explore Collection
+                Explore
               </Link>
             </motion.div>
           </motion.div>

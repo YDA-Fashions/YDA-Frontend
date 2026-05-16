@@ -84,24 +84,24 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickAdd }) => {
             </div>
           </div>
 
-          <div className="p-5 flex flex-col gap-3">
-            <div className="flex flex-col gap-1">
-              <span className="text-[8px] uppercase tracking-[0.3em] font-black text-accent-dark/60">{product.category}</span>
-              <h3 className="text-sm md:text-base font-serif italic tracking-tight text-foreground line-clamp-1">
+          <div className="p-3 md:p-5 flex flex-col gap-2 md:gap-3">
+            <div className="flex flex-col gap-0.5 md:gap-1">
+              <span className="text-[7px] md:text-[8px] uppercase tracking-[0.3em] font-black text-accent-dark/60">{product.category}</span>
+              <h3 className="text-xs md:text-base font-serif italic tracking-tight text-foreground line-clamp-1">
                 {product.name}
               </h3>
             </div>
             
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <span className="text-sm font-black text-black">
+              <div className="flex items-center gap-2 md:gap-3">
+                <span className="text-xs md:text-sm font-black text-black">
                   ₹{product.selling_price.toLocaleString()}
                 </span>
-                <span className="text-[10px] text-black/20 line-through">
+                <span className="text-[9px] md:text-[10px] text-black/20 line-through">
                   ₹{product.original_price.toLocaleString()}
                 </span>
               </div>
-              <span className="text-[8px] font-black text-emerald-600 bg-emerald-50 px-2 py-0.5 tracking-tighter uppercase">
+              <span className="text-[7px] md:text-[8px] font-black text-emerald-600 bg-emerald-50 px-1.5 md:px-2 py-0.5 tracking-tighter uppercase">
                 {discount}% Off
               </span>
             </div>
@@ -109,12 +109,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickAdd }) => {
         </Link>
 
         {/* Action Button */}
-        <div className="px-5 pb-6">
+        <div className="px-3 md:px-5 pb-4 md:pb-6">
           <motion.button 
             whileTap={!isSoldOut ? { scale: 0.98 } : {}}
             onClick={!isSoldOut ? handleAddToCart : undefined}
             disabled={isSoldOut}
-            className={`w-full py-4 text-[9px] tracking-[0.3em] font-black uppercase transition-all flex items-center justify-center gap-2 group/btn ${
+            className={`w-full py-3 md:py-4 text-[8px] md:text-[9px] tracking-[0.2em] md:tracking-[0.3em] font-black uppercase transition-all flex items-center justify-center gap-2 group/btn rounded-full md:rounded-none ${
               isSoldOut 
                 ? "bg-black/10 text-black/40 cursor-not-allowed" 
                 : "bg-black text-white hover:bg-accent-dark"
@@ -124,8 +124,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickAdd }) => {
               "Sold Out"
             ) : (
               <>
-                <ShoppingBag size={12} strokeWidth={2} className="group-hover/btn:scale-110 transition-transform" />
-                Add to Selection
+                <ShoppingBag size={12} strokeWidth={2} className="group-hover/btn:scale-110 transition-transform hidden sm:block" />
+                <span className="truncate">Add to Bag</span>
               </>
             )}
           </motion.button>
