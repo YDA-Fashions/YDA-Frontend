@@ -218,33 +218,33 @@ const CheckoutPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#FDFDFB]">
+    <div className="min-h-screen bg-[#FAF9F6]">
       <Header />
       
-      <main className="pt-24 pb-24 md:pt-36">
-        <div className="container mx-auto px-6 max-w-7xl">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 xl:gap-20 items-start">
+      <main className="pt-24 pb-24 md:pt-36 overflow-x-hidden">
+        <div className="container mx-auto px-4 md:px-6 max-w-7xl">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 xl:gap-20 items-start">
             
             {/* LEFT: MULTI-STEP FLOW */}
-            <div className="lg:col-span-7 xl:col-span-8">
+            <div className="lg:col-span-7 xl:col-span-8 overflow-hidden">
               
               {/* Progress Steps */}
-              <div className="flex items-center gap-6 mb-20 overflow-x-auto no-scrollbar py-2">
+              <div className="flex items-center gap-3 md:gap-6 mb-16 overflow-x-auto no-scrollbar py-2">
                 {[
                   { step: 1, label: "Identity" },
                   { step: 2, label: "Shipping" },
                   { step: 3, label: "Payment" }
                 ].map((s) => (
-                  <div key={s.step} className="flex items-center gap-4 shrink-0">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center text-[10px] font-black transition-all duration-700 ${
-                      currentStep === s.step ? "bg-black text-white scale-110 shadow-xl" : currentStep > s.step ? "bg-emerald-500 text-white" : "bg-black/5 text-black/20"
+                  <div key={s.step} className="flex items-center gap-2 md:gap-4 shrink-0">
+                    <div className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center text-[9px] md:text-[10px] font-black transition-all duration-700 ${
+                      currentStep === s.step ? "bg-black text-white scale-105 shadow-xl" : currentStep > s.step ? "bg-emerald-500 text-white" : "bg-black/5 text-black/20"
                     }`}>
-                      {currentStep > s.step ? <CheckCircle2 size={16} /> : s.step}
+                      {currentStep > s.step ? <CheckCircle2 size={14} /> : s.step}
                     </div>
-                    <span className={`text-[10px] uppercase tracking-[0.3em] font-black ${currentStep >= s.step ? "opacity-100" : "opacity-20"}`}>
+                    <span className={`text-[8px] md:text-[10px] uppercase tracking-[0.2em] md:tracking-[0.3em] font-black ${currentStep >= s.step ? "opacity-100" : "opacity-20"}`}>
                       {s.label}
                     </span>
-                    {s.step < 3 && <div className="w-12 h-[1px] bg-black/5 mx-2" />}
+                    {s.step < 3 && <div className="w-6 md:w-12 h-[1px] bg-black/5 mx-1" />}
                   </div>
                 ))}
               </div>
@@ -252,113 +252,113 @@ const CheckoutPage = () => {
               <AnimatePresence mode="wait">
                 <motion.div
                   key={currentStep}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.5, ease: [0.19, 1, 0.22, 1] }}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.4, ease: [0.19, 1, 0.22, 1] }}
                 >
-                  <div className="mb-12">
-                    <h1 className="text-5xl md:text-7xl font-serif tracking-tighter mb-4 italic leading-[1.1]">
+                  <div className="mb-10">
+                    <h1 className="text-3xl md:text-6xl font-serif tracking-tighter mb-4 italic leading-[1.1]">
                       {currentStep === 1 ? "Start Your Narrative." : currentStep === 2 ? "The Final Destination." : "Secure Fulfillment."}
                     </h1>
-                    <p className="text-[10px] uppercase tracking-[0.5em] font-black text-black/20">Artisan Curation Phase {currentStep}/3</p>
+                    <p className="text-[9px] uppercase tracking-[0.4em] font-black text-black/30">Phase {currentStep} / 3</p>
                   </div>
 
                   {/* FORM FIELDS */}
-                  <div className="space-y-10">
+                  <div className="space-y-8">
                     {currentStep === 1 && (
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div className="space-y-3">
-                          <label className="text-[9px] uppercase tracking-widest font-black text-black/40 ml-1">Full Name</label>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-2.5">
+                          <label className="text-[9px] uppercase tracking-widest font-black text-black/50 ml-1">Full Name</label>
                           <input 
                             type="text" 
                             value={formData.name}
                             onChange={(e) => setFormData({...formData, name: e.target.value})}
-                            className="w-full bg-white border border-black/10 p-6 text-sm outline-none focus:border-black focus:shadow-2xl transition-all"
+                            className="w-full bg-[#F9F9F7] border border-black/20 p-5 text-sm outline-none focus:border-black focus:bg-white transition-all shadow-sm"
                             placeholder="Aaryan Malhotra"
                           />
                         </div>
-                        <div className="space-y-3">
-                          <label className="text-[9px] uppercase tracking-widest font-black text-black/40 ml-1">Contact Channel</label>
+                        <div className="space-y-2.5">
+                          <label className="text-[9px] uppercase tracking-widest font-black text-black/50 ml-1">Contact Channel</label>
                           <input 
                             type="tel" 
                             maxLength={10}
                             value={formData.phone}
                             onChange={(e) => setFormData({...formData, phone: e.target.value.replace(/\D/g, '')})}
-                            className="w-full bg-white border border-black/10 p-6 text-sm outline-none focus:border-black focus:shadow-2xl transition-all"
+                            className="w-full bg-[#F9F9F7] border border-black/20 p-5 text-sm outline-none focus:border-black focus:bg-white transition-all shadow-sm"
                             placeholder="10-digit Mobile No"
                           />
                         </div>
-                        <div className="md:col-span-2 pt-6">
-                           <button onClick={nextStep} className="group flex items-center gap-6 bg-black text-white px-12 py-6 text-[11px] uppercase tracking-[0.4em] font-black hover:bg-black/90 transition-all shadow-2xl">
-                             Next: Shipping Architecture
-                             <ChevronRight size={16} className="group-hover:translate-x-2 transition-transform" />
+                        <div className="md:col-span-2 pt-4">
+                           <button onClick={nextStep} className="group flex items-center gap-4 bg-black text-white px-10 py-4 text-[10px] uppercase tracking-[0.4em] font-black hover:bg-accent-dark transition-all shadow-xl">
+                             Next Step
+                             <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
                            </button>
                         </div>
                       </div>
                     )}
 
                     {currentStep === 2 && (
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div className="space-y-3">
-                          <label className="text-[9px] uppercase tracking-widest font-black text-black/40 ml-1">
-                            Postal Pin {pincodeLoading && <span className="text-emerald-500 animate-pulse">— Verifying...</span>}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-2.5">
+                          <label className="text-[9px] uppercase tracking-widest font-black text-black/50 ml-1">
+                            Postal Pin {pincodeLoading && <span className="text-emerald-500 animate-pulse">— Verifying</span>}
                           </label>
                           <input 
                             type="tel" 
                             maxLength={6}
                             value={formData.pincode}
                             onChange={(e) => setFormData({...formData, pincode: e.target.value.replace(/\D/g, '')})}
-                            className="w-full bg-white border border-black/10 p-6 text-sm outline-none focus:border-black focus:shadow-2xl transition-all"
+                            className="w-full bg-[#F9F9F7] border border-black/20 p-5 text-sm outline-none focus:border-black focus:bg-white transition-all shadow-sm"
                             placeholder="6-digit PIN"
                           />
                         </div>
-                        <div className="space-y-3">
-                          <label className="text-[9px] uppercase tracking-widest font-black text-black/40 ml-1">House / Floor / Suite</label>
+                        <div className="space-y-2.5">
+                          <label className="text-[9px] uppercase tracking-widest font-black text-black/50 ml-1">House / Suite</label>
                           <input 
                             type="text" 
                             value={formData.house}
                             onChange={(e) => setFormData({...formData, house: e.target.value})}
-                            className="w-full bg-white border border-black/10 p-6 text-sm outline-none focus:border-black focus:shadow-2xl transition-all"
+                            className="w-full bg-[#F9F9F7] border border-black/20 p-5 text-sm outline-none focus:border-black focus:bg-white transition-all shadow-sm"
                             placeholder="Flat 102, Blue Heights"
                           />
                         </div>
-                        <div className="md:col-span-2 space-y-3">
-                          <label className="text-[9px] uppercase tracking-widest font-black text-black/40 ml-1">Street / Colony / Landmark</label>
+                        <div className="md:col-span-2 space-y-2.5">
+                          <label className="text-[9px] uppercase tracking-widest font-black text-black/50 ml-1">Street / Landmark</label>
                           <input 
                             type="text" 
                             value={formData.area}
                             onChange={(e) => setFormData({...formData, area: e.target.value})}
-                            className="w-full bg-white border border-black/10 p-6 text-sm outline-none focus:border-black focus:shadow-2xl transition-all"
+                            className="w-full bg-[#F9F9F7] border border-black/20 p-5 text-sm outline-none focus:border-black focus:bg-white transition-all shadow-sm"
                             placeholder="Near Central Park, Civil Lines"
                           />
                         </div>
-                        <div className="space-y-3">
-                          <label className="text-[9px] uppercase tracking-widest font-black text-black/40 ml-1">City</label>
+                        <div className="space-y-2.5">
+                          <label className="text-[9px] uppercase tracking-widest font-black text-black/50 ml-1">City</label>
                           <input 
                             type="text" 
                             readOnly={!manualMode}
                             value={formData.city}
                             onChange={(e) => setFormData({...formData, city: e.target.value})}
-                            className={`w-full border border-black/10 p-6 text-sm outline-none ${manualMode ? 'bg-white focus:border-black shadow-xl' : 'bg-black/[0.03] text-black/40'}`}
+                            className={`w-full border border-black/20 p-5 text-sm outline-none shadow-sm ${manualMode ? 'bg-[#F9F9F7] focus:border-black' : 'bg-black/[0.03] text-black/40'}`}
                           />
                         </div>
-                        <div className="space-y-3">
-                          <label className="text-[9px] uppercase tracking-widest font-black text-black/40 ml-1">State</label>
+                        <div className="space-y-2.5">
+                          <label className="text-[9px] uppercase tracking-widest font-black text-black/50 ml-1">State</label>
                           <input 
                             type="text" 
                             readOnly={!manualMode}
                             value={formData.state}
                             onChange={(e) => setFormData({...formData, state: e.target.value})}
-                            className={`w-full border border-black/10 p-6 text-sm outline-none ${manualMode ? 'bg-white focus:border-black shadow-xl' : 'bg-black/[0.03] text-black/40'}`}
+                            className={`w-full border border-black/20 p-5 text-sm outline-none shadow-sm ${manualMode ? 'bg-[#F9F9F7] focus:border-black' : 'bg-black/[0.03] text-black/40'}`}
                           />
                         </div>
-                        <div className="md:col-span-2 pt-6 flex gap-4">
-                           <button onClick={prevStep} className="px-10 py-6 border border-black/10 text-[10px] uppercase tracking-[0.4em] font-black hover:bg-black/5 transition-all">
+                        <div className="md:col-span-2 pt-4 flex flex-col md:flex-row gap-4">
+                           <button onClick={prevStep} className="px-8 py-4 border border-black/10 text-[9px] uppercase tracking-[0.4em] font-black hover:bg-black/5 transition-all">
                              Back
                            </button>
-                           <button onClick={nextStep} className="flex-grow bg-black text-white px-12 py-6 text-[11px] uppercase tracking-[0.4em] font-black hover:bg-black/90 transition-all shadow-2xl">
-                             Next: Payment Method
+                           <button onClick={nextStep} className="flex-grow bg-black text-white px-10 py-4 text-[10px] uppercase tracking-[0.4em] font-black hover:bg-accent-dark transition-all shadow-xl">
+                             Proceed to Payment
                            </button>
                         </div>
                       </div>
@@ -366,51 +366,44 @@ const CheckoutPage = () => {
 
                     {currentStep === 3 && (
                       <div className="space-y-8">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <button
                             onClick={() => setPaymentMethod("COD")}
-                            className={`p-8 border flex flex-col gap-6 transition-all text-left group relative overflow-hidden ${
-                              paymentMethod === "COD" ? "border-black bg-black text-white shadow-2xl" : "border-black/10 bg-white hover:border-black/30"
+                            className={`p-6 md:p-8 border flex flex-col gap-4 transition-all text-left group relative overflow-hidden ${
+                              paymentMethod === "COD" ? "border-black bg-black text-white shadow-xl" : "border-black/20 bg-white hover:border-black/40"
                             }`}
                           >
-                            <Banknote size={28} className={paymentMethod === "COD" ? "text-white" : "text-black/30"} />
+                            <Banknote size={24} className={paymentMethod === "COD" ? "text-white" : "text-black/30"} />
                             <div>
-                              <p className="text-[11px] font-black uppercase tracking-[0.3em]">Cash on Delivery</p>
-                              <p className={`text-[9px] uppercase tracking-wider mt-2 ${paymentMethod === "COD" ? "text-white/60" : "text-black/20"}`}>Fulfill upon receipt</p>
+                              <p className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.2em]">Cash on Delivery</p>
+                              <p className={`text-[8px] md:text-[9px] uppercase tracking-wider mt-1 ${paymentMethod === "COD" ? "text-white/60" : "text-black/30"}`}>Pay upon receipt</p>
                             </div>
-                            {paymentMethod === "COD" && <motion.div layoutId="activePay" className="absolute top-4 right-4 text-emerald-400"><CheckCircle2 size={16} /></motion.div>}
                           </button>
                           
                           <button
                             onClick={() => setPaymentMethod("ONLINE")}
-                            className={`p-8 border flex flex-col gap-6 transition-all text-left group relative overflow-hidden ${
-                              paymentMethod === "ONLINE" ? "border-black bg-black text-white shadow-2xl" : "border-black/10 bg-white hover:border-black/30"
+                            className={`p-6 md:p-8 border flex flex-col gap-4 transition-all text-left group relative overflow-hidden ${
+                              paymentMethod === "ONLINE" ? "border-black bg-black text-white shadow-xl" : "border-black/20 bg-white hover:border-black/40"
                             }`}
                           >
-                            <CreditCard size={28} className={paymentMethod === "ONLINE" ? "text-white" : "text-black/30"} />
+                            <CreditCard size={24} className={paymentMethod === "ONLINE" ? "text-white" : "text-black/30"} />
                             <div>
-                              <p className="text-[11px] font-black uppercase tracking-[0.3em]">Online Transfer</p>
-                              <p className={`text-[9px] uppercase tracking-wider mt-2 ${paymentMethod === "ONLINE" ? "text-white/60" : "text-black/20"}`}>Secure via Razorpay</p>
+                              <p className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.3em]">Online Transfer</p>
+                              <p className={`text-[8px] md:text-[9px] uppercase tracking-wider mt-1 ${paymentMethod === "ONLINE" ? "text-white/60" : "text-black/30"}`}>UPI, Cards, Banking</p>
                             </div>
-                            {paymentMethod === "ONLINE" && <motion.div layoutId="activePay" className="absolute top-4 right-4 text-emerald-400"><CheckCircle2 size={16} /></motion.div>}
                           </button>
                         </div>
 
-                        <div className="bg-emerald-50/50 p-6 border border-emerald-100 flex items-center gap-4">
-                          <ShieldCheck size={20} className="text-emerald-700" />
-                          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-900">Artisan Authentication & Secure Encryption Enabled</p>
-                        </div>
-
-                        <div className="pt-6 flex gap-4">
-                           <button onClick={prevStep} className="px-10 py-6 border border-black/10 text-[10px] uppercase tracking-[0.4em] font-black hover:bg-black/5 transition-all">
+                        <div className="pt-6 flex flex-col md:flex-row gap-4">
+                           <button onClick={prevStep} className="px-8 py-4 border border-black/10 text-[9px] uppercase tracking-[0.4em] font-black hover:bg-black/5 transition-all">
                              Review Address
                            </button>
                            <button 
                              onClick={handleCheckout}
                              disabled={isProcessing}
-                             className="flex-grow bg-black text-white px-12 py-6 text-[12px] uppercase tracking-[0.4em] font-black hover:bg-black/90 transition-all shadow-2xl disabled:opacity-50"
+                             className="flex-grow bg-black text-white px-10 py-4 text-[10px] uppercase tracking-[0.4em] font-black hover:bg-accent-dark transition-all shadow-xl disabled:opacity-50"
                            >
-                             {isProcessing ? "Authenticating..." : `Complete Order - ₹${finalTotal.toLocaleString()}`}
+                             {isProcessing ? "Authenticating..." : `Fulfill Order - ₹${finalTotal.toLocaleString()}`}
                            </button>
                         </div>
                       </div>
@@ -422,49 +415,49 @@ const CheckoutPage = () => {
 
             {/* RIGHT: PREMIUM SUMMARY RECAP */}
             <div className="lg:col-span-5 xl:col-span-4">
-              <div className="sticky top-40 space-y-10">
-                <div className="bg-white border border-black/5 p-10 shadow-[0_30px_70px_rgba(0,0,0,0.04)] backdrop-blur-3xl relative overflow-hidden">
+              <div className="sticky top-40 space-y-6 md:space-y-10">
+                <div className="bg-white border border-black/5 p-6 md:p-10 shadow-[0_30px_70px_rgba(0,0,0,0.04)] backdrop-blur-3xl relative overflow-hidden">
                   <div className="absolute top-0 left-0 w-full h-[2px] bg-black/5" />
-                  <h3 className="text-[11px] uppercase tracking-[0.5em] font-black mb-10 text-black/40 border-b border-black/5 pb-6">Final Selection Recap</h3>
+                  <h3 className="text-[10px] md:text-[11px] uppercase tracking-[0.4em] font-black mb-8 text-black/40 border-b border-black/5 pb-6">Selection Recap</h3>
                   
-                  <div className="space-y-8 mb-12 max-h-[350px] overflow-y-auto no-scrollbar">
+                  <div className="space-y-6 md:space-y-8 mb-10 max-h-[300px] md:max-h-[350px] overflow-y-auto no-scrollbar">
                     {activeItems.map((item) => (
-                      <div key={item.id} className="flex gap-6 group items-center">
-                        <div className="w-20 h-24 bg-[#F9F9F7] flex-shrink-0 relative overflow-hidden">
-                          <img src={item.colors?.[0]?.images?.[0]} alt={item.name} className="w-full h-full object-cover p-3 group-hover:scale-110 transition-transform duration-700" />
+                      <div key={item.id} className="flex gap-4 md:gap-6 group items-center">
+                        <div className="w-16 h-20 md:w-20 md:h-24 bg-[#F9F9F7] flex-shrink-0 relative overflow-hidden">
+                          <img src={item.colors?.[0]?.images?.[0]} alt={item.name} className="w-full h-full object-cover p-2 md:p-3 group-hover:scale-110 transition-transform duration-700" />
                         </div>
                         <div className="flex-grow">
-                          <p className="text-sm font-serif italic text-foreground mb-1">{item.name}</p>
-                          <p className="text-[9px] font-black tracking-widest text-black/30 uppercase">
+                          <p className="text-xs md:text-sm font-serif italic text-foreground mb-1">{item.name}</p>
+                          <p className="text-[8px] md:text-[9px] font-black tracking-widest text-black/30 uppercase">
                             Qty: {item.quantity} × ₹{item.selling_price.toLocaleString()}
                           </p>
                         </div>
-                        <p className="text-sm font-black text-right">₹{(item.selling_price * item.quantity).toLocaleString()}</p>
+                        <p className="text-xs md:text-sm font-black text-right">₹{(item.selling_price * item.quantity).toLocaleString()}</p>
                       </div>
                     ))}
                   </div>
 
-                  <div className="space-y-5 pt-10 border-t border-black/5">
-                    <div className="flex justify-between items-center text-[10px] uppercase tracking-widest font-black text-black/30">
+                  <div className="space-y-4 pt-8 border-t border-black/5">
+                    <div className="flex justify-between items-center text-[9px] md:text-[10px] uppercase tracking-widest font-black text-black/30">
                       <span>Curation Total</span>
                       <span className="text-black">₹{activeTotal.toLocaleString()}</span>
                     </div>
                     {appliedCoupon && (
-                      <div className="flex justify-between items-center text-[10px] uppercase tracking-widest font-black text-emerald-600">
+                      <div className="flex justify-between items-center text-[9px] md:text-[10px] uppercase tracking-widest font-black text-emerald-600">
                         <span>Artflow Discount</span>
                         <span>- ₹{discountAmount.toLocaleString()}</span>
                       </div>
                     )}
-                    <div className="flex justify-between items-center text-[10px] uppercase tracking-widest font-black text-black/30">
+                    <div className="flex justify-between items-center text-[9px] md:text-[10px] uppercase tracking-widest font-black text-black/30">
                       <span>Heritage Fulfillment</span>
                       <span className="text-black">{shippingFee === 0 ? "Complimentary" : `₹${shippingFee}`}</span>
                     </div>
 
-                    <div className="pt-10 mt-10 border-t border-black/10">
+                    <div className="pt-8 mt-8 border-t border-black/10">
                       <div className="flex justify-between items-end">
                         <div className="space-y-2">
-                          <p className="text-[10px] uppercase tracking-[0.5em] font-black text-black/20">Total Investment</p>
-                          <p className="text-5xl font-black tracking-tighter leading-none">₹{finalTotal.toLocaleString()}</p>
+                          <p className="text-[9px] md:text-[10px] uppercase tracking-[0.5em] font-black text-black/20">Total Investment</p>
+                          <p className="text-3xl md:text-5xl font-black tracking-tighter leading-none">₹{finalTotal.toLocaleString()}</p>
                         </div>
                       </div>
                     </div>
@@ -472,40 +465,40 @@ const CheckoutPage = () => {
                 </div>
 
                 {/* Coupon Architecture */}
-                <div className="bg-white border border-black/5 p-8 shadow-sm">
-                  <p className="text-[9px] uppercase tracking-widest font-black mb-5 text-black/40">Apply Artflow Code</p>
-                  <div className="flex gap-3">
+                <div className="bg-white border border-black/5 p-6 md:p-8 shadow-sm">
+                  <p className="text-[8px] md:text-[9px] uppercase tracking-widest font-black mb-4 text-black/40">Apply Artflow Code</p>
+                  <div className="flex gap-2">
                     <input 
                       type="text" 
-                      placeholder="ENTER CODE" 
+                      placeholder="CODE" 
                       value={couponCode}
                       onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
-                      className="flex-grow bg-[#F9F9F7] border-none p-5 text-[10px] tracking-widest font-black outline-none focus:ring-1 ring-black/5 uppercase"
+                      className="flex-grow bg-[#F9F9F7] border border-black/10 p-4 text-[9px] md:text-[10px] tracking-widest font-black outline-none focus:ring-1 ring-black/5 uppercase"
                     />
                     <button 
                       onClick={handleApplyCoupon}
                       disabled={isValidatingCoupon || !couponCode}
-                      className="bg-black text-white px-8 text-[10px] font-black uppercase tracking-widest hover:bg-black/90 disabled:opacity-50 transition-all"
+                      className="bg-black text-white px-6 text-[9px] md:text-[10px] font-black uppercase tracking-widest hover:bg-black/90 disabled:opacity-50 transition-all"
                     >
                       {isValidatingCoupon ? "..." : "Apply"}
                     </button>
                   </div>
                   {appliedCoupon && (
-                    <div className="mt-4 p-4 bg-emerald-50 border border-emerald-100 flex justify-between items-center animate-in fade-in slide-in-from-top-2">
-                      <span className="text-[9px] font-black uppercase text-emerald-700 tracking-widest">Active: {appliedCoupon.code}</span>
-                      <button onClick={() => setAppliedCoupon(null)} className="text-[9px] font-black uppercase text-emerald-700 underline">Remove</button>
+                    <div className="mt-4 p-3 bg-emerald-50 border border-emerald-100 flex justify-between items-center animate-in fade-in slide-in-from-top-2">
+                      <span className="text-[8px] md:text-[9px] font-black uppercase text-emerald-700 tracking-widest">Active: {appliedCoupon.code}</span>
+                      <button onClick={() => setAppliedCoupon(null)} className="text-[8px] font-black uppercase text-emerald-700 underline">Remove</button>
                     </div>
                   )}
                 </div>
 
-                <div className="flex flex-col gap-6 opacity-20 hover:opacity-40 transition-opacity duration-700 px-4">
-                  <div className="flex items-center gap-5">
-                    <Truck size={20} strokeWidth={1.5} />
-                    <span className="text-[9px] uppercase tracking-[0.4em] font-black italic">Expedited Heritage Logistics Across India</span>
+                <div className="flex flex-col gap-4 md:gap-6 opacity-20 hover:opacity-40 transition-opacity duration-700 px-4">
+                  <div className="flex items-center gap-4">
+                    <Truck size={18} strokeWidth={1.5} />
+                    <span className="text-[8px] uppercase tracking-[0.3em] font-black italic">Expedited Heritage Logistics Across India</span>
                   </div>
-                  <div className="flex items-center gap-5">
-                    <ShieldCheck size={20} strokeWidth={1.5} />
-                    <span className="text-[9px] uppercase tracking-[0.4em] font-black italic">Secured Razorpay Transaction Node</span>
+                  <div className="flex items-center gap-4">
+                    <ShieldCheck size={18} strokeWidth={1.5} />
+                    <span className="text-[8px] uppercase tracking-[0.3em] font-black italic">Secured Razorpay Transaction Node</span>
                   </div>
                 </div>
               </div>
