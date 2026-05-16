@@ -19,7 +19,7 @@ export const supabase: SupabaseClient = (supabaseUrl && supabaseAnonKey)
         storageKey: 'yda-studio-auth'
       }
     })
-  : (null as any); 
+  : ({ from: () => ({ select: () => ({ eq: () => ({ single: () => Promise.resolve({ data: null, error: null }), order: () => Promise.resolve({ data: [], error: null }) }) }) }) } as any); 
 
 if (!supabaseUrl || !supabaseAnonKey) {
   if (process.env.NODE_ENV === "production") {
