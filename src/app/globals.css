@@ -15,10 +15,10 @@
 
   @media (prefers-color-scheme: dark) {
     :root {
-      --background: #0A0A0A; /* Rich Midnight Black */
-      --foreground: #E5E5E5; /* Soft Off-White */
-      --border: #1F1F1F;     /* Subtle dark border */
-      --accent-dark: #C5B358; /* Metallic Gold Accent */
+      --background: #0A0A0A; 
+      --foreground: #E5E5E5; 
+      --border: #1F1F1F;     
+      --accent-dark: #D1D1D1; /* Sophisticated Platinum Silver (Replaces Gold in Dark Mode) */
     }
   }
 
@@ -27,7 +27,7 @@
     --background: #0A0A0A;
     --foreground: #E5E5E5;
     --border: #1F1F1F;
-    --accent-dark: #C5B358;
+    --accent-dark: #D1D1D1;
   }
 
   body {
