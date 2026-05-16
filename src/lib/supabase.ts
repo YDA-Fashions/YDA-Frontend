@@ -10,6 +10,20 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
  * Note: If environment variables are missing (e.g., during build), 
  * a placeholder client is created to avoid fatal errors.
  */
+// Recursive Proxy to handle any level of method chaining (from.select.order.eq...)
+const createDummyProxy = (): any => {
+  const dummy: any = new Proxy(() => dummy, {
+    get: (target, prop) => {
+      if (prop === "then") {
+        return (resolve: any) => resolve({ data: [], error: null });
+      }
+      return dummy;
+    },
+    apply: () => dummy,
+  });
+  return dummy;
+};
+
 export const supabase: SupabaseClient = (supabaseUrl && supabaseAnonKey) 
   ? createClient(supabaseUrl, supabaseAnonKey, {
       auth: {
@@ -19,7 +33,7 @@ export const supabase: SupabaseClient = (supabaseUrl && supabaseAnonKey)
         storageKey: 'yda-studio-auth'
       }
     })
-  : ({ from: () => ({ select: () => ({ eq: () => ({ single: () => Promise.resolve({ data: null, error: null }), order: () => Promise.resolve({ data: [], error: null }) }) }) }) } as any); 
+  : createDummyProxy(); 
 
 if (!supabaseUrl || !supabaseAnonKey) {
   if (process.env.NODE_ENV === "production") {
