@@ -20,17 +20,31 @@ export default async function CushionCoversPage() {
       
       <Header />
       
-      <main className="pt-32 pb-24 md:pt-44">
-        <div className="container mx-auto px-6">
-          <div className="max-w-3xl mb-16">
-            <h1 className="text-5xl md:text-7xl font-serif tracking-tight uppercase leading-none">
+      <main className="pt-20">
+        {/* Editorial Hero Banner */}
+        <div className="relative h-[45vh] md:h-[55vh] min-h-[350px] w-full flex items-center justify-center overflow-hidden mb-16 md:mb-24">
+          <div className="absolute inset-0 z-0">
+            <img 
+              src="/images/home-page-image/cushion-1.jpg" 
+              alt="Artisan Cushion Covers" 
+              className="object-cover object-center w-full h-full opacity-80 dark:opacity-40"
+            />
+            <div className="absolute inset-0 bg-black/40 dark:bg-black/70" />
+          </div>
+          
+          <div className="relative z-10 text-center text-white px-6 max-w-4xl">
+            <h1 className="text-4xl md:text-7xl font-serif tracking-tight uppercase leading-none mb-6">
               Cushion <br />
-              <span className="italic ml-12 md:ml-24 text-accent-dark">Covers.</span>
+              <span className="italic font-normal tracking-wide text-white/95">Covers</span>
             </h1>
-            <p className="mt-8 text-sm md:text-base text-foreground/60 max-w-md leading-relaxed">
+            <div className="w-16 h-[1px] bg-white/30 mx-auto mb-6" />
+            <p className="text-xs md:text-sm uppercase tracking-[0.3em] font-light max-w-md mx-auto leading-relaxed text-white/80">
               Softness meets heritage. Our cushion covers are meticulously crafted to bring warmth and artistic charm to every corner of your home.
             </p>
           </div>
+        </div>
+
+        <div className="container mx-auto px-6">
 
           {products.length === 0 ? (
             <div className="py-32 text-center border-t border-border-beige">

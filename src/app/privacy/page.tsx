@@ -11,19 +11,31 @@ const PrivacyPolicy = () => {
       <Header />
       
       <main className="pt-32 pb-24 md:pt-48">
-        <div className="container mx-auto px-6 max-w-3xl">
+        {/* Hero Section with Editorial Image */}
+        <section className="relative h-[40vh] md:h-[50vh] min-h-[300px] w-full flex items-center justify-center overflow-hidden mb-16 md:mb-24">
+          <div className="absolute inset-0 z-0">
+            <img 
+              src="/images/home-page-image/small-tote.jpg" 
+              alt="YDA Privacy" 
+              className="object-cover object-center w-full h-full opacity-80 dark:opacity-40"
+            />
+            <div className="absolute inset-0 bg-black/30 dark:bg-black/60" />
+          </div>
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-16 text-center"
+            className="relative z-10 text-center text-white px-4"
           >
-            <h1 className="text-4xl md:text-5xl font-serif tracking-tight mb-4">
-              Privacy <span className="italic">Policy</span>
+            <h1 className="text-4xl md:text-6xl font-serif tracking-tight mb-4 italic">
+              Privacy Policy
             </h1>
-            <p className="text-[10px] uppercase tracking-[0.3em] font-sans font-bold text-foreground/40">
+            <p className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-black opacity-80">
               Last Updated: {new Date().toLocaleDateString()}
             </p>
           </motion.div>
+        </section>
+
+        <div className="container mx-auto px-6 max-w-3xl">
 
           <div className="prose prose-sm md:prose-base prose-headings:font-serif prose-headings:font-normal prose-a:text-accent-dark text-foreground/80 max-w-none space-y-8">
             <section>
