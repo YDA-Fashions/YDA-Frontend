@@ -108,10 +108,10 @@ const Header = () => {
       ).slice(0, 8);
 
   const navLinks = [
-    { name: "Big Totes", href: "/big-tote-bags", previewImage: "/images/products/big-tote-bags/YDA-big-tote-primary.jpg" },
-    { name: "Small Totes", href: "/small-tote-bags", previewImage: "/images/products/small-tote-bags/YDA-small-tote-primary.jpg" },
-    { name: "New Arrivals", href: "/new-arrivals", previewImage: "/images/products/big-tote-bags/YDA-big-tote-primary.jpg" },
-    { name: "Cushion Covers", href: "/cushion-covers", previewImage: "/images/products/cushion-covers/YDA-cushion-cover-primary.jpg" },
+    { name: "Big Totes", href: "/big-tote-bags", previewImage: "/images/home-page-image/big-tote.jpg" },
+    { name: "Small Totes", href: "/small-tote-bags", previewImage: "/images/home-page-image/small-tote.jpg" },
+    { name: "New Arrivals", href: "/new-arrivals", previewImage: "/images/home-page-image/gujarati-print-1.jpg" },
+    { name: "Cushion Covers", href: "/cushion-covers", previewImage: "/images/home-page-image/cushion-1.jpg" },
     { name: "Our Story", href: "/story", previewImage: "/images/home-page-image/sanganeri-print-1.jpg.png" },
   ];
 

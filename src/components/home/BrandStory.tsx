@@ -73,8 +73,8 @@ const BrandStory = () => {
             className="relative aspect-square md:aspect-[4/5] rounded-none overflow-hidden order-1 md:order-2 shadow-2xl"
           >
             <Image
-              src="/images/home-page-image/sanganeri-print-1.jpg.png"
-              alt="Manoj Tailor's Craft"
+              src="/images/brand-story-image-1.png"
+              alt="Manoj Tailor - The Founder & Master Craftsman"
               fill
               className="object-cover hover:scale-105 transition-all duration-1000"
             />

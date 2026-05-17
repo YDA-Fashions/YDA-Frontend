@@ -4,7 +4,7 @@ import React from "react";
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import { motion } from "framer-motion";
-import { AlertCircle, Clock, FileVideo, ShieldAlert, MessageCircle } from "lucide-react";
+import { AlertCircle, Clock, FileVideo, MessageCircle } from "lucide-react";
 
 export default function ReturnsPolicy() {
   return (
@@ -32,10 +32,10 @@ export default function ReturnsPolicy() {
         </section>
 
         <div className="container mx-auto px-6 max-w-7xl">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
+          <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
             
             {/* Left Column: Strict Requirements Highlights */}
-            <div className="lg:col-span-4">
+            <div className="w-full lg:w-[35%] shrink-0">
               <div className="lg:sticky lg:top-32 space-y-8">
                 <div className="bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-8 shadow-sm">
                   <h3 className="text-[10px] uppercase tracking-[0.3em] font-black text-black/40 dark:text-white/40 mb-6 font-sans">Strict Requirements</h3>
@@ -91,7 +91,7 @@ export default function ReturnsPolicy() {
             </div>
 
             {/* Right Column: Styled Policy Panels */}
-            <div className="lg:col-span-8 space-y-12">
+            <div className="w-full lg:w-[65%] space-y-12">
               <div className="bg-white dark:bg-[#121212] p-8 md:p-12 border border-black/5 dark:border-white/10 shadow-sm space-y-10">
                 
                 <section className="space-y-4">
