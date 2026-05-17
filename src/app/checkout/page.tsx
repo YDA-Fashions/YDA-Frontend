@@ -310,7 +310,7 @@ const CheckoutPage = () => {
                           />
                         </div>
                         <div className="md:col-span-2 pt-4">
-                           <button onClick={nextStep} className="group flex items-center gap-4 bg-primary text-white dark:bg-primary dark:text-white px-10 py-4 text-[10px] uppercase tracking-[0.4em] font-black hover:bg-primary-hover transition-all shadow-xl">
+                           <button onClick={nextStep} className="group flex items-center gap-4 bg-black text-white dark:bg-white dark:text-black px-10 py-4 text-[10px] uppercase tracking-[0.4em] font-black hover:bg-accent-dark transition-all shadow-xl">
                              Next Step
                              <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
                            </button>
@@ -377,7 +377,7 @@ const CheckoutPage = () => {
                            <button onClick={prevStep} className="px-8 py-4 border border-black/10 dark:border-white/10 text-[9px] uppercase tracking-[0.4em] font-black hover:bg-black/5 dark:hover:bg-white/5 transition-all dark:text-white">
                              Back
                            </button>
-                           <button onClick={nextStep} className="flex-grow bg-primary text-white dark:bg-primary dark:text-white px-10 py-4 text-[10px] uppercase tracking-[0.4em] font-black hover:bg-primary-hover transition-all shadow-xl">
+                           <button onClick={nextStep} className="flex-grow bg-black text-white dark:bg-white dark:text-black px-10 py-4 text-[10px] uppercase tracking-[0.4em] font-black hover:bg-accent-dark transition-all shadow-xl">
                              Proceed to Payment
                            </button>
                         </div>
@@ -421,7 +421,7 @@ const CheckoutPage = () => {
                            <button 
                              onClick={handleCheckout}
                              disabled={isProcessing}
-                             className="flex-grow bg-primary text-white dark:bg-primary dark:text-white px-10 py-4 text-[10px] uppercase tracking-[0.4em] font-black hover:bg-primary-hover transition-all shadow-xl disabled:opacity-50"
+                             className="flex-grow bg-black text-white dark:bg-white dark:text-black px-10 py-4 text-[10px] uppercase tracking-[0.4em] font-black hover:bg-accent-dark transition-all shadow-xl disabled:opacity-50"
                            >
                              {isProcessing ? "Authenticating..." : `Fulfill Order - ₹${finalTotal.toLocaleString()}`}
                            </button>

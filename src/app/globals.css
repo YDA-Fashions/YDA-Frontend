@@ -7,8 +7,6 @@
     --accent: #FADADD;     /* Soft Pastel Pink */
     --accent-dark: #8B7D6B; /* Muted Beige / Taupe */
     --border: #E8E2D6;     /* Subtle beige border */
-    --btn-primary: #1C2A43; /* Deep Indigo (Heritage Blue) */
-    --btn-primary-hover: #141f33; /* Darker Indigo */
     
     /* Font families */
     --font-serif: "Prata", serif;
@@ -20,9 +18,7 @@
       --background: #0A0A0A; 
       --foreground: #E5E5E5; 
       --border: #1F1F1F;     
-      --accent-dark: #D1D1D1;
-      --btn-primary: #2A3B5C; /* Softened Deep Indigo for dark mode */
-      --btn-primary-hover: #374A73;
+      --accent-dark: #D1D1D1; /* Sophisticated Platinum Silver (Replaces Gold in Dark Mode) */
     }
   }
 
@@ -32,8 +28,6 @@
     --foreground: #E5E5E5;
     --border: #1F1F1F;
     --accent-dark: #D1D1D1;
-    --btn-primary: #2A3B5C;
-    --btn-primary-hover: #374A73;
   }
 
   body {
@@ -62,8 +56,6 @@
   --color-accent: var(--accent);
   --color-accent-dark: var(--accent-dark);
   --color-border-beige: var(--border);
-  --color-primary: var(--btn-primary);
-  --color-primary-hover: var(--btn-primary-hover);
   
   --font-serif: var(--font-serif);
   --font-sans: var(--font-sans);

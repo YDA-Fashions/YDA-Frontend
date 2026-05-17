@@ -290,13 +290,13 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                       onMouseLeave={addMagnetic.onMouseLeave}
                       animate={{ x: addMagnetic.offset.x, y: addMagnetic.offset.y }}
                       transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                      whileTap={{ scale: 0.98 }}
+                      whileTap={product.stock > 0 ? { scale: 0.98 } : {}}
                       onClick={product.stock > 0 ? () => addItem(product) : undefined}
                       disabled={product.stock <= 0}
-                      className={`w-full py-5 text-[11px] uppercase tracking-[0.4em] font-black transition-colors ${
+                      className={`w-full py-5 text-[11px] uppercase tracking-[0.4em] font-black transition-colors duration-300 shadow-lg ${
                         product.stock <= 0 
-                          ? "bg-black/5 text-black/20 cursor-not-allowed" 
-                          : "border border-black/20 hover:bg-primary hover:text-white dark:hover:bg-primary dark:hover:text-white"
+                          ? "bg-black/10 text-black/40 cursor-not-allowed shadow-none" 
+                          : "bg-[#FFD700] hover:bg-[#F2CC00] text-black"
                       }`}
                     >
                       {product.stock <= 0 ? "Sold Out" : "Add to Selection"}
@@ -316,7 +316,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                     className={`flex-grow py-6 uppercase tracking-[0.4em] text-[12px] font-sans font-black transition-colors flex items-center justify-center gap-4 shadow-2xl ${
                       product.stock <= 0 
                         ? "bg-black/5 text-black/20 cursor-not-allowed shadow-none" 
-                        : "bg-primary text-white hover:bg-primary-hover"
+                        : "bg-[#1a1a1a] text-white hover:bg-black"
                     }`}
                   >
                     {product.stock <= 0 ? "Out of Stock" : <>Buy Now <ArrowRight size={18} /></>}
