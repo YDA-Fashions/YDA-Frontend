@@ -144,32 +144,51 @@ const CheckoutPage = () => {
   const prevStep = () => setCurrentStep(prev => prev - 1);
 
   const handleCheckout = async () => {
-    if (!validateStep(1) || !validateStep(2)) return;
+    if (!validateStep(1)) {
+      alert("Please ensure Identity details (Step 1) are complete and valid.");
+      return;
+    }
+    if (!validateStep(2)) {
+      alert("Please ensure Shipping details (Step 2) are complete and valid.");
+      return;
+    }
+    
     setIsProcessing(true);
     try {
       if (paymentMethod === "ONLINE") {
         const res = await loadRazorpay();
         if (!res) {
-          alert("Payment gateway failed to load.");
+          alert("Payment gateway failed to load. Please check your internet connection or disable adblockers.");
           setIsProcessing(false);
           return;
         }
-        const options = {
-          key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_placeholder",
-          amount: finalTotal * 100,
-          currency: "INR",
-          name: "YDA Fashions",
-          description: "Artisan Garment Purchase",
-          image: "/images/logo.png",
-          handler: async function (response: any) {
-            await finalizeOrder(response.razorpay_payment_id);
-          },
-          prefill: { name: formData.name, email: user?.email, contact: formData.phone },
-          theme: { color: "#1A1A1A" },
-          modal: { ondismiss: () => setIsProcessing(false) }
-        };
-        const rzp = new window.Razorpay(options);
-        rzp.open();
+        
+        try {
+          const options = {
+            key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_placeholder",
+            amount: Math.round(finalTotal * 100), // Ensure integer
+            currency: "INR",
+            name: "YDA Fashions",
+            description: "Artisan Garment Purchase",
+            image: "/images/logo.png",
+            handler: async function (response: any) {
+              await finalizeOrder(response.razorpay_payment_id);
+            },
+            prefill: { name: formData.name, email: user?.email || "customer@example.com", contact: formData.phone },
+            theme: { color: "#1A1A1A" },
+            modal: { ondismiss: () => setIsProcessing(false) }
+          };
+          const rzp = new window.Razorpay(options);
+          rzp.on('payment.failed', function (response: any){
+            alert("Payment failed: " + response.error.description);
+            setIsProcessing(false);
+          });
+          rzp.open();
+        } catch (rzpError: any) {
+          console.error("Razorpay Error:", rzpError);
+          alert("Error initializing payment gateway: " + rzpError.message);
+          setIsProcessing(false);
+        }
       } else {
         await finalizeOrder("COD");
       }
@@ -185,9 +204,9 @@ const CheckoutPage = () => {
       const orderData = {
         user_id: user?.id,
         items: activeItems,
-        amount: activeTotal * 100, // Pass raw total to bypass DB mismatch
-        discount: discountAmount * 100,
-        shipping: shippingFee * 100,
+        amount: Math.round(activeTotal * 100), // Pass raw total as strict integer to bypass DB mismatch
+        discount: Math.round(discountAmount * 100),
+        shipping: Math.round(shippingFee * 100),
         customer_name: formData.name.trim(),
         customer_phone: formData.phone.trim(),
         customer_address: fullAddress,
