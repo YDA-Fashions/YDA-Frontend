@@ -291,7 +291,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                       animate={{ x: addMagnetic.offset.x, y: addMagnetic.offset.y }}
                       transition={{ type: "spring", stiffness: 200, damping: 20 }}
                       whileTap={{ scale: 0.98 }}
-                      onClick={handleAddToCart}
+                      onClick={product.stock > 0 ? () => addItem(product) : undefined}
                       disabled={product.stock <= 0}
                       className={`w-full py-5 text-[11px] uppercase tracking-[0.4em] font-black transition-colors ${
                         product.stock <= 0 
