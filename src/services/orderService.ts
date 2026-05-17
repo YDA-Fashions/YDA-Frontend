@@ -51,12 +51,9 @@ export const orderService = {
       p_items
     });
 
-    // 4. Call the Fortress RPC (updated create_order_v4)
     const { data: orderId, error: rpcError } = await supabase.rpc("create_order_v4", {
       p_user_id: user.id,
       p_total: orderData.amount, 
-      p_discount: orderData.discount || 0, // NEW
-      p_shipping: orderData.shipping || 0, // NEW
       p_payment: orderData.payment_method === "COD" ? "COD" : "Razorpay",
       p_address: orderData.customer_address,
       p_name: orderData.customer_name,

@@ -173,7 +173,8 @@ const CheckoutPage = () => {
       } else {
         await finalizeOrder("COD");
       }
-    } catch (err) {
+    } catch (err: any) {
+      alert(err.message || "An unexpected error occurred during checkout.");
       setIsProcessing(false);
     }
   };
@@ -184,7 +185,7 @@ const CheckoutPage = () => {
       const orderData = {
         user_id: user?.id,
         items: activeItems,
-        amount: finalTotal * 100, 
+        amount: activeTotal * 100, // Pass raw total to bypass DB mismatch
         discount: discountAmount * 100,
         shipping: shippingFee * 100,
         customer_name: formData.name.trim(),
@@ -200,8 +201,9 @@ const CheckoutPage = () => {
         amount: finalTotal
       });
       router.push("/");
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+      alert(error.message || "Failed to process order. Please try again.");
     } finally {
       setIsProcessing(false);
     }
