@@ -65,7 +65,7 @@ export default function ContactPage() {
       <main className="pt-24 md:pt-32 pb-24">
         
         {/* Hero Section with Editorial Image */}
-        <section className="relative h-[40vh] md:h-[50vh] min-h-[300px] w-full flex items-center justify-center overflow-hidden mb-16 md:mb-24">
+        <section className="relative h-[50vh] md:h-[65vh] min-h-[400px] w-full flex items-center justify-center overflow-hidden mb-16 md:mb-24">
           <div className="absolute inset-0 z-0">
             <Image 
               src="/images/home-page-image/small-tote.jpg" 
