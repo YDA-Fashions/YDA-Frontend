@@ -69,6 +69,7 @@ import GlobalInit from "@/components/common/GlobalInit";
 import JsonLd from "@/components/common/JsonLd";
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
+import WhatsAppFAB from "@/components/common/WhatsAppFAB";
 
 export default function RootLayout({
   children,
@@ -94,13 +95,14 @@ export default function RootLayout({
             ],
             "contactPoint": {
               "@type": "ContactPoint",
-              "telephone": "+91-XXXXXXXXXX",
+              "telephone": "+91-7877646756",
               "contactType": "customer service"
             }
           }}
         />
         <GlobalInit />
         {children}
+        <WhatsAppFAB />
       </body>
     </html>
   );
