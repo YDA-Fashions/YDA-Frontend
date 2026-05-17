@@ -24,27 +24,34 @@ export default async function NewArrivalsPage() {
       
       <main className="pt-20">
         
-        {/* Optimized Editorial Hero Banner */}
-        <section className="relative h-[30vh] md:h-[45vh] min-h-[250px] w-full flex items-center justify-center overflow-hidden mb-16 md:mb-24">
-          <div className="absolute inset-0 z-0">
-            <Image 
-              src="/images/Slider-image-C/Slider-image-C1.jpg" 
-              alt="YDA New Arrivals Collection" 
-              fill
-              className="object-cover object-center opacity-70 dark:opacity-45"
-              priority
-            />
-            <div className="absolute inset-0 bg-black/45 dark:bg-black/70" />
-          </div>
-          
-          <div className="relative z-10 text-center text-white px-6 pt-8 md:pt-12">
-            <h1 className="text-3xl md:text-5xl lg:text-6xl font-serif tracking-tight uppercase leading-tight mb-4">
-              New <span className="italic font-normal text-white/90 lowercase">arrivals</span>
-            </h1>
-            <div className="w-12 h-[1px] bg-white/30 mx-auto mb-4" />
-            <p className="text-[10px] md:text-xs uppercase tracking-[0.25em] font-light max-w-md mx-auto leading-relaxed text-white/80">
-              Fresh from the studio. Discover our most recent artisanal creations, blending timeless Indian craftsmanship with contemporary luxury.
-            </p>
+        {/* Split-Screen Editorial Hero Banner */}
+        <section className="relative w-full bg-[#FAF9F6] dark:bg-[#121212] overflow-hidden border-b border-black/5 dark:border-white/10 mb-16 md:mb-24">
+          <div className="grid grid-cols-1 md:grid-cols-2 min-h-[350px] md:min-h-[450px]">
+            {/* Left: Text Content with solid luxury background */}
+            <div className="flex flex-col justify-center px-8 py-16 md:px-16 lg:px-24 bg-black text-white dark:bg-[#0B0B0B]">
+              <div className="max-w-xl">
+                <span className="text-[10px] uppercase tracking-[0.4em] font-black text-white/50 mb-4 block">Fresh from the Loom</span>
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif tracking-tight uppercase leading-tight mb-6">
+                  New <br />
+                  <span className="italic font-normal text-white/95 lowercase">arrivals</span>
+                </h1>
+                <div className="w-12 h-[1px] bg-white/30 mb-6" />
+                <p className="text-xs md:text-sm uppercase tracking-[0.2em] font-light leading-relaxed text-white/70">
+                  Fresh from the studio. Discover our most recent artisanal creations, blending timeless Indian craftsmanship with contemporary luxury.
+                </p>
+              </div>
+            </div>
+            
+            {/* Right: Proportionate Image Wrapper */}
+            <div className="relative min-h-[250px] md:min-h-full w-full">
+              <Image 
+                src="/images/Slider-image-C/Slider-image-C1.jpg" 
+                alt="YDA New Arrivals Collection" 
+                fill
+                className="object-cover object-center"
+                priority
+              />
+            </div>
           </div>
         </section>
 

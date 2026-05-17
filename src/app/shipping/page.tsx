@@ -1,40 +1,31 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import { motion } from "framer-motion";
-import { Truck, Clock, ShieldCheck, MapPin, MessageCircle } from "lucide-react";
+import { Truck, Clock, ShieldCheck, MessageCircle } from "lucide-react";
 
 export default function ShippingPolicy() {
   return (
     <div className="min-h-screen bg-[#FAF9F6] dark:bg-background transition-colors duration-500">
       <Header />
       
-      <main className="pt-24 pb-24">
+      <main className="pt-32 pb-24 md:pt-40">
         
-        {/* Adjusted Editorial Hero Banner */}
-        <section className="relative h-[35vh] md:h-[45vh] min-h-[250px] w-full flex items-center justify-center overflow-hidden mb-16 md:mb-24">
-          <div className="absolute inset-0 z-0">
-            <Image 
-              src="/images/home-page-image/small-tote.jpg" 
-              alt="YDA Shipping" 
-              fill
-              className="object-cover object-center opacity-75 dark:opacity-30"
-              priority
-            />
-            <div className="absolute inset-0 bg-black/40 dark:bg-black/75" />
-          </div>
+        {/* Minimalist Premium Typography Header */}
+        <section className="container mx-auto px-6 max-w-7xl mb-16 md:mb-24 text-center">
           <motion.div 
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            className="relative z-10 text-center text-white px-6 pt-12 md:pt-16"
+            className="space-y-4 max-w-3xl mx-auto"
           >
-            <h1 className="text-3xl md:text-5xl font-serif tracking-tight mb-3 italic">
+            <span className="text-[10px] uppercase tracking-[0.5em] font-black text-black/40 dark:text-white/40 block">YDA Fashions</span>
+            <h1 className="text-4xl md:text-6xl font-serif tracking-tight text-black dark:text-white italic">
               Shipping Policy
             </h1>
-            <p className="text-[9px] md:text-[10px] uppercase tracking-[0.4em] font-black opacity-80">
+            <div className="w-16 h-[1px] bg-black/10 dark:bg-white/10 mx-auto mt-6 mb-4" />
+            <p className="text-[10px] md:text-xs uppercase tracking-[0.3em] font-medium text-black/50 dark:text-white/50">
               Artisan Curation & Delivery Timelines
             </p>
           </motion.div>
@@ -110,7 +101,7 @@ export default function ShippingPolicy() {
                   </div>
                   <div className="prose prose-sm dark:prose-invert text-black/70 dark:text-white/70 max-w-none leading-relaxed space-y-4">
                     <p>
-                      At YDA Fashions, we practice slow, intentional luxury. Because each piece in our Sanganeri and Gujarati collections is crafted using artisanal techniques and undergoes thorough quality hydration before packaging, please allow **5 to 8 business days** for your curated selection to arrive.
+                      At YDA Fashions, we practice slow, intentional luxury. Because each piece in our Sanganeri and Gujarati collections is crafted using artisanal techniques and undergoes thorough quality checks before packaging, please allow **5 to 8 business days** for your curated selection to arrive.
                     </p>
                     <p>
                       Our delivery cycle consists of a detailed dispatch assessment at our Jaipur studios followed by secure transit via our premium logistical partners.
@@ -164,7 +155,7 @@ export default function ShippingPolicy() {
                       We extend Cash on Delivery (COD) services as a luxury of choice to our patrons. However, we request that you ensure cash availability and your physical presence during the designated delivery window.
                     </p>
                     <p>
-                      patrons who repeatedly refuse or fail to accept Cash on Delivery parcels without valid cause may face restriction from placing future COD orders, limiting their transaction choices to prepaid options.
+                      Patrons who repeatedly refuse or fail to accept Cash on Delivery parcels without valid cause may face restriction from placing future COD orders, limiting their transaction choices to prepaid options.
                     </p>
                   </div>
                 </section>
