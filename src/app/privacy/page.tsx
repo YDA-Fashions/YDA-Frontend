@@ -1,96 +1,177 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import { motion } from "framer-motion";
+import { ShieldCheck, Eye, Database, Lock, Mail } from "lucide-react";
 
-const PrivacyPolicy = () => {
+export default function PrivacyPolicy() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#FAF9F6] dark:bg-background transition-colors duration-500">
       <Header />
       
-      <main className="pt-32 pb-24 md:pt-48">
-        {/* Hero Section with Editorial Image */}
-        <section className="relative h-[40vh] md:h-[50vh] min-h-[300px] w-full flex items-center justify-center overflow-hidden mb-16 md:mb-24">
+      <main className="pt-24 pb-24">
+        
+        {/* Adjusted Editorial Hero Banner */}
+        <section className="relative h-[35vh] md:h-[45vh] min-h-[250px] w-full flex items-center justify-center overflow-hidden mb-16 md:mb-24">
           <div className="absolute inset-0 z-0">
-            <img 
+            <Image 
               src="/images/home-page-image/small-tote.jpg" 
               alt="YDA Privacy" 
-              className="object-cover object-center w-full h-full opacity-80 dark:opacity-40"
+              fill
+              className="object-cover object-center opacity-75 dark:opacity-30"
+              priority
             />
-            <div className="absolute inset-0 bg-black/30 dark:bg-black/60" />
+            <div className="absolute inset-0 bg-black/40 dark:bg-black/75" />
           </div>
           <motion.div 
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            className="relative z-10 text-center text-white px-4"
+            className="relative z-10 text-center text-white px-6 pt-12 md:pt-16"
           >
-            <h1 className="text-4xl md:text-6xl font-serif tracking-tight mb-4 italic">
+            <h1 className="text-3xl md:text-5xl font-serif tracking-tight mb-3 italic">
               Privacy Policy
             </h1>
-            <p className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-black opacity-80">
-              Last Updated: {new Date().toLocaleDateString()}
+            <p className="text-[9px] md:text-[10px] uppercase tracking-[0.4em] font-black opacity-80">
+              Data Protection & Privacy Covenants
             </p>
           </motion.div>
         </section>
 
-        <div className="container mx-auto px-6 max-w-3xl">
+        <div className="container mx-auto px-6 max-w-7xl">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
+            
+            {/* Left Column: At a Glance Highlight Sidebar */}
+            <div className="lg:col-span-4">
+              <div className="lg:sticky lg:top-32 space-y-8">
+                <div className="bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-8 shadow-sm">
+                  <h3 className="text-[10px] uppercase tracking-[0.3em] font-black text-black/40 dark:text-white/40 mb-6 font-sans">Privacy Snapshot</h3>
+                  
+                  <div className="space-y-6">
+                    <div className="flex gap-4">
+                      <div className="text-black dark:text-white shrink-0 mt-1">
+                        <ShieldCheck size={18} strokeWidth={1.5} />
+                      </div>
+                      <div>
+                        <h4 className="text-xs uppercase tracking-widest font-black dark:text-white mb-1 font-sans">Payment Security</h4>
+                        <p className="text-sm text-black/60 dark:text-white/60">Processed securely via Razorpay. We do not store card credentials.</p>
+                      </div>
+                    </div>
 
-          <div className="prose prose-sm md:prose-base prose-headings:font-serif prose-headings:font-normal prose-a:text-accent-dark text-foreground/80 max-w-none space-y-8">
-            <section>
-              <p>
-                YDA Fashions ("we," "our," or "us"), a brand of Avani Enterprises, is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you visit our website (ydafashions.com) or make a purchase.
-              </p>
-            </section>
+                    <div className="flex gap-4">
+                      <div className="text-black dark:text-white shrink-0 mt-1">
+                        <Lock size={18} strokeWidth={1.5} />
+                      </div>
+                      <div>
+                        <h4 className="text-xs uppercase tracking-widest font-black dark:text-white mb-1 font-sans">Data Control</h4>
+                        <p className="text-sm text-black/60 dark:text-white/60">We never rent or sell your contact files to external marketing lists.</p>
+                      </div>
+                    </div>
 
-            <section>
-              <h2 className="text-2xl font-serif text-foreground mb-4">1. Information We Collect</h2>
-              <p>We collect information to provide better services to our customers. The types of information we collect include:</p>
-              <ul className="list-disc pl-5 mt-2 space-y-2">
-                <li><strong>Personal Information:</strong> Name, shipping address, billing address, email address, and phone number when you register or place an order.</li>
-                <li><strong>Payment Information:</strong> Processed securely via trusted third-party gateways (e.g., Razorpay). We do not store your full credit card or bank details on our servers.</li>
-                <li><strong>Device & Browsing Information:</strong> IP address, browser type, device type, and interaction data via cookies and analytics tools.</li>
-              </ul>
-            </section>
+                    <div className="flex gap-4">
+                      <div className="text-black dark:text-white shrink-0 mt-1">
+                        <Database size={18} strokeWidth={1.5} />
+                      </div>
+                      <div>
+                        <h4 className="text-xs uppercase tracking-widest font-black dark:text-white mb-1 font-sans">Cookie Usage</h4>
+                        <p className="text-sm text-black/60 dark:text-white/60">Strictly to remember shopping carts and maintain account session security.</p>
+                      </div>
+                    </div>
+                  </div>
 
-            <section>
-              <h2 className="text-2xl font-serif text-foreground mb-4">2. How We Use Your Information</h2>
-              <ul className="list-disc pl-5 space-y-2">
-                <li>To process and fulfill your orders, including sending shipping updates.</li>
-                <li>To communicate with you regarding your purchases, inquiries, and customer support.</li>
-                <li>For marketing communication (you can opt-out at any time).</li>
-                <li>To improve our website functionality, prevent fraud, and optimize our store using analytics.</li>
-              </ul>
-            </section>
+                  <div className="border-t border-black/5 dark:border-white/10 mt-8 pt-8">
+                    <p className="text-xs text-black/50 dark:text-white/50 leading-relaxed mb-4 font-sans">
+                      Want to request complete file deletion or edit your account information?
+                    </p>
+                    <a 
+                      href="mailto:support@ydafashions.com"
+                      className="inline-flex items-center gap-2 text-[10px] uppercase tracking-widest font-black text-black dark:text-white hover:underline font-sans"
+                    >
+                      <Mail size={14} />
+                      Contact Data Specialist
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-            <section>
-              <h2 className="text-2xl font-serif text-foreground mb-4">3. Third-Party Services</h2>
-              <p>
-                We may share your information with trusted third parties to help us provide our services, including:
-              </p>
-              <ul className="list-disc pl-5 mt-2 space-y-2">
-                <li><strong>Payment Processors:</strong> Razorpay for secure checkout processing.</li>
-                <li><strong>Shipping Partners:</strong> Logistics providers (e.g., Shiprocket) to deliver your orders.</li>
-                <li><strong>Analytics & Marketing:</strong> Google Analytics and Meta Pixel to understand user behavior and serve relevant advertisements.</li>
-              </ul>
-            </section>
+            {/* Right Column: Styled Policy Panels */}
+            <div className="lg:col-span-8 space-y-12">
+              <div className="bg-white dark:bg-[#121212] p-8 md:p-12 border border-black/5 dark:border-white/10 shadow-sm space-y-10">
+                
+                <section className="space-y-4">
+                  <div className="flex items-center gap-3 text-black/40 dark:text-white/40">
+                    <span className="font-serif italic text-lg">01 /</span>
+                    <h2 className="text-[10px] uppercase tracking-[0.3em] font-black font-sans">Data We Acquire</h2>
+                  </div>
+                  <div className="prose prose-sm dark:prose-invert text-black/70 dark:text-white/70 max-w-none leading-relaxed space-y-4 font-sans">
+                    <p>
+                      YDA Fashions ("we," "our," or "us"), operating under Avani Enterprises, prioritizes the integrity of your personal information. When you place a custom bag order, check out, or build an account profile, we securely acquire:
+                    </p>
+                    <ul className="list-disc pl-5 space-y-2 text-sm">
+                      <li>**Identity Records:** Full name, registered shipping and billing addresses, email address, and active telephone numbers.</li>
+                      <li>**Browsing Logs:** Analytical logs representing system interfaces, browser variations, IP coordinates, and cookie states.</li>
+                    </ul>
+                  </div>
+                </section>
 
-            <section>
-              <h2 className="text-2xl font-serif text-foreground mb-4">4. Cookies</h2>
-              <p>
-                We use cookies to enhance your browsing experience, remember your cart items, and analyze site traffic. By using our website, you consent to our use of cookies. You can manage your cookie preferences through your browser settings.
-              </p>
-            </section>
+                <div className="h-px bg-black/5 dark:bg-white/10" />
 
-            <section>
-              <h2 className="text-2xl font-serif text-foreground mb-4">5. Contact Us</h2>
-              <p>If you have any questions or concerns about our Privacy Policy, please contact us at:</p>
-              <p className="mt-2">
-                <strong>Email:</strong> support@ydafashions.com<br />
-                <strong>Customer Care:</strong> +91 7877646756
-              </p>
-            </section>
+                <section className="space-y-4">
+                  <div className="flex items-center gap-3 text-black/40 dark:text-white/40">
+                    <span className="font-serif italic text-lg">02 /</span>
+                    <h2 className="text-[10px] uppercase tracking-[0.3em] font-black font-sans">Usage Boundaries</h2>
+                  </div>
+                  <div className="prose prose-sm dark:prose-invert text-black/70 dark:text-white/70 max-w-none leading-relaxed space-y-4 font-sans">
+                    <p>
+                      Your personal data is protected under robust security layers and is strictly used to:
+                    </p>
+                    <ul className="list-disc pl-5 space-y-2 text-sm">
+                      <li>Fulfill orders, compute currency transactions, and dispatch items from Jaipur.</li>
+                      <li>Transmit critical logistics, custom fabric choices, and direct support updates via SMS/WhatsApp.</li>
+                      <li>Facilitate marketing announcements (fully controlled by opt-out preferences).</li>
+                    </ul>
+                  </div>
+                </section>
+
+                <div className="h-px bg-black/5 dark:bg-white/10" />
+
+                <section className="space-y-4">
+                  <div className="flex items-center gap-3 text-black/40 dark:text-white/40">
+                    <span className="font-serif italic text-lg">03 /</span>
+                    <h2 className="text-[10px] uppercase tracking-[0.3em] font-black font-sans">Logistical & Payment Gateways</h2>
+                  </div>
+                  <div className="prose prose-sm dark:prose-invert text-black/70 dark:text-white/70 max-w-none leading-relaxed space-y-4 font-sans">
+                    <p>
+                      We limit data exposure strictly to certified platforms required to run operations:
+                    </p>
+                    <ul className="list-disc pl-5 space-y-2 text-sm">
+                      <li>**Razorpay:** Computes transactions under rigid PCI-DSS security layers.</li>
+                      <li>**Logistic partners (e.g., Shiprocket):** Receive shipping coordinates for delivery.</li>
+                      <li>**Google & Meta Analytics:** Process anonymized traffic data to diagnose platform speed and performance.</li>
+                    </ul>
+                  </div>
+                </section>
+
+                <div className="h-px bg-black/5 dark:bg-white/10" />
+
+                <section className="space-y-4">
+                  <div className="flex items-center gap-3 text-black/40 dark:text-white/40">
+                    <span className="font-serif italic text-lg">04 /</span>
+                    <h2 className="text-[10px] uppercase tracking-[0.3em] font-black font-sans">Cookies & Sessions</h2>
+                  </div>
+                  <div className="prose prose-sm dark:prose-invert text-black/70 dark:text-white/70 max-w-none leading-relaxed space-y-4 font-sans">
+                    <p>
+                      We deploy essential cookies to stabilize cart states, protect login sessions, and optimize checkout. You can manage or disable cookie configurations within your web browser settings.
+                    </p>
+                  </div>
+                </section>
+
+              </div>
+            </div>
+
           </div>
         </div>
       </main>
@@ -98,6 +179,4 @@ const PrivacyPolicy = () => {
       <Footer />
     </div>
   );
-};
-
-export default PrivacyPolicy;
+}
