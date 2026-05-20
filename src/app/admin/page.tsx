@@ -266,16 +266,21 @@ const AdminPage = () => {
           </div>
           <div className="flex flex-col gap-3 pt-4">
             <button 
-              onClick={() => router.push("/")}
+              onClick={() => { window.location.href = "/"; }}
               className="w-full bg-foreground text-background py-4 text-[10px] uppercase tracking-[0.3em] font-sans font-bold hover:bg-accent-dark transition-all duration-300"
             >
               Return to Curation
             </button>
             <button 
               onClick={async () => {
-                const { useAuthStore } = await import("@/store/useAuthStore");
-                await useAuthStore.getState().signOut();
-                router.push("/login?redirect=/admin");
+                try {
+                  const { useAuthStore } = await import("@/store/useAuthStore");
+                  await useAuthStore.getState().signOut();
+                } catch (e) {
+                  console.error(e);
+                } finally {
+                  window.location.href = "/login?redirect=/admin";
+                }
               }}
               className="w-full border border-foreground/10 py-4 text-[10px] uppercase tracking-[0.3em] font-sans font-bold hover:bg-foreground hover:text-background transition-all duration-300"
             >
