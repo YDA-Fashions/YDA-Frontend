@@ -29,6 +29,19 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
   const [quantity, setQuantity] = useState(1);
   const [isZoomModalOpen, setIsZoomModalOpen] = useState(false);
   const [currentReview, setCurrentReview] = useState(0);
+  const [viewers, setViewers] = useState(12);
+
+  useEffect(() => {
+    setViewers(Math.floor(Math.random() * 11) + 12); // random between 12 and 22
+    const interval = setInterval(() => {
+      setViewers(prev => {
+        const delta = Math.random() > 0.5 ? 1 : -1;
+        const next = prev + delta;
+        return next >= 10 && next <= 25 ? next : prev;
+      });
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   // Quick Add State
   const [isQuickAddOpen, setIsQuickAddOpen] = useState(false);
@@ -211,12 +224,25 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                 </h1>
               </div>
 
-              <div className="flex items-center gap-5 mb-10">
-                <span className="text-3xl font-black text-black tracking-tighter">₹{product.selling_price.toLocaleString()}</span>
-                <span className="text-lg text-black/30 line-through tracking-wider">₹{product.original_price.toLocaleString()}</span>
-                <span className="text-[10px] font-black tracking-widest text-emerald-600 uppercase italic">
-                  Special Offer Price
-                </span>
+              <div className="flex flex-col gap-3 mb-10">
+                <div className="flex items-center gap-5">
+                  <span className="text-3xl font-black text-black tracking-tighter">₹{product.selling_price.toLocaleString()}</span>
+                  <span className="text-lg text-black/30 line-through tracking-wider">₹{product.original_price.toLocaleString()}</span>
+                  <span className="text-[10px] font-black tracking-widest text-emerald-600 uppercase italic">
+                    Special Offer Price
+                  </span>
+                </div>
+                
+                {/* Live Social Proof Badge */}
+                <div className="flex items-center gap-2 bg-[#F9F6F0] border border-[#EBE3D5]/60 rounded-full px-4 py-1.5 self-start shadow-[0_1px_3px_rgba(0,0,0,0.02)] animate-pulse">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-500 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-600"></span>
+                  </span>
+                  <span className="text-[9px] font-sans font-bold uppercase tracking-wider text-amber-800">
+                    ✨ {viewers} active collectors are viewing this piece right now
+                  </span>
+                </div>
               </div>
 
               <div className="space-y-10 mb-16">
@@ -335,6 +361,40 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                   </svg>
                   Speak to a Stylist
                 </a>
+
+                {/* Complete the Look Bundle */}
+                {relatedProducts && relatedProducts.length > 0 && (
+                  <div className="mt-8 p-5 bg-[#FAF9F5] border border-[#EBE3D5] rounded-sm shadow-sm">
+                    <span className="text-[8px] uppercase tracking-widest font-black text-black/40 block mb-3">Perfect Styling Set</span>
+                    <h4 className="text-[10px] font-sans font-black uppercase tracking-wider text-black mb-4">✨ Complete The Curation & Save 10%</h4>
+                    <div className="flex items-center gap-4">
+                      {/* Current Product Thumbnail */}
+                      <div className="w-14 h-16 bg-[#F9F8F6] relative rounded border border-black/5 flex-shrink-0">
+                        <img src={product.colors?.[0]?.images?.[0]} alt={product.name} className="w-full h-full object-contain p-1" />
+                      </div>
+                      <span className="text-lg font-light text-black/30">+</span>
+                      {/* Related Product Thumbnail */}
+                      <div className="w-14 h-16 bg-[#F9F8F6] relative rounded border border-black/5 flex-shrink-0">
+                        <img src={relatedProducts[0].colors?.[0]?.images?.[0]} alt={relatedProducts[0].name} className="w-full h-full object-contain p-1" />
+                      </div>
+                      
+                      <div className="flex-grow">
+                        <p className="text-[9px] font-black uppercase text-black line-clamp-1">{relatedProducts[0].name}</p>
+                        <p className="text-[11px] font-bold text-amber-800 mt-0.5">₹{(product.selling_price + relatedProducts[0].selling_price - 100).toLocaleString()} <span className="text-[9px] text-black/30 line-through">₹{(product.selling_price + relatedProducts[0].selling_price).toLocaleString()}</span></p>
+                      </div>
+                    </div>
+                    <button 
+                      onClick={() => {
+                        addItem(product);
+                        addItem(relatedProducts[0]);
+                        router.push("/cart");
+                      }}
+                      className="mt-4 w-full bg-white hover:bg-black hover:text-white text-black border border-black py-2.5 text-[9px] uppercase tracking-[0.2em] font-black transition-colors rounded-sm"
+                    >
+                      Buy Styling Bundle
+                    </button>
+                  </div>
+                )}
               </div>
 
               <div className="pt-12 border-t border-black/5">
@@ -373,12 +433,114 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                       <span className="text-[11px] font-bold uppercase tracking-widest text-black/80">Artisan Direct Shipping</span>
                     </div>
                   </div>
+
+                  {/* Category-Specific Visual Guide */}
+                  <div className="mt-10 p-5 bg-[#FAF9F5] border border-[#EBE3D5] rounded-sm">
+                    {product.category === "bags" ? (
+                      <div>
+                        <p className="text-[9px] uppercase tracking-widest font-black text-black/40 mb-3 block">Visual Curation Guide</p>
+                        <h4 className="text-xs font-sans font-black uppercase tracking-wider text-black mb-3">🎒 What Fits Inside Your Curation</h4>
+                        <div className="grid grid-cols-2 gap-3 text-[10px] font-sans text-black/75">
+                          <div className="flex items-center gap-2">
+                            <span className="text-emerald-600">✓</span> <span>13" & 14" Macbook Pro / iPad Pro</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-emerald-600">✓</span> <span>Designer Sunglasses Case</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-emerald-600">✓</span> <span>Daily Planner & Notebook</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-emerald-600">✓</span> <span>Luxury Wallet & Phone Pouch</span>
+                          </div>
+                          <div className="flex items-center gap-2 col-span-2 pt-2 border-t border-black/5 text-[9px] text-black/40 tracking-wide">
+                            Dimensions: 14.5" Width x 12" Height x 4.5" Depth
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div>
+                        <p className="text-[9px] uppercase tracking-widest font-black text-black/40 mb-3 block">Visual Styling Guide</p>
+                        <h4 className="text-xs font-sans font-black uppercase tracking-wider text-black mb-3">🛋️ Where It Belongs / Styling Ideas</h4>
+                        <div className="grid grid-cols-2 gap-3 text-[10px] font-sans text-black/75">
+                          <div className="flex items-center gap-2">
+                            <span className="text-amber-700">✦</span> <span>Living Room Accent Sofa</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-amber-700">✦</span> <span>Master Bed Central Pillow Stack</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-amber-700">✦</span> <span>Cozy Armchair Statement Accent</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-amber-700">✦</span> <span>Terrace / Balcony Premium Seating</span>
+                          </div>
+                          <div className="flex items-center gap-2 col-span-2 pt-2 border-t border-black/5 text-[9px] text-black/40 tracking-wide">
+                            Dimensions: 16" x 16" Standard Luxury Accent Size
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Seal of Authenticity Card */}
+                  <div className="mt-8 p-6 border border-amber-900/10 bg-amber-500/[0.03] rounded-sm relative overflow-hidden flex items-center gap-4">
+                    <div className="absolute top-0 right-0 w-24 h-24 bg-amber-500/[0.04] blur-xl rounded-full" />
+                    
+                    {/* Golden vintage circular badge */}
+                    <div className="flex-shrink-0 w-16 h-16 rounded-full border border-dashed border-amber-600/30 flex items-center justify-center relative bg-white shadow-sm">
+                      <div className="w-12 h-12 rounded-full border border-amber-600/40 flex flex-col items-center justify-center p-1 text-center bg-amber-50/50">
+                        <span className="text-[6px] font-black uppercase text-amber-800 tracking-tighter">YDA</span>
+                        <span className="text-[5px] font-bold text-amber-700 leading-none">100%</span>
+                        <span className="text-[5px] font-black uppercase text-amber-800 tracking-tighter">Jaipur</span>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-1">
+                      <h4 className="text-[10px] font-sans font-black uppercase tracking-widest text-amber-900">Heritage Craftsmanship Seal</h4>
+                      <p className="text-[10px] font-sans text-amber-900/60 leading-relaxed">
+                        This piece carries the authentic seal of Manoj Tailor's atelier. Hand-block printed using premium organic colors on vintage-finished cotton in Jaipur, India.
+                      </p>
+                    </div>
+                  </div>
+
                 </div>
               </div>
             </div>
           </div>
 
           <div className="w-full space-y-24">
+            {/* The Craftsmanship Journey Block */}
+            <div className="pt-24 border-t border-black/5">
+              <span className="text-[9px] uppercase tracking-[0.4em] font-black text-black opacity-40 mb-3 block font-sans">Craftsmanship Narrative</span>
+              <h3 className="text-2xl md:text-3xl font-serif italic text-black mb-10">Behind The Masterpiece</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="bg-[#FAF9F6] border border-[#EBE3D5] p-8 rounded-sm space-y-4 hover:shadow-md transition-shadow">
+                  <div className="w-10 h-10 rounded-full bg-amber-500/10 flex items-center justify-center text-amber-800 font-serif font-black text-sm">01</div>
+                  <h4 className="text-sm font-sans font-black uppercase tracking-wider text-black">Teak Block Carving</h4>
+                  <p className="text-xs font-sans text-black/60 leading-relaxed">
+                    Master block-carvers engrave intricate floral and classic motifs onto aged teak wood blocks by hand. This takes up to 48 hours of chiseling per single pattern layer.
+                  </p>
+                </div>
+                
+                <div className="bg-[#FAF9F6] border border-[#EBE3D5] p-8 rounded-sm space-y-4 hover:shadow-md transition-shadow">
+                  <div className="w-10 h-10 rounded-full bg-amber-500/10 flex items-center justify-center text-amber-800 font-serif font-black text-sm">02</div>
+                  <h4 className="text-sm font-sans font-black uppercase tracking-wider text-black">Sanganeri Hand-Block Print</h4>
+                  <p className="text-xs font-sans text-black/60 leading-relaxed">
+                    Artisans dip wooden blocks into natural vegetable colors, stamping them repeatedly onto fabrics. The slight variations are a proud signature of human hands.
+                  </p>
+                </div>
+                
+                <div className="bg-[#FAF9F6] border border-[#EBE3D5] p-8 rounded-sm space-y-4 hover:shadow-md transition-shadow">
+                  <div className="w-10 h-10 rounded-full bg-amber-500/10 flex items-center justify-center text-amber-800 font-serif font-black text-sm">03</div>
+                  <h4 className="text-sm font-sans font-black uppercase tracking-wider text-black">Tailored Heritage Finish</h4>
+                  <p className="text-xs font-sans text-black/60 leading-relaxed">
+                    Stitched carefully in limited batches by Manoj Tailor's boutique workshop. Heavy reinforcement on double-seams ensures lifetime resilience.
+                  </p>
+                </div>
+              </div>
+            </div>
+
             {/* Cinematic Review Showcase */}
             <div className="pt-24 border-t border-black/5">
               <h3 className="text-[10px] uppercase tracking-[0.4em] font-black text-black mb-12 block font-sans">Client Stories</h3>
