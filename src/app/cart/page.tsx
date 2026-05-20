@@ -11,6 +11,13 @@ import Footer from "@/components/common/Footer";
 import { useCartStore } from "@/store/useCartStore";
 import { useUIStore } from "@/store/useUIStore";
 
+const URGENCY_MESSAGES = [
+  "🔥 Limited Stock. Buy Within",
+  "⏳ Masterpieces are reserved. Checkout within",
+  "⚡ High Demand. Complete purchase within",
+  "🛍️ Popular curation. Secure items within"
+];
+
 const CartPage = () => {
   const router = useRouter();
   const { items, removeItem, updateQuantity, getTotalPrice, getTotalItems, clearCart, cartTimerExpiresAt } = useCartStore();
@@ -20,9 +27,13 @@ const CartPage = () => {
 
   const [timeLeft, setTimeLeft] = useState<string>("");
   const [showExpiredModal, setShowExpiredModal] = useState(false);
+  const [selectedMessage, setSelectedMessage] = useState<string>("");
 
   useEffect(() => {
     setIsMounted(true);
+    // Select a random urgency message on load
+    const randomIndex = Math.floor(Math.random() * URGENCY_MESSAGES.length);
+    setSelectedMessage(URGENCY_MESSAGES[randomIndex]);
   }, []);
 
   useEffect(() => {
@@ -69,26 +80,22 @@ const CartPage = () => {
         <div className="container mx-auto px-6 max-w-7xl">
           
           {/* URGENCY COUNTDOWN TIMER BANNER */}
-          {isMounted && items.length > 0 && timeLeft && (
-            <div className="mb-8 bg-red-600 border border-red-700 text-white rounded-sm px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4 shadow-md relative overflow-hidden">
+          {isMounted && items.length > 0 && timeLeft && selectedMessage && (
+            <div className="mb-6 bg-red-600 border border-red-700 text-white rounded-sm px-4 py-3.5 flex items-center justify-between gap-4 shadow-sm relative overflow-hidden">
               {/* Background heartbeat pulse effect */}
               <div className="absolute inset-0 bg-red-500 opacity-20 animate-pulse pointer-events-none" />
               
-              <div className="flex items-center gap-4 z-10">
-                <span className="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-white/20">
-                  <span className="w-2.5 h-2.5 rounded-full bg-white animate-ping" />
+              <div className="flex items-center gap-2.5 z-10">
+                <span className="flex-shrink-0 flex items-center justify-center w-5 h-5 rounded-full bg-white/20">
+                  <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping" />
                 </span>
-                <div className="text-left">
-                  <p className="text-[10px] uppercase tracking-[0.3em] font-black text-white/80">Curation Reservation Alert</p>
-                  <p className="text-sm md:text-base font-serif italic font-bold">
-                    Handcrafted masterworks are in high demand. We have reserved your pieces.
-                  </p>
-                </div>
+                <p className="text-xs md:text-sm font-sans font-bold tracking-wide uppercase">
+                  {selectedMessage}
+                </p>
               </div>
 
-              <div className="z-10 flex-shrink-0 flex items-center gap-3 bg-white/10 px-6 py-2 border border-white/20 rounded-sm">
-                <span className="text-[10px] uppercase tracking-widest font-black text-white/70">RELEASING IN</span>
-                <span className="text-2xl font-sans font-black tracking-widest tabular-nums animate-pulse text-[#FFD700]">
+              <div className="z-10 flex-shrink-0 flex items-center bg-white/10 px-3 py-1 border border-white/20 rounded-sm">
+                <span className="text-base md:text-lg font-sans font-black tracking-widest tabular-nums animate-pulse text-[#FFD700]">
                   {timeLeft}
                 </span>
               </div>
