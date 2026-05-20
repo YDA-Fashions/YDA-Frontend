@@ -232,50 +232,6 @@ const CartPage = () => {
                       </div>
                     ))}
                   </div>
-
-                  {/* Frequently Bought Together Widget */}
-                  {recommendedItems.length > 0 && (
-                    <div className="mt-20 pt-10 border-t border-black/[0.08]">
-                      <span className="text-[9px] uppercase tracking-[0.3em] font-black text-black/40 block mb-2">Complements</span>
-                      <h3 className="text-lg font-serif italic text-black mb-6">
-                        Frequently Bought Together
-                      </h3>
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                        {recommendedItems.map((product) => (
-                          <div 
-                            key={product.id} 
-                            className="border border-[#EBE3D5] bg-[#FDFCFB] p-4 rounded-sm flex flex-col justify-between group"
-                          >
-                            <div>
-                              <Link href={`/product/${product.id}`}>
-                                <div className="relative w-full aspect-square bg-[#F9F8F6] rounded-sm overflow-hidden mb-3 border border-black/[0.02]">
-                                  <Image 
-                                    src={product.colors?.[0]?.images?.[0] || "/images/placeholder.jpg"} 
-                                    alt={product.name} 
-                                    fill 
-                                    className="object-contain p-2 group-hover:scale-105 transition-transform duration-500"
-                                  />
-                                </div>
-                              </Link>
-                              <Link href={`/product/${product.id}`}>
-                                <h4 className="text-xs font-sans font-bold text-black/85 hover:text-amber-800 line-clamp-1">
-                                  {product.name}
-                                </h4>
-                              </Link>
-                              <p className="text-[8px] text-black/40 uppercase tracking-widest mt-0.5">{product.category}</p>
-                              <p className="text-xs font-sans font-black text-black mt-2">₹{product.selling_price.toLocaleString()}</p>
-                            </div>
-                            <button
-                              onClick={() => addItem(product)}
-                              className="mt-4 w-full bg-white hover:bg-black hover:text-white border border-black/20 text-black py-2 text-[9px] uppercase tracking-widest font-sans font-black transition-colors rounded-sm"
-                            >
-                              + Add to Curation
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
                 </div>
 
                 {/* Right Column: Invoice-Style Summary Card */}
@@ -409,6 +365,50 @@ const CartPage = () => {
                 </div>
 
               </div>
+
+              {/* Frequently Bought Together - BELOW the grid so it appears after summary on mobile */}
+              {recommendedItems.length > 0 && (
+                <div className="mt-12 pt-8 border-t border-black/[0.08]">
+                  <span className="text-[9px] uppercase tracking-[0.3em] font-black text-black/40 block mb-2">Complements</span>
+                  <h3 className="text-lg font-serif italic text-black mb-6">
+                    Frequently Bought Together
+                  </h3>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+                    {recommendedItems.map((product) => (
+                      <div 
+                        key={product.id} 
+                        className="border border-[#EBE3D5] bg-[#FDFCFB] p-2.5 sm:p-4 rounded-sm flex flex-col justify-between group"
+                      >
+                        <div>
+                          <Link href={`/product/${product.id}`}>
+                            <div className="relative w-full aspect-square bg-[#F9F8F6] rounded-sm overflow-hidden mb-2 border border-black/[0.02]">
+                              <Image 
+                                src={product.colors?.[0]?.images?.[0] || "/images/placeholder.jpg"} 
+                                alt={product.name} 
+                                fill 
+                                className="object-contain p-1.5 group-hover:scale-105 transition-transform duration-500"
+                              />
+                            </div>
+                          </Link>
+                          <Link href={`/product/${product.id}`}>
+                            <h4 className="text-[10px] sm:text-xs font-sans font-bold text-black/85 hover:text-amber-800 line-clamp-1">
+                              {product.name}
+                            </h4>
+                          </Link>
+                          <p className="text-[7px] sm:text-[8px] text-black/40 uppercase tracking-widest mt-0.5">{product.category}</p>
+                          <p className="text-[10px] sm:text-xs font-sans font-black text-black mt-1">₹{product.selling_price.toLocaleString()}</p>
+                        </div>
+                        <button
+                          onClick={() => addItem(product)}
+                          className="mt-2 w-full bg-white hover:bg-black hover:text-white border border-black/20 text-black py-1.5 text-[8px] sm:text-[9px] uppercase tracking-widest font-sans font-black transition-colors rounded-sm"
+                        >
+                          + Add
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 

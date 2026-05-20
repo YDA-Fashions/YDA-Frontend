@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowLeft, ShieldCheck, Truck, CreditCard, Banknote, ChevronRight, CheckCircle2 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import Header from "@/components/common/Header";
@@ -13,6 +14,7 @@ import { useUIStore } from "@/store/useUIStore";
 import { useProductStore } from "@/store/useProductStore";
 import { addressService } from "@/services/addressService";
 import { orderService } from "@/services/orderService";
+import { PRODUCTS } from "@/data/products";
 import { couponService } from "@/services/couponService";
 import { supabase } from "@/lib/supabase";
 
@@ -28,7 +30,7 @@ const CheckoutPage = () => {
   const buyNowId = searchParams?.get("buyNow");
   const buyNowQty = parseInt(searchParams?.get("qty") || "1");
 
-  const { items: cartItems, getTotalPrice, clearCart } = useCartStore();
+  const { items: cartItems, getTotalPrice, clearCart, addItem } = useCartStore();
   const { products } = useProductStore();
   const { user, isLoading: isAuthLoading } = useAuthStore();
   const { setOrderModalOpen, setErrorModalOpen } = useUIStore();
@@ -108,25 +110,6 @@ const CheckoutPage = () => {
       router.push("/cart");
     }
   }, [activeItems.length, router, isAuthLoading]);
-
-  useEffect(() => {
-    const couponParam = searchParams?.get("coupon");
-    if (couponParam) {
-      const autoApply = async () => {
-        setIsValidatingCoupon(true);
-        setCouponError("");
-        try {
-          const coupon = await couponService.validateCoupon(couponParam);
-          setAppliedCoupon({ code: coupon.code, percent: coupon.discount_percent });
-        } catch (err: any) {
-          console.error("Failed to auto-apply coupon from URL:", err);
-        } finally {
-          setIsValidatingCoupon(false);
-        }
-      };
-      autoApply();
-    }
-  }, [searchParams]);
 
   const handleApplyCoupon = async () => {
     if (!couponCode.trim()) return;
@@ -405,6 +388,37 @@ const CheckoutPage = () => {
 
                     {currentStep === 3 && (
                       <div className="space-y-8">
+                        {/* Coupon Code Input - visible in payment step */}
+                        <div className="bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-5 md:p-6 shadow-sm">
+                          <p className="text-[9px] md:text-[10px] uppercase tracking-widest font-black mb-4 text-black/50 dark:text-white/40">Have a Coupon Code?</p>
+                          <div className="flex gap-2">
+                            <input 
+                              type="text" 
+                              placeholder="Enter code" 
+                              value={couponCode}
+                              onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                              className="flex-grow bg-[#F9F9F7] dark:bg-white/5 border border-black/10 dark:border-white/10 p-3.5 text-xs tracking-widest font-bold outline-none focus:ring-1 ring-black/5 dark:ring-white/10 uppercase dark:text-white"
+                            />
+                            <button 
+                              onClick={handleApplyCoupon}
+                              disabled={isValidatingCoupon || !couponCode}
+                              className="bg-black text-white dark:bg-white dark:text-black px-6 text-[10px] font-black uppercase tracking-widest hover:bg-black/90 dark:hover:bg-white/80 disabled:opacity-50 transition-all"
+                            >
+                              {isValidatingCoupon ? "..." : "Apply"}
+                            </button>
+                          </div>
+                          {appliedCoupon && (
+                            <div className="mt-3 p-3 bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-100 dark:border-emerald-500/20 flex justify-between items-center">
+                              <span className="text-[9px] font-black uppercase text-emerald-700 dark:text-emerald-400 tracking-widest">Active: {appliedCoupon.code} ({appliedCoupon.percent}% off)</span>
+                              <button onClick={() => setAppliedCoupon(null)} className="text-[9px] font-black uppercase text-red-600 underline">Remove</button>
+                            </div>
+                          )}
+                          {couponError && (
+                            <p className="mt-2 text-[9px] text-red-600 font-bold">{couponError}</p>
+                          )}
+                        </div>
+
+                        {/* Payment Method Selection */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <button
                             onClick={() => setPaymentMethod("COD")}
@@ -433,6 +447,35 @@ const CheckoutPage = () => {
                           </button>
                         </div>
 
+                        {/* Compact Cross-Sell (Mobile Friendly) */}
+                        {(() => {
+                          const cartIds = new Set(activeItems.map(i => i.id));
+                          const crossSell = PRODUCTS.filter(p => !cartIds.has(p.id)).slice(0, 3);
+                          if (crossSell.length === 0) return null;
+                          return (
+                            <div className="pt-6 border-t border-black/[0.06]">
+                              <p className="text-[9px] uppercase tracking-widest font-black text-black/40 dark:text-white/30 mb-4">You may also like</p>
+                              <div className="grid grid-cols-3 gap-2.5">
+                                {crossSell.map(product => (
+                                  <div key={product.id} className="border border-black/[0.06] dark:border-white/10 bg-white dark:bg-white/5 p-2 rounded-sm group">
+                                    <Link href={`/product/${product.id}`}>
+                                      <div className="relative w-full aspect-square bg-[#F9F8F6] dark:bg-white/5 rounded-sm overflow-hidden mb-1.5">
+                                        <Image src={product.colors?.[0]?.images?.[0] || "/images/placeholder.jpg"} alt={product.name} fill className="object-contain p-1 group-hover:scale-105 transition-transform duration-300" />
+                                      </div>
+                                    </Link>
+                                    <h4 className="text-[9px] font-bold text-black/80 dark:text-white/80 line-clamp-1">{product.name}</h4>
+                                    <p className="text-[9px] font-black text-black dark:text-white mt-0.5">₹{product.selling_price.toLocaleString()}</p>
+                                    <button onClick={() => addItem(product)} className="mt-1.5 w-full bg-white dark:bg-white/10 hover:bg-black hover:text-white border border-black/15 dark:border-white/10 text-black dark:text-white py-1 text-[8px] uppercase tracking-widest font-black transition-colors rounded-sm">
+                                      + Add
+                                    </button>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          );
+                        })()}
+
+                        {/* Review & Checkout Buttons */}
                         <div className="pt-6 flex flex-col md:flex-row gap-4">
                            <button onClick={prevStep} className="px-8 py-4 border border-black/10 dark:border-white/10 text-[9px] uppercase tracking-[0.4em] font-black hover:bg-black/5 dark:hover:bg-white/5 transition-all dark:text-white">
                              Review Address
