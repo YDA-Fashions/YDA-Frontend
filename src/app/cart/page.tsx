@@ -89,7 +89,7 @@ const CartPage = () => {
           
           {/* URGENCY COUNTDOWN TIMER BANNER */}
           {isMounted && items.length > 0 && timeLeft && selectedMessage && (
-            <div className="mb-6 bg-red-600 border border-red-700 text-white rounded-sm px-4 py-3.5 flex items-center justify-between gap-4 shadow-sm relative overflow-hidden">
+            <div className="mb-8 bg-red-600 border border-red-700 text-white rounded-sm px-4 py-3 flex items-center justify-between gap-4 shadow-sm relative overflow-hidden">
               {/* Background heartbeat pulse effect */}
               <div className="absolute inset-0 bg-red-500 opacity-20 animate-pulse pointer-events-none" />
               
@@ -97,13 +97,13 @@ const CartPage = () => {
                 <span className="flex-shrink-0 flex items-center justify-center w-5 h-5 rounded-full bg-white/20">
                   <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping" />
                 </span>
-                <p className="text-xs md:text-sm font-sans font-bold tracking-wide uppercase">
+                <p className="text-xs font-sans font-bold tracking-wider uppercase">
                   {selectedMessage}
                 </p>
               </div>
 
               <div className="z-10 flex-shrink-0 flex items-center bg-white/10 px-3 py-1 border border-white/20 rounded-sm">
-                <span className="text-base md:text-lg font-sans font-black tracking-widest tabular-nums animate-pulse text-[#FFD700]">
+                <span className="text-sm font-sans font-black tracking-widest tabular-nums animate-pulse text-[#FFD700]">
                   {timeLeft}
                 </span>
               </div>
@@ -118,266 +118,295 @@ const CartPage = () => {
               </div>
             </div>
           ) : items.length === 0 ? (
-            <div className="py-32 text-center bg-white border border-black/5 p-12">
-              <div className="w-20 h-20 bg-black/5 rounded-full flex items-center justify-center mx-auto mb-8">
-                <ShoppingBag size={32} className="text-black/20" strokeWidth={1} />
+            <div className="py-32 text-center bg-white border border-black/5 p-12 max-w-xl mx-auto rounded-sm">
+              <div className="w-20 h-20 bg-black/5 rounded-full flex items-center justify-center mx-auto mb-6">
+                <ShoppingBag size={32} className="text-black/30" strokeWidth={1} />
               </div>
-              <h1 className="text-3xl font-serif mb-4">Your Shopping Cart is empty.</h1>
+              <h1 className="text-3xl font-serif italic mb-3">Your Curation is Empty</h1>
+              <p className="text-sm font-sans text-black/50 mb-8 max-w-sm mx-auto leading-relaxed">
+                Add handcrafted masterworks, cushions, or luxury accessories from YDA collections to start your curation.
+              </p>
               <Link 
                 href="/shop"
-                className="inline-block bg-[#FFD700] hover:bg-[#F2CC00] text-black px-8 py-3 rounded-md text-sm font-bold shadow-sm transition-colors mt-4"
+                className="inline-block bg-black hover:bg-black/80 text-white px-8 py-3.5 text-[10px] font-sans font-bold uppercase tracking-widest rounded-sm transition-all"
               >
-                Continue shopping
+                Browse Collections
               </Link>
             </div>
           ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-              
-              {/* Left Column: Cart Items (Amazon Style) */}
-              <div className="lg:col-span-9 bg-white p-6 border border-black/5 rounded-sm">
-                <div className="flex justify-between items-end border-b border-black/10 pb-2 mb-6">
-                  <h1 className="text-3xl font-serif">Shopping Cart</h1>
-                  <span className="text-sm font-sans text-black/60 hidden md:block">Price</span>
-                </div>
-
-                <div className="space-y-6">
-                  {items.map((item) => (
-                     <div key={item.id} className="flex flex-col sm:flex-row gap-6 pb-6 border-b border-black/5 last:border-0 last:pb-0">
-                      
-                      {/* Product Image */}
-                      <Link href={`/product/${item.id}`} className="flex-shrink-0">
-                        <div className="relative w-32 md:w-48 aspect-square bg-[#F5F5F0] rounded-sm overflow-hidden mix-blend-multiply">
-                          <Image 
-                            src={item.colors?.[0]?.images?.[0] || "/images/placeholder.jpg"} 
-                            alt={item.name} 
-                            fill 
-                            className="object-contain p-2" 
-                          />
-                        </div>
-                      </Link>
-
-                      {/* Product Details */}
-                      <div className="flex-grow flex flex-col sm:flex-row justify-between">
-                        <div className="space-y-1 sm:pr-8">
-                          <Link href={`/product/${item.id}`}>
-                            <h3 className="text-lg md:text-xl font-sans font-medium line-clamp-2 hover:text-amber-700 hover:underline">
-                              {item.name}
-                            </h3>
-                          </Link>
-                          <p className="text-sm text-emerald-700 font-sans font-medium mt-1">In stock</p>
-                          <p className="text-xs text-black/60 font-sans mt-1">Eligible for FREE Shipping</p>
-                          <p className="text-xs text-black/60 font-sans mt-1 uppercase tracking-widest"><span className="font-bold">Category:</span> {item.category}</p>
-                          
-                          {/* Quantity & Actions (Amazon Style Layout) */}
-                          <div className="flex items-center flex-wrap gap-3 mt-4 pt-2">
-                            <div className="flex items-center bg-[#FBF9F4] rounded-md border border-black/10 shadow-sm overflow-hidden">
-                              <button 
-                                onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                                className="px-3 py-1 bg-black/5 hover:bg-black/10 transition-colors"
-                              >
-                                <Minus size={14} />
-                              </button>
-                              <span className="px-3 py-1 text-sm font-sans min-w-[32px] text-center">{item.quantity}</span>
-                              <button 
-                                onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                className="px-3 py-1 bg-black/5 hover:bg-black/10 transition-colors"
-                              >
-                                <Plus size={14} />
-                              </button>
-                            </div>
-                            <span className="text-black/20">|</span>
-                            <button 
-                              onClick={() => removeItem(item.id)}
-                              className="text-sm text-cyan-700 hover:text-amber-700 hover:underline font-sans"
-                            >
-                              Delete
-                            </button>
-                            <span className="text-black/20">|</span>
-                            <button className="text-sm text-cyan-700 hover:text-amber-700 hover:underline font-sans">
-                              Share
-                            </button>
-                          </div>
-                        </div>
-
-                        {/* Price (Right side on desktop) */}
-                        <div className="mt-4 sm:mt-0 text-left sm:text-right flex-shrink-0">
-                          <p className="text-xl font-bold font-sans">
-                            ₹{(item.selling_price * item.quantity).toLocaleString()}
-                          </p>
-                          {item.original_price > item.selling_price && (
-                            <p className="text-xs text-black/40 line-through mt-1">
-                              ₹{(item.original_price * item.quantity).toLocaleString()}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-
-                    </div>
-                  ))}
-                </div>
-                
-                <div className="mt-6 pt-4 border-t border-black/10 text-right">
-                  <p className="text-lg font-sans">
-                    Subtotal ({getTotalItems()} items): <span className="font-bold">₹{subtotal.toLocaleString()}</span>
-                  </p>
-                </div>
-
-                {/* Frequently Bought Together Widget */}
-                {recommendedItems.length > 0 && (
-                  <div className="mt-12 pt-8 border-t border-black/10">
-                    <h3 className="text-sm font-sans font-bold uppercase tracking-[0.2em] text-black/80 mb-6">
-                      Frequently Bought Together
-                    </h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                      {recommendedItems.map((product) => (
-                        <div key={product.id} className="border border-[#EBE3D5] bg-[#FCFBFA] p-4 rounded-sm flex flex-col justify-between group">
-                          <div>
-                            <Link href={`/product/${product.id}`}>
-                              <div className="relative w-full aspect-square bg-[#F5F5F0] rounded-sm overflow-hidden mb-3">
-                                <Image 
-                                  src={product.colors?.[0]?.images?.[0] || "/images/placeholder.jpg"} 
-                                  alt={product.name} 
-                                  fill 
-                                  className="object-contain p-2 group-hover:scale-105 transition-transform duration-300"
-                                />
-                              </div>
-                            </Link>
-                            <Link href={`/product/${product.id}`}>
-                              <h4 className="text-xs font-sans font-bold text-black/80 hover:text-amber-800 line-clamp-1">
-                                {product.name}
-                              </h4>
-                            </Link>
-                            <p className="text-[9px] text-black/50 uppercase tracking-widest mt-0.5">{product.category}</p>
-                            <p className="text-xs font-sans font-black text-black mt-1.5">₹{product.selling_price.toLocaleString()}</p>
-                          </div>
-                          <button
-                            onClick={() => addItem(product)}
-                            className="mt-4 w-full bg-white hover:bg-black hover:text-white border border-black/20 text-black py-2.5 text-[9px] uppercase tracking-widest font-sans font-black transition-colors rounded-sm"
-                          >
-                            + Add to Cart
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
+            <div>
+              {/* Cinematic Luxury Page Header */}
+              <div className="text-center max-w-2xl mx-auto mb-16">
+                <span className="text-[9px] uppercase tracking-[0.4em] font-black text-black/40">Boutique Checkout</span>
+                <h1 className="text-4xl md:text-5xl font-serif italic text-black mt-2 mb-4">Your Curation</h1>
+                <p className="text-sm font-sans text-black/60 leading-relaxed">
+                  A carefully selected range of YDA handcrafted luxury creations, reserved for your private collection.
+                </p>
               </div>
 
-              {/* Right Column: Order Summary (Amazon Style) */}
-              <div className="lg:col-span-3 space-y-6">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
                 
-                <div className="bg-white border border-black/5 p-5 rounded-sm">
-                  {/* Interactive Gold Progress Bar */}
-                  <div className="mb-6 space-y-2">
-                    <div className="flex justify-between items-center text-[10px] font-sans uppercase tracking-wider">
-                      <span className="font-black text-black/80">
-                        {subtotal >= threshold ? "🎉 Free Delivery Unlocked" : "Delivery Progress"}
-                      </span>
-                      <span className="text-black/50 font-bold">
-                        {subtotal >= threshold ? "100%" : `${Math.floor((subtotal / threshold) * 100)}%`}
-                      </span>
-                    </div>
-                    {/* Visual Bar */}
-                    <div className="w-full h-2 bg-[#F5F4F0] rounded-full overflow-hidden border border-[#EBE3D5]">
+                {/* Left Column: Spacious Curation Items List */}
+                <div className="lg:col-span-8 space-y-10">
+                  <div className="space-y-8">
+                    {items.map((item) => (
                       <div 
-                        className="h-full bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-600 rounded-full transition-all duration-500" 
-                        style={{ width: `${Math.min((subtotal / threshold) * 100, 100)}%` }}
-                      />
-                    </div>
-                    <p className="text-[10px] font-sans text-black/60 leading-relaxed pt-0.5">
-                      {subtotal >= threshold 
-                        ? "Your curation qualifies for FREE delivery and a surprise handcrafted gift!" 
-                        : `Add ₹${awayAmount.toLocaleString()} more to unlock FREE delivery and surprise gift.`
-                      }
-                    </p>
+                        key={item.id} 
+                        className="flex flex-col sm:flex-row gap-8 pb-8 border-b border-black/[0.06] last:border-0 last:pb-0"
+                      >
+                        {/* Product Image Frame */}
+                        <Link href={`/product/${item.id}`} className="flex-shrink-0">
+                          <div className="relative w-36 md:w-44 aspect-[4/5] bg-[#F9F8F6] rounded-sm overflow-hidden border border-black/[0.03] shadow-sm group">
+                            <Image 
+                              src={item.colors?.[0]?.images?.[0] || "/images/placeholder.jpg"} 
+                              alt={item.name} 
+                              fill 
+                              className="object-contain p-3 group-hover:scale-105 transition-transform duration-500" 
+                            />
+                          </div>
+                        </Link>
+
+                        {/* Product Detailed Metadata */}
+                        <div className="flex-grow flex flex-col justify-between py-1">
+                          <div className="space-y-2">
+                            <div className="flex justify-between items-start gap-4">
+                              <div>
+                                <span className="text-[8px] uppercase tracking-widest font-black text-black/40 block mb-1">
+                                  {item.category}
+                                </span>
+                                <Link href={`/product/${item.id}`}>
+                                  <h3 className="text-lg md:text-xl font-serif italic text-black hover:text-amber-800 transition-colors leading-tight">
+                                    {item.name}
+                                  </h3>
+                                </Link>
+                              </div>
+                              <div className="text-right flex-shrink-0">
+                                <p className="text-base font-sans font-bold text-black">
+                                  ₹{(item.selling_price * item.quantity).toLocaleString()}
+                                </p>
+                                {item.original_price > item.selling_price && (
+                                  <p className="text-xs text-black/40 line-through mt-0.5">
+                                    ₹{(item.original_price * item.quantity).toLocaleString()}
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                            
+                            <p className="text-xs text-emerald-700 font-sans font-medium">In Stock • Dispatches in 24 Hours</p>
+                            <p className="text-[10px] text-black/50 font-sans tracking-wide">
+                              Complimentary wrapping & gift message available
+                            </p>
+                          </div>
+
+                          {/* Minimal Quantity & Action Bar */}
+                          <div className="flex items-center justify-between flex-wrap gap-4 mt-6 pt-4 border-t border-black/[0.04]">
+                            <div className="flex items-center gap-1 bg-[#F5F4F0] border border-black/[0.06] rounded-sm px-1 py-0.5">
+                              <button 
+                                onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                className="p-1 hover:text-black text-black/40 transition-colors"
+                              >
+                                <Minus size={11} />
+                              </button>
+                              <span className="px-3 text-xs font-sans font-bold text-black min-w-[24px] text-center">
+                                {item.quantity}
+                              </span>
+                              <button 
+                                onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                className="p-1 hover:text-black text-black/40 transition-colors"
+                              >
+                                <Plus size={11} />
+                              </button>
+                            </div>
+
+                            <div className="flex items-center gap-4">
+                              <button 
+                                onClick={() => removeItem(item.id)}
+                                className="text-[9px] font-sans font-black tracking-widest text-black/30 hover:text-red-700 uppercase transition-colors"
+                              >
+                                [ Remove Piece ]
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    ))}
                   </div>
 
-                  <h2 className="text-base font-sans mb-1 uppercase tracking-wide">
-                    Subtotal ({getTotalItems()} items): <span className="font-bold">₹{subtotal.toLocaleString()}</span>
-                  </h2>
-                  <p className="text-xs text-black/60 font-sans mb-5">
-                    Shipping: {shippingFee === 0 ? <span className="text-emerald-700 font-bold uppercase">Free</span> : `₹${shippingFee}`}
-                  </p>
-
-                  <button 
-                    onClick={handleCheckout}
-                    disabled={isProcessing}
-                    className="w-full bg-black text-white hover:bg-black/90 border border-black rounded-sm py-3.5 px-4 text-xs font-sans font-black uppercase tracking-widest shadow-sm transition-all mb-4 disabled:opacity-50"
-                  >
-                    {isProcessing ? "Authenticating..." : "Proceed to Buy"}
-                  </button>
-
-                  <div className="space-y-4 pt-4 border-t border-black/10">
-                    <div className="flex items-center gap-2.5">
-                      <ShieldCheck size={18} className="text-emerald-600 flex-shrink-0" />
-                      <span className="text-xs font-sans font-bold text-black/70 uppercase tracking-wider">Secure 256-Bit Checkout</span>
+                  {/* Frequently Bought Together Widget */}
+                  {recommendedItems.length > 0 && (
+                    <div className="mt-20 pt-10 border-t border-black/[0.08]">
+                      <span className="text-[9px] uppercase tracking-[0.3em] font-black text-black/40 block mb-2">Complements</span>
+                      <h3 className="text-lg font-serif italic text-black mb-6">
+                        Frequently Bought Together
+                      </h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                        {recommendedItems.map((product) => (
+                          <div 
+                            key={product.id} 
+                            className="border border-[#EBE3D5] bg-[#FDFCFB] p-4 rounded-sm flex flex-col justify-between group"
+                          >
+                            <div>
+                              <Link href={`/product/${product.id}`}>
+                                <div className="relative w-full aspect-square bg-[#F9F8F6] rounded-sm overflow-hidden mb-3 border border-black/[0.02]">
+                                  <Image 
+                                    src={product.colors?.[0]?.images?.[0] || "/images/placeholder.jpg"} 
+                                    alt={product.name} 
+                                    fill 
+                                    className="object-contain p-2 group-hover:scale-105 transition-transform duration-500"
+                                  />
+                                </div>
+                              </Link>
+                              <Link href={`/product/${product.id}`}>
+                                <h4 className="text-xs font-sans font-bold text-black/85 hover:text-amber-800 line-clamp-1">
+                                  {product.name}
+                                </h4>
+                              </Link>
+                              <p className="text-[8px] text-black/40 uppercase tracking-widest mt-0.5">{product.category}</p>
+                              <p className="text-xs font-sans font-black text-black mt-2">₹{product.selling_price.toLocaleString()}</p>
+                            </div>
+                            <button
+                              onClick={() => addItem(product)}
+                              className="mt-4 w-full bg-white hover:bg-black hover:text-white border border-black/20 text-black py-2 text-[9px] uppercase tracking-widest font-sans font-black transition-colors rounded-sm"
+                            >
+                              + Add to Curation
+                            </button>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2.5">
-                      <Truck size={18} className="text-black/60 flex-shrink-0" />
-                      <span className="text-xs font-sans font-bold text-black/70 uppercase tracking-wider">Studio Dispatch Verified</span>
-                    </div>
+                  )}
+                </div>
+
+                {/* Right Column: Invoice-Style Summary Card */}
+                <div className="lg:col-span-4 lg:sticky lg:top-36">
+                  <div className="bg-[#FDFCFB] border border-[#EBE3D5] p-6 shadow-sm rounded-sm">
                     
-                    {/* Stylized Brand Payment Logos */}
-                    <div className="pt-3.5 border-t border-black/5 flex flex-wrap gap-2 justify-center items-center">
-                      {/* Visa */}
-                      <svg className="w-10 h-6.5 shadow-[0_1px_2px_rgba(0,0,0,0.06)] rounded-[3px] border border-black/[0.03]" viewBox="0 0 40 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="40" height="24" rx="2" fill="#1A1F71"/>
-                        <path d="M12.5 15.5l1.2-7h1.6l-1.2 7h-1.6zm7.2-6.8c-.3-.1-.7-.2-1.2-.2-1.3 0-2.2.7-2.2 1.6 0 .7.6 1.1 1.2 1.4.5.2.7.4.7.6 0 .3-.4.5-.8.5-.6 0-.9-.1-1.4-.3l-.2-.1-.2 1.3c.4.2 1 .3 1.5.3 1.4 0 2.3-.7 2.3-1.7 0-.8-.7-1.2-1.4-1.5-.5-.2-.7-.4-.7-.6 0-.3.3-.5.7-.5.5 0 .8.1 1.2.2l.2.1.2-1.3zm6 6.8l-1.5-7h-1.5l-.8 4.5-.4-2.5c-.1-.7-.7-1.5-1.5-1.5h-1.3l.2 1 1 .5c.6.3.8.7.9 1.1l1.1 3.9h1.8zm4.8 0l1.2-7h-1.3l-.9 5-.1-.7-.6-4.3h-1.5l1.6 7h1.6z" fill="#FFF"/>
-                      </svg>
+                    {/* Invoice Header */}
+                    <div className="border-b border-black/[0.06] pb-4 mb-6">
+                      <span className="text-[9px] uppercase tracking-[0.3em] font-black text-black/40 block mb-1">Curation Slip</span>
+                      <h3 className="text-lg font-serif italic text-black">Summary of Pieces</h3>
+                    </div>
 
-                      {/* Mastercard */}
-                      <svg className="w-10 h-6.5 shadow-[0_1px_2px_rgba(0,0,0,0.06)] rounded-[3px] border border-black/[0.03]" viewBox="0 0 40 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="40" height="24" rx="2" fill="#222222"/>
-                        <circle cx="15" cy="12" r="6" fill="#EB001B"/>
-                        <circle cx="23" cy="12" r="6" fill="#FF5F00" fillOpacity="0.85"/>
-                      </svg>
+                    {/* Interactive Gold Progress Bar */}
+                    <div className="mb-6 bg-[#FCFBFA] border border-[#EBE3D5] p-4 rounded-sm space-y-2">
+                      <div className="flex justify-between items-center text-[9px] font-sans font-black uppercase tracking-wider">
+                        <span className="text-black/80">
+                          {subtotal >= threshold ? "🎉 Free Delivery Unlocked" : "Delivery Progress"}
+                        </span>
+                        <span className="text-black/50">
+                          {subtotal >= threshold ? "100%" : `${Math.floor((subtotal / threshold) * 100)}%`}
+                        </span>
+                      </div>
+                      <div className="w-full h-1.5 bg-[#F5F4F0] rounded-full overflow-hidden border border-black/[0.04]">
+                        <div 
+                          className="h-full bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-600 rounded-full transition-all duration-500" 
+                          style={{ width: `${Math.min((subtotal / threshold) * 100, 100)}%` }}
+                        />
+                      </div>
+                      <p className="text-[9px] font-sans text-black/50 leading-relaxed">
+                        {subtotal >= threshold 
+                          ? "Qualifies for free priority courier dispatch & surprise artisan gift." 
+                          : `Add ₹${awayAmount.toLocaleString()} more for free shipping & a surprise handcrafted gift.`
+                        }
+                      </p>
+                    </div>
 
-                      {/* UPI */}
-                      <svg className="w-10 h-6.5 shadow-[0_1px_2px_rgba(0,0,0,0.06)] rounded-[3px] border border-black/[0.08]" viewBox="0 0 48 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="48" height="24" rx="2" fill="#FFFFFF"/>
-                        <text x="4" y="16" fontFamily="sans-serif" fontWeight="900" fontSize="10" fill="#000000" fontStyle="italic" letterSpacing="-0.5">UPI</text>
-                        <path d="M28 8l3 3-3 3" stroke="#097939" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                        <path d="M33 8l-3 3 3 3" stroke="#0072b2" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
+                    {/* Receipt Line Items */}
+                    <div className="space-y-3 font-sans text-xs border-b border-black/[0.06] pb-6 mb-6">
+                      <div className="flex justify-between items-center text-black/60">
+                        <span>Items Subtotal ({getTotalItems()})</span>
+                        <span>₹{subtotal.toLocaleString()}</span>
+                      </div>
+                      <div className="flex justify-between items-center text-black/60">
+                        <span>Luxury Gift Wrapping</span>
+                        <span className="text-[9px] uppercase font-bold text-emerald-700 tracking-wider">Complimentary</span>
+                      </div>
+                      <div className="flex justify-between items-center text-black/60">
+                        <span>Courier Dispatch</span>
+                        <span>{shippingFee === 0 ? <span className="text-[9px] uppercase font-bold text-emerald-700 tracking-wider">Free</span> : `₹${shippingFee}`}</span>
+                      </div>
+                      <div className="flex justify-between items-center text-black/60 border-t border-dashed border-black/10 pt-3">
+                        <span>Estimated GST (Included)</span>
+                        <span>₹0</span>
+                      </div>
+                    </div>
 
-                      {/* Paytm */}
-                      <svg className="w-10 h-6.5 shadow-[0_1px_2px_rgba(0,0,0,0.06)] rounded-[3px] border border-black/[0.08]" viewBox="0 0 48 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="48" height="24" rx="2" fill="#FFFFFF"/>
-                        <text x="3" y="16" fontFamily="sans-serif" fontWeight="900" fontSize="11" fill="#00baf2" letterSpacing="-0.5">Pay</text>
-                        <text x="23" y="16" fontFamily="sans-serif" fontWeight="900" fontSize="11" fill="#002e6e" letterSpacing="-0.5">tm</text>
-                      </svg>
+                    {/* Grand Total */}
+                    <div className="flex justify-between items-baseline mb-8">
+                      <span className="text-xs uppercase tracking-widest font-black text-black/80">Total Value</span>
+                      <span className="text-2xl font-sans font-black text-black">
+                        ₹{(subtotal + shippingFee).toLocaleString()}
+                      </span>
+                    </div>
 
-                      {/* PhonePe */}
-                      <svg className="w-10 h-6.5 shadow-[0_1px_2px_rgba(0,0,0,0.06)] rounded-[3px] border border-black/[0.03]" viewBox="0 0 48 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="48" height="24" rx="2" fill="#5f259f"/>
-                        <text x="5" y="15" fontFamily="sans-serif" fontWeight="900" fontSize="8" fill="#FFFFFF" letterSpacing="0.3">PhonePe</text>
-                      </svg>
+                    {/* Luxury Checkout Button */}
+                    <button 
+                      onClick={handleCheckout}
+                      disabled={isProcessing}
+                      className="w-full bg-black text-white hover:bg-black/90 border border-black rounded-sm py-4 px-6 text-[10px] font-sans font-black uppercase tracking-[0.2em] shadow-md transition-all duration-300 mb-6 disabled:opacity-50"
+                    >
+                      {isProcessing ? "Authenticating..." : "Proceed to Checkout"}
+                    </button>
 
-                      {/* RuPay */}
-                      <svg className="w-10 h-6.5 shadow-[0_1px_2px_rgba(0,0,0,0.06)] rounded-[3px] border border-black/[0.08]" viewBox="0 0 48 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="48" height="24" rx="2" fill="#FFFFFF"/>
-                        <text x="3" y="15" fontFamily="sans-serif" fontWeight="900" fontSize="8" fill="#0a3973" fontStyle="italic" letterSpacing="-0.3">RuPay</text>
-                        <path d="M37 9h3l-1.5 3h-3z" fill="#f7941d"/>
-                        <path d="M38.5 6h3l-1.5 3h-3z" fill="#0a3973"/>
-                      </svg>
+                    {/* Verified Badges */}
+                    <div className="space-y-4 pt-4 border-t border-black/[0.06]">
+                      <div className="flex items-center gap-3">
+                        <ShieldCheck size={16} className="text-emerald-700 flex-shrink-0" />
+                        <span className="text-[10px] font-sans font-bold text-black/75 uppercase tracking-wider">Secure 256-Bit Checkout</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <Truck size={16} className="text-black/60 flex-shrink-0" />
+                        <span className="text-[10px] font-sans font-bold text-black/75 uppercase tracking-wider">Studio Dispatch Verified</span>
+                      </div>
+                      
+                      {/* Stylized Brand Payment Logos */}
+                      <div className="pt-3.5 border-t border-black/[0.04] flex flex-wrap gap-2 justify-center items-center">
+                        {/* Visa */}
+                        <svg className="w-10 h-6.5 shadow-[0_1px_2px_rgba(0,0,0,0.06)] rounded-[3px] border border-black/[0.03]" viewBox="0 0 40 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <rect width="40" height="24" rx="2" fill="#1A1F71"/>
+                          <path d="M12.5 15.5l1.2-7h1.6l-1.2 7h-1.6zm7.2-6.8c-.3-.1-.7-.2-1.2-.2-1.3 0-2.2.7-2.2 1.6 0 .7.6 1.1 1.2 1.4.5.2.7.4.7.6 0 .3-.4.5-.8.5-.6 0-.9-.1-1.4-.3l-.2-.1-.2 1.3c.4.2 1 .3 1.5.3 1.4 0 2.3-.7 2.3-1.7 0-.8-.7-1.2-1.4-1.5-.5-.2-.7-.4-.7-.6 0-.3.3-.5.7-.5.5 0 .8.1 1.2.2l.2.1.2-1.3zm6 6.8l-1.5-7h-1.5l-.8 4.5-.4-2.5c-.1-.7-.7-1.5-1.5-1.5h-1.3l.2 1 1 .5c.6.3.8.7.9 1.1l1.1 3.9h1.8zm4.8 0l1.2-7h-1.3l-.9 5-.1-.7-.6-4.3h-1.5l1.6 7h1.6z" fill="#FFF"/>
+                        </svg>
+
+                        {/* Mastercard */}
+                        <svg className="w-10 h-6.5 shadow-[0_1px_2px_rgba(0,0,0,0.06)] rounded-[3px] border border-black/[0.03]" viewBox="0 0 40 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <rect width="40" height="24" rx="2" fill="#222222"/>
+                          <circle cx="15" cy="12" r="6" fill="#EB001B"/>
+                          <circle cx="23" cy="12" r="6" fill="#FF5F00" fillOpacity="0.85"/>
+                        </svg>
+
+                        {/* UPI */}
+                        <svg className="w-10 h-6.5 shadow-[0_1px_2px_rgba(0,0,0,0.06)] rounded-[3px] border border-black/[0.08]" viewBox="0 0 48 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <rect width="48" height="24" rx="2" fill="#FFFFFF"/>
+                          <text x="4" y="16" fontFamily="sans-serif" fontWeight="900" fontSize="10" fill="#000000" fontStyle="italic" letterSpacing="-0.5">UPI</text>
+                          <path d="M28 8l3 3-3 3" stroke="#097939" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                          <path d="M33 8l-3 3 3 3" stroke="#0072b2" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+
+                        {/* Paytm */}
+                        <svg className="w-10 h-6.5 shadow-[0_1px_2px_rgba(0,0,0,0.06)] rounded-[3px] border border-black/[0.08]" viewBox="0 0 48 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <rect width="48" height="24" rx="2" fill="#FFFFFF"/>
+                          <text x="3" y="16" fontFamily="sans-serif" fontWeight="900" fontSize="11" fill="#00baf2" letterSpacing="-0.5">Pay</text>
+                          <text x="23" y="16" fontFamily="sans-serif" fontWeight="900" fontSize="11" fill="#002e6e" letterSpacing="-0.5">tm</text>
+                        </svg>
+
+                        {/* PhonePe */}
+                        <svg className="w-10 h-6.5 shadow-[0_1px_2px_rgba(0,0,0,0.06)] rounded-[3px] border border-black/[0.03]" viewBox="0 0 48 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <rect width="48" height="24" rx="2" fill="#5f259f"/>
+                          <text x="5" y="15" fontFamily="sans-serif" fontWeight="900" fontSize="8" fill="#FFFFFF" letterSpacing="0.3">PhonePe</text>
+                        </svg>
+
+                        {/* RuPay */}
+                        <svg className="w-10 h-6.5 shadow-[0_1px_2px_rgba(0,0,0,0.06)] rounded-[3px] border border-black/[0.08]" viewBox="0 0 48 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <rect width="48" height="24" rx="2" fill="#FFFFFF"/>
+                          <text x="3" y="15" fontFamily="sans-serif" fontWeight="900" fontSize="8" fill="#0a3973" fontStyle="italic" letterSpacing="-0.3">RuPay</text>
+                          <path d="M37 9h3l-1.5 3h-3z" fill="#f7941d"/>
+                          <path d="M38.5 6h3l-1.5 3h-3z" fill="#0a3973"/>
+                        </svg>
+                      </div>
                     </div>
                   </div>
                 </div>
-
-                {/* AOV Booster Alert */}
-                {!isFreeGiftEligible && (
-                  <div className="bg-white border border-[#EBE3D5] p-5 rounded-sm">
-                    <h3 className="text-xs font-bold font-sans uppercase tracking-widest mb-2 flex items-center gap-2">
-                      <Gift size={15} className="text-amber-700" /> Complimentary Gift
-                    </h3>
-                    <p className="text-xs font-sans text-black/70 leading-relaxed mb-3">
-                      Add ₹{awayAmount.toLocaleString()} more to your curation to receive an exclusive surprise handcrafted gift!
-                    </p>
-                    <Link href="/shop" className="text-xs text-amber-800 hover:text-black font-sans font-bold hover:underline uppercase tracking-wider">
-                      Shop more creations →
-                    </Link>
-                  </div>
-                )}
 
               </div>
             </div>
