@@ -71,31 +71,41 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
       name: "Shivani Mahata",
       text: "Amazing quality and finish. The print is so authentic and the fabric feels premium. Truly a luxury experience.",
       rating: 5,
-      image: "/images/review-image-folder/YDA-review-shivani-mahata.png"
+      image: "/images/review-image-folder/YDA-review-shivani-mahata.png",
+      purchaseSpecs: "Floral Canvas Tote Bag (Small)",
+      userUploadedPhotos: ["/images/home-page-image/small-tote.jpg"]
     },
     {
       name: "Chhavi Singh",
       text: "Loved the fabric and print. It's rare to find such high-quality handcrafted items online. Highly recommended.",
       rating: 5,
-      image: "/images/review-image-folder/YDA-review-chhavi-singh.png"
+      image: "/images/review-image-folder/YDA-review-chhavi-singh.png",
+      purchaseSpecs: "Heritage Canvas Tote Bag (Large)",
+      userUploadedPhotos: ["/images/home-page-image/big-tote.jpg"]
     },
     {
       name: "Priya Naiwal",
       text: "Looks even better in real life. The Sanganeri detail is breathtaking. Perfect for my modern home decor.",
       rating: 5,
-      image: "/images/review-image-folder/YDA-review-priya-naiwal.png"
+      image: "/images/review-image-folder/YDA-review-priya-naiwal.png",
+      purchaseSpecs: "Heritage Garden Cushion Cover",
+      userUploadedPhotos: ["/images/home-page-image/cushion-1.jpg"]
     },
     {
       name: "Radhika Kumari",
       text: "The craftsmanship is unparalleled. I've bought multiple pieces and each one tells a unique story of Indian art.",
       rating: 5,
-      image: "/images/review-image-folder/YDA-review-radhika-kumari.png"
+      image: "/images/review-image-folder/YDA-review-radhika-kumari.png",
+      purchaseSpecs: "Vintage Floral Cushion Cover",
+      userUploadedPhotos: ["/images/home-page-image/cushion-1.jpg"]
     },
     {
       name: "Parul Choudhari",
       text: "Absolutely stunning designs! The colors are vibrant yet sophisticated. It adds so much character to the space.",
       rating: 5,
-      image: "/images/review-image-folder/YDA-review-parul-choudhari.png"
+      image: "/images/review-image-folder/YDA-review-parul-choudhari.png",
+      purchaseSpecs: "Bloom Carry Canvas Tote Bag",
+      userUploadedPhotos: ["/images/home-page-image/small-tote.jpg"]
     }
   ];
 
@@ -569,20 +579,55 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                     </div>
 
                     <div className="flex-grow flex flex-col justify-center max-w-xl">
-                      <div className="flex gap-1 mb-8">
-                        {[...Array(5)].map((_, i) => (
-                          <Star key={i} size={18} className="fill-yellow-400 text-yellow-400" />
-                        ))}
+                      {/* Gold Crest Rating System */}
+                      <div className="flex flex-col gap-2 mb-8">
+                        <div className="flex gap-1">
+                          {[...Array(5)].map((_, i) => (
+                            <Star key={i} size={14} className="fill-[#FFD700] text-[#FFD700]" />
+                          ))}
+                        </div>
+                        <span className="text-[8px] uppercase tracking-[0.3em] font-sans font-black text-amber-800">
+                          ✦ Heritage Curation Certified ✦
+                        </span>
                       </div>
-                      <p className="text-2xl md:text-4xl font-serif italic text-black/90 leading-[1.3] mb-12">
+
+                      <p className="text-2xl md:text-3xl font-serif italic text-black/90 leading-[1.3] mb-8">
                         "{reviews[currentReview].text}"
                       </p>
-                      <div className="flex items-center gap-6">
-                        <div className="w-12 h-[1px] bg-black/20" />
-                        <div className="flex flex-col">
-                          <span className="text-xs uppercase tracking-[0.4em] font-black text-black mb-1">{reviews[currentReview].name}</span>
-                          <span className="text-[9px] uppercase tracking-[0.2em] text-black/30 font-bold">Verified Collector</span>
+
+                      {/* Customer Uploaded Gallery Thumbnails */}
+                      {reviews[currentReview].userUploadedPhotos && (
+                        <div className="flex gap-3 mb-8 items-center">
+                          <span className="text-[7px] uppercase tracking-widest font-black text-black/30">Collector's Setup:</span>
+                          {reviews[currentReview].userUploadedPhotos.map((photo, pIdx) => (
+                            <div key={pIdx} className="w-12 h-12 rounded border-2 border-white shadow-md relative overflow-hidden bg-gray-50 flex-shrink-0 group/thumb cursor-zoom-in">
+                              <img src={photo} alt="Customer styling preview" className="w-full h-full object-cover transition-transform group-hover/thumb:scale-110" />
+                            </div>
+                          ))}
                         </div>
+                      )}
+
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pt-6 border-t border-black/5">
+                        <div className="flex items-center gap-4">
+                          <div className="w-10 h-[1px] bg-black/20" />
+                          <div className="flex flex-col">
+                            <span className="text-xs uppercase tracking-[0.4em] font-black text-black mb-1">{reviews[currentReview].name}</span>
+                            <span className="text-[8px] uppercase tracking-[0.2em] text-emerald-700 font-bold flex items-center gap-1.5">
+                              <span className="w-1 h-1 rounded-full bg-emerald-600 animate-ping" />
+                              Verified Buyer — {reviews[currentReview].purchaseSpecs}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Inquire This Style CTA Button */}
+                        <a
+                          href={`https://wa.me/917877646756?text=Hello%20YDA!%20I%20am%20absolutely%20inspired%20by%20${encodeURIComponent(reviews[currentReview].name)}'s%20curation%20of%20the%20${encodeURIComponent(reviews[currentReview].purchaseSpecs)}.%20Could%20we%20design%20a%20similar%20styled%20set%20for%20my%20home?`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[8px] uppercase tracking-widest font-black text-amber-900 border border-amber-900/20 px-4 py-2 hover:bg-amber-900 hover:text-white transition-all self-start sm:self-auto rounded-sm bg-amber-500/[0.03]"
+                        >
+                          Inquire This Style
+                        </a>
                       </div>
                     </div>
                   </motion.div>

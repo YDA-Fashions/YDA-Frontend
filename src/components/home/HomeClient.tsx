@@ -79,6 +79,14 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
   const [currentReview, setCurrentReview] = useState(0);
   const [showPopup, setShowPopup] = useState(false);
   const [mounted, setMounted] = useState(false);
+
+  // Custom Cursor states
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [isHoveringReviews, setIsHoveringReviews] = useState(false);
+  const handleReviewsMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setMousePos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+  };
   
   // Quick Add State
   const [isQuickAddOpen, setIsQuickAddOpen] = useState(false);
@@ -99,31 +107,41 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
       name: "Shivani Mahata",
       text: "Amazing quality and finish. The print is so authentic and the fabric feels premium. Truly a luxury experience.",
       rating: 5,
-      image: "/images/review-image-folder/YDA-review-shivani-mahata.png"
+      image: "/images/review-image-folder/YDA-review-shivani-mahata.png",
+      styledImage: "/images/home-page-image/small-tote.jpg",
+      purchaseSpecs: "Floral Canvas Tote Bag (Small)"
     },
     {
       name: "Chhavi Singh",
       text: "Loved the fabric and print. It's rare to find such high-quality handcrafted items online. Highly recommended.",
       rating: 5,
-      image: "/images/review-image-folder/YDA-review-chhavi-singh.png"
+      image: "/images/review-image-folder/YDA-review-chhavi-singh.png",
+      styledImage: "/images/home-page-image/big-tote.jpg",
+      purchaseSpecs: "Heritage Canvas Tote Bag (Large)"
     },
     {
       name: "Priya Naiwal",
       text: "Looks even better in real life. The Sanganeri detail is breathtaking. Perfect for my modern home decor.",
       rating: 5,
-      image: "/images/review-image-folder/YDA-review-priya-naiwal.png"
+      image: "/images/review-image-folder/YDA-review-priya-naiwal.png",
+      styledImage: "/images/home-page-image/cushion-1.jpg",
+      purchaseSpecs: "Heritage Garden Cushion Cover"
     },
     {
       name: "Radhika Kumari",
       text: "The craftsmanship is unparalleled. I've bought multiple pieces and each one tells a unique story of Indian art.",
       rating: 5,
-      image: "/images/review-image-folder/YDA-review-radhika-kumari.png"
+      image: "/images/review-image-folder/YDA-review-radhika-kumari.png",
+      styledImage: "/images/home-page-image/cushion-1.jpg",
+      purchaseSpecs: "Vintage Floral Cushion Cover"
     },
     {
       name: "Parul Choudhari",
       text: "Absolutely stunning designs! The colors are vibrant yet sophisticated. It adds so much character to the space.",
       rating: 5,
-      image: "/images/review-image-folder/YDA-review-parul-choudhari.png"
+      image: "/images/review-image-folder/YDA-review-parul-choudhari.png",
+      styledImage: "/images/home-page-image/small-tote.jpg",
+      purchaseSpecs: "Bloom Carry Canvas Tote Bag"
     }
   ];
 
@@ -300,14 +318,28 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
             </div>
           </div>
 
-          <div className="flex overflow-x-auto gap-6 md:gap-10 px-6 md:px-20 pb-12 snap-x scrollbar-hide no-scrollbar cursor-grab active:cursor-grabbing">
-            {[
-              { id: 1, name: "Shivani Mahata", text: "Amazing quality and finish. The fabric feels premium.", image: "/images/review-image-folder/YDA-review-shivani-mahata.png" },
-              { id: 2, name: "Chhavi Singh", text: "Loved the fabric and print. Truly authentic.", image: "/images/review-image-folder/YDA-review-chhavi-singh.png" },
-              { id: 3, name: "Priya Naiwal", text: "Breathtaking Sanganeri detail. Perfect for my home.", image: "/images/review-image-folder/YDA-review-priya-naiwal.png" },
-              { id: 4, name: "Radhika Kumari", text: "The craftsmanship is unparalleled. Unique Indian art.", image: "/images/review-image-folder/YDA-review-radhika-kumari.png" },
-              { id: 5, name: "Parul Choudhari", text: "Absolutely stunning designs! Vibrant colors.", image: "/images/review-image-folder/YDA-review-parul-choudhari.png" },
-            ].map((review, idx) => (
+          <div 
+            onMouseMove={handleReviewsMouseMove}
+            onMouseEnter={() => setIsHoveringReviews(true)}
+            onMouseLeave={() => setIsHoveringReviews(false)}
+            className="relative flex overflow-x-auto gap-6 md:gap-10 px-6 md:px-20 pb-12 snap-x scrollbar-hide no-scrollbar cursor-grab active:cursor-grabbing"
+          >
+            {/* Custom magnetic DRAG cursor */}
+            {isHoveringReviews && (
+              <motion.div
+                className="pointer-events-none absolute w-24 h-24 bg-amber-500 text-white rounded-full flex items-center justify-center text-[10px] uppercase tracking-[0.25em] font-black z-50 border border-white/20 shadow-2xl hidden md:flex"
+                style={{
+                  left: mousePos.x,
+                  top: mousePos.y,
+                  transform: "translate(-50%, -50%)",
+                }}
+                transition={{ type: "spring", stiffness: 350, damping: 25 }}
+              >
+                Drag
+              </motion.div>
+            )}
+
+            {reviews.map((review, idx) => (
               <motion.div 
                 key={idx}
                 initial={{ opacity: 0, y: 30 }}
@@ -316,20 +348,32 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
                 transition={{ duration: 0.8, delay: idx * 0.1 }}
                 className="flex-shrink-0 w-[280px] md:w-[420px] aspect-[9/16] relative bg-white overflow-hidden snap-center group shadow-xl hover:shadow-2xl transition-all duration-700"
               >
+                {/* Visual Context Image Swap */}
                 <Image
                   src={review.image}
                   alt={review.name}
                   fill
-                  className="object-cover transition-all duration-1000 group-hover:scale-110"
+                  className="object-cover transition-all duration-1000 group-hover:opacity-0 group-hover:scale-105"
+                />
+                <Image
+                  src={review.styledImage}
+                  alt={`${review.name} styled setting`}
+                  fill
+                  className="object-cover absolute inset-0 opacity-0 group-hover:opacity-100 scale-105 group-hover:scale-100 transition-all duration-1000"
                 />
                 
                 {/* Overlay Gradient */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
                 
-                {/* Verified Badge */}
-                <div className="absolute top-6 left-6 z-10 flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                  <span className="text-[8px] uppercase tracking-[0.2em] font-black text-white/80">Verified Buyer</span>
+                {/* Verified Badge & Specs */}
+                <div className="absolute top-6 left-6 z-10 flex flex-col gap-1.5">
+                  <div className="flex items-center gap-2 bg-emerald-600/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
+                    <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                    <span className="text-[7px] uppercase tracking-[0.25em] font-black text-white">Collector Certified</span>
+                  </div>
+                  <span className="text-[7px] font-sans font-bold text-white/60 bg-black/40 backdrop-blur-sm px-2 py-0.5 self-start rounded-sm tracking-wide">
+                    {review.purchaseSpecs}
+                  </span>
                 </div>
 
                 {/* Content Overlay */}
