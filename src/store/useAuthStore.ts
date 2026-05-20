@@ -33,18 +33,33 @@ export const useAuthStore = create<AuthState>()(
       setLoading: (loading) => set({ isLoading: loading }),
       
       signOut: async () => {
-        const { supabase } = await import("@/lib/supabase");
         console.log("🚪 Auth: Signing out and clearing session");
         
-        // 1. Backend SignOut
-        await supabase?.auth.signOut();
+        // 1. Backend SignOut (with try-catch to prevent freezes)
+        try {
+          const { supabase } = await import("@/lib/supabase");
+          if (supabase) {
+            await supabase.auth.signOut();
+          }
+        } catch (authError) {
+          console.error("⚠️ Auth: Backend signOut failed/timed out, continuing local cleanup:", authError);
+        }
         
         // 2. Immediate Local State Termination
-        const { useCartStore } = await import("./useCartStore");
-        
-        useCartStore.getState().clearLocalItems();
+        try {
+          const { useCartStore } = await import("./useCartStore");
+          useCartStore.getState().clearLocalItems();
+        } catch (cartError) {
+          console.error("⚠️ Auth: Clearing cart state failed:", cartError);
+        }
         
         set({ user: null, session: null, isLoading: false });
+
+        // 3. Clear storage and force redirect to home to refresh UI completely
+        if (typeof window !== "undefined") {
+          localStorage.removeItem("yda-auth-storage");
+          window.location.href = "/";
+        }
       },
     }),
     {
