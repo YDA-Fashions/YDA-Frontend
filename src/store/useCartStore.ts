@@ -23,6 +23,10 @@ interface CartStore {
   syncCart: (userId: string) => Promise<void>;
   clearLocalItems: () => void;
 
+  // Timer State
+  cartTimerExpiresAt: number | null;
+  setCartTimerExpiresAt: (expiresAt: number | null) => void;
+
   // Actions
   addItem: (product: Product) => void;
   removeItem: (productId: string) => void;
@@ -47,11 +51,13 @@ export const useCartStore = create<CartStore>()(
       userId: null,
       setUserId: (id) => set({ userId: id }),
 
+      cartTimerExpiresAt: null,
+      setCartTimerExpiresAt: (expiresAt) => set({ cartTimerExpiresAt: expiresAt }),
+
       syncCart: async (userId) => {
         set({ userId, isLoading: true } as any);
         try {
           const backendItems = await cartService.getCart(userId);
-          // ALWAYS take backend data if it exists to ensure cross-device sync
           if (backendItems) {
             set({ items: backendItems });
           }
@@ -63,7 +69,7 @@ export const useCartStore = create<CartStore>()(
       },
 
       clearLocalItems: () => {
-        set({ items: [], userId: null });
+        set({ items: [], userId: null, cartTimerExpiresAt: null });
         if (typeof window !== 'undefined') {
           localStorage.removeItem('cart-storage');
         }
@@ -99,10 +105,17 @@ export const useCartStore = create<CartStore>()(
           updatedItems.push({ ...product, quantity: 1 });
         }
 
+        // Set persistent 20-minute countdown if it's the first item added
+        let expiresAt = get().cartTimerExpiresAt;
+        if (!expiresAt) {
+          expiresAt = Date.now() + 20 * 60 * 1000; // 20 minutes from now
+        }
+
         set({ 
           items: updatedItems,
           lastAddedItem: { ...product, quantity: newQuantity },
-          isCartToastOpen: true 
+          isCartToastOpen: true,
+          cartTimerExpiresAt: expiresAt
         });
 
         // Sync to backend
@@ -115,7 +128,11 @@ export const useCartStore = create<CartStore>()(
         const { userId, items } = get();
         if (!userId) return;
 
-        set({ items: items.filter((item) => item.id !== productId) });
+        const updatedItems = items.filter((item) => item.id !== productId);
+        set({ 
+          items: updatedItems,
+          cartTimerExpiresAt: updatedItems.length === 0 ? null : get().cartTimerExpiresAt
+        });
         cartService.removeItem(userId, productId).catch(console.error);
       },
 
@@ -133,7 +150,7 @@ export const useCartStore = create<CartStore>()(
 
       clearCart: () => {
         const { userId } = get();
-        set({ items: [] });
+        set({ items: [], cartTimerExpiresAt: null });
         if (userId) {
           cartService.clearCart(userId).catch(console.error);
         }
@@ -144,7 +161,10 @@ export const useCartStore = create<CartStore>()(
     }),
     {
       name: "cart-storage",
-      partialize: (state) => ({ items: state.items }),
+      partialize: (state) => ({ 
+        items: state.items,
+        cartTimerExpiresAt: state.cartTimerExpiresAt
+      }),
     }
   )
 );

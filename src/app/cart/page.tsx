@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,14 +13,43 @@ import { useUIStore } from "@/store/useUIStore";
 
 const CartPage = () => {
   const router = useRouter();
-  const { items, removeItem, updateQuantity, getTotalPrice, getTotalItems, clearCart } = useCartStore();
+  const { items, removeItem, updateQuantity, getTotalPrice, getTotalItems, clearCart, cartTimerExpiresAt } = useCartStore();
   const { setOrderModalOpen } = useUIStore();
   const [isProcessing, setIsProcessing] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
 
-  React.useEffect(() => {
+  const [timeLeft, setTimeLeft] = useState<string>("");
+  const [showExpiredModal, setShowExpiredModal] = useState(false);
+
+  useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (!isMounted || !cartTimerExpiresAt || items.length === 0) {
+      setTimeLeft("");
+      return;
+    }
+
+    const updateTimer = () => {
+      const remaining = cartTimerExpiresAt - Date.now();
+      if (remaining <= 0) {
+        setTimeLeft("00:00");
+        setShowExpiredModal(true);
+        clearInterval(interval);
+        clearCart();
+      } else {
+        const minutes = Math.floor(remaining / 60000);
+        const seconds = Math.floor((remaining % 60000) / 1000);
+        const pad = (num: number) => num.toString().padStart(2, "0");
+        setTimeLeft(`${pad(minutes)}:${pad(seconds)}`);
+      }
+    };
+
+    updateTimer(); // Run once immediately
+    const interval = setInterval(updateTimer, 1000);
+    return () => clearInterval(interval);
+  }, [cartTimerExpiresAt, items, clearCart, isMounted]);
 
   const subtotal = getTotalPrice();
   const threshold = 1000;
@@ -39,6 +68,33 @@ const CartPage = () => {
       <main className="pt-28 pb-24 md:pt-40">
         <div className="container mx-auto px-6 max-w-7xl">
           
+          {/* URGENCY COUNTDOWN TIMER BANNER */}
+          {isMounted && items.length > 0 && timeLeft && (
+            <div className="mb-8 bg-red-600 border border-red-700 text-white rounded-sm px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4 shadow-md relative overflow-hidden">
+              {/* Background heartbeat pulse effect */}
+              <div className="absolute inset-0 bg-red-500 opacity-20 animate-pulse pointer-events-none" />
+              
+              <div className="flex items-center gap-4 z-10">
+                <span className="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-white/20">
+                  <span className="w-2.5 h-2.5 rounded-full bg-white animate-ping" />
+                </span>
+                <div className="text-left">
+                  <p className="text-[10px] uppercase tracking-[0.3em] font-black text-white/80">Curation Reservation Alert</p>
+                  <p className="text-sm md:text-base font-serif italic font-bold">
+                    Handcrafted masterworks are in high demand. We have reserved your pieces.
+                  </p>
+                </div>
+              </div>
+
+              <div className="z-10 flex-shrink-0 flex items-center gap-3 bg-white/10 px-6 py-2 border border-white/20 rounded-sm">
+                <span className="text-[10px] uppercase tracking-widest font-black text-white/70">RELEASING IN</span>
+                <span className="text-2xl font-sans font-black tracking-widest tabular-nums animate-pulse text-[#FFD700]">
+                  {timeLeft}
+                </span>
+              </div>
+            </div>
+          )}
+
           {!isMounted ? (
             <div className="py-32 text-center">
               <div className="animate-pulse flex flex-col items-center">
@@ -71,7 +127,7 @@ const CartPage = () => {
 
                 <div className="space-y-6">
                   {items.map((item) => (
-                    <div key={item.id} className="flex flex-col sm:flex-row gap-6 pb-6 border-b border-black/5 last:border-0 last:pb-0">
+                     <div key={item.id} className="flex flex-col sm:flex-row gap-6 pb-6 border-b border-black/5 last:border-0 last:pb-0">
                       
                       {/* Product Image */}
                       <Link href={`/product/${item.id}`} className="flex-shrink-0">
@@ -226,6 +282,42 @@ const CartPage = () => {
       </main>
 
       <Footer />
+
+      {/* Expired Notification Modal */}
+      <AnimatePresence>
+        {showExpiredModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/60 backdrop-blur-sm">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="bg-[#FCFBFA] border border-[#EBE3D5] p-8 max-w-md w-full shadow-2xl relative"
+            >
+              <div className="text-center space-y-4">
+                <div className="w-16 h-16 bg-red-50 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4 border border-red-100">
+                  <ShoppingBag size={28} strokeWidth={1.5} />
+                </div>
+                <span className="text-[10px] uppercase tracking-[0.4em] font-black text-red-600">Reservation Expired</span>
+                <h3 className="text-2xl font-serif italic text-black">Curation Released</h3>
+                <p className="text-sm font-sans text-black/60 leading-relaxed">
+                  Due to high demand for YDA handcrafted creations, your 20-minute reservation has expired and the items have been released.
+                </p>
+                <div className="pt-4">
+                  <button
+                    onClick={() => {
+                      setShowExpiredModal(false);
+                      router.push("/shop");
+                    }}
+                    className="w-full bg-black text-white py-4 text-[10px] uppercase tracking-[0.3em] font-sans font-bold hover:bg-black/80 transition-all duration-300"
+                  >
+                    Browse Collections
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

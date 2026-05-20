@@ -222,56 +222,76 @@ const Header = () => {
         )}
       </AnimatePresence>
 
-      {/* Search Overlay */}
+      {/* Search Side Drawer */}
       <AnimatePresence>
         {isSearchOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[200] bg-white flex flex-col items-center justify-start pt-20 md:pt-32 px-6"
-          >
-            <button 
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               onClick={() => {
                 setIsSearchOpen(false);
                 setSearchQuery("");
               }}
-              className="absolute top-8 right-8 p-2 text-foreground/40 hover:text-black transition-colors"
-              aria-label="Close Search"
+              className="fixed inset-0 z-[200] bg-black/40 backdrop-blur-sm"
+            />
+
+            {/* Side Drawer Panel */}
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "tween", duration: 0.3, ease: "easeOut" }}
+              className="fixed right-0 top-0 bottom-0 z-[201] w-full max-w-md bg-[#FDFBF7] h-full flex flex-col p-6 md:p-8 shadow-2xl border-l border-[#EBE3D5] overflow-y-auto"
             >
-              <X size={32} strokeWidth={1} />
-            </button>
-            
-            <div className="w-full max-w-2xl">
-              <div className="relative">
+              {/* Header inside Drawer */}
+              <div className="flex justify-between items-center pb-6 border-b border-black/5">
+                <span className="text-[10px] uppercase tracking-[0.4em] font-black text-black/40">Search Curation</span>
+                <button 
+                  onClick={() => {
+                    setIsSearchOpen(false);
+                    setSearchQuery("");
+                  }}
+                  className="p-1.5 text-black/50 hover:text-black hover:rotate-90 transition-transform duration-300"
+                  aria-label="Close Search"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              {/* Input Row */}
+              <div className="mt-8 relative">
                 <input 
                   type="text" 
-                  placeholder="Search by name or category..."
+                  placeholder="Search products, prints..."
                   autoFocus
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-transparent border-b border-black/10 py-6 text-xl md:text-3xl font-serif italic outline-none placeholder:text-black/10 focus:border-black transition-all"
+                  className="w-full bg-transparent border-b border-black/10 py-4 text-lg font-serif italic outline-none placeholder:text-black/20 focus:border-black transition-all"
                 />
                 {searchQuery && (
                   <button 
                     onClick={() => setSearchQuery("")}
-                    className="absolute right-0 top-1/2 -translate-y-1/2 text-[10px] uppercase tracking-widest font-black text-black/20 hover:text-black"
+                    className="absolute right-0 top-1/2 -translate-y-1/2 text-[9px] uppercase tracking-widest font-black text-black/30 hover:text-black"
                   >
                     Clear
                   </button>
                 )}
               </div>
 
-              {/* Search Results */}
-              <div className="mt-12 overflow-y-auto max-h-[60vh] custom-scrollbar-hide pb-20">
-                {searchQuery.trim() !== "" && (
-                  <>
+              {/* Content Area */}
+              <div className="flex-1 mt-8 overflow-y-auto custom-scrollbar-hide pb-6">
+                {searchQuery.trim() !== "" ? (
+                  /* Search Results */
+                  <div>
                     {filteredResults.length > 0 ? (
-                      <div className="space-y-8">
-                        <p className="text-[10px] uppercase tracking-[0.4em] font-black text-black/20 border-b border-black/5 pb-4">
-                          Found {filteredResults.length} Results
+                      <div className="space-y-6">
+                        <p className="text-[9px] uppercase tracking-widest font-black text-black/30">
+                          Found {filteredResults.length} Creations
                         </p>
-                        <div className="grid grid-cols-1 gap-6">
+                        <div className="space-y-4">
                           {filteredResults.map((product) => (
                             <Link 
                               key={product.id}
@@ -280,43 +300,93 @@ const Header = () => {
                                 setIsSearchOpen(false);
                                 setSearchQuery("");
                               }}
-                              className="flex items-center gap-6 group"
+                              className="flex items-center gap-4 group p-2 hover:bg-black/[0.02] rounded-sm transition-colors"
                             >
-                              <div className="relative w-16 h-16 bg-[#F5F5F0] rounded-sm overflow-hidden flex-shrink-0">
+                              <div className="relative w-14 h-14 bg-[#F5F5F0] rounded-sm overflow-hidden flex-shrink-0">
                                 <Image 
                                   src={product.colors[0].images[0]} 
                                   alt={product.name}
                                   fill
-                                  className="object-contain p-2 group-hover:scale-110 transition-transform duration-500"
+                                  className="object-contain p-1.5 group-hover:scale-105 transition-transform duration-500"
                                 />
                               </div>
                               <div className="flex-grow">
-                                <p className="text-[8px] uppercase tracking-widest font-black text-black/40 mb-1">{product.category}</p>
-                                <h4 className="text-sm font-serif italic">{product.name}</h4>
-                                <p className="text-[10px] font-black mt-1">₹{product.selling_price}</p>
+                                <p className="text-[7px] uppercase tracking-widest font-black text-black/40 mb-0.5">{product.category}</p>
+                                <h4 className="text-xs font-serif italic text-black/80 group-hover:text-black line-clamp-1">{product.name}</h4>
+                                <p className="text-[9px] font-sans font-bold text-black mt-0.5">₹{product.selling_price}</p>
                               </div>
-                              <ArrowRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity -translate-x-4 group-hover:translate-x-0" />
+                              <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0 text-black/50" />
                             </Link>
                           ))}
                         </div>
                       </div>
                     ) : (
-                      <div className="text-center py-20">
-                        <p className="text-lg font-serif italic text-black/20">No matching creations found.</p>
+                      <div className="text-center py-16">
+                        <p className="text-sm font-serif italic text-black/40">No matching creations found.</p>
                       </div>
                     )}
-                  </>
-                )}
-                
-                {searchQuery.trim() === "" && (
-                  <div className="text-center py-20 opacity-20">
-                    <Search size={48} className="mx-auto mb-6" strokeWidth={1} />
-                    <p className="text-[10px] uppercase tracking-[0.5em] font-black">Begin Typing to Search</p>
+                  </div>
+                ) : (
+                  /* Empty State: Trending & Bestsellers */
+                  <div className="space-y-8">
+                    {/* Trending Section */}
+                    <div>
+                      <h4 className="text-[9px] uppercase tracking-widest font-black text-black/40 mb-4">Trending Searches</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {["Jungle Print", "Tote Bag", "Cushion Covers", "Lime", "Floral Print"].map((tag) => (
+                          <button
+                            key={tag}
+                            onClick={() => setSearchQuery(tag)}
+                            className="text-[9px] uppercase tracking-widest font-black text-black/60 bg-[#F5F4F0] border border-[#EBE3D5]/60 hover:bg-black hover:text-white px-3 py-1.5 rounded-full transition-all duration-200"
+                          >
+                            {tag}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Separator */}
+                    <div className="h-[1px] bg-black/5" />
+
+                    {/* Bestselling Creations */}
+                    <div>
+                      <h4 className="text-[9px] uppercase tracking-widest font-black text-black/40 mb-4">Featured Masterpieces</h4>
+                      <div className="space-y-4">
+                        {PRODUCTS.slice(0, 3).map((product) => (
+                          <Link
+                            key={product.id}
+                            href={`/product/${product.id}`}
+                            onClick={() => {
+                              setIsSearchOpen(false);
+                              setSearchQuery("");
+                            }}
+                            className="flex items-center gap-4 group p-2 hover:bg-black/[0.02] rounded-sm transition-colors"
+                          >
+                            <div className="relative w-14 h-14 bg-[#F5F5F0] rounded-sm overflow-hidden flex-shrink-0">
+                              <Image
+                                src={product.colors[0].images[0]}
+                                alt={product.name}
+                                fill
+                                className="object-contain p-1.5 group-hover:scale-105 transition-transform duration-500"
+                              />
+                            </div>
+                            <div className="flex-grow">
+                              <span className="inline-block text-[6px] font-sans font-black tracking-widest bg-amber-50 text-amber-800 border border-amber-100 uppercase px-1.5 py-0.5 mb-1 rounded-sm">
+                                Bestseller
+                              </span>
+                              <h4 className="text-xs font-serif italic text-black/80 group-hover:text-black line-clamp-1">{product.name}</h4>
+                              <p className="text-[9px] font-sans font-bold text-black mt-0.5">₹{product.selling_price}</p>
+                            </div>
+                            <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0 text-black/50" />
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 )}
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
       
