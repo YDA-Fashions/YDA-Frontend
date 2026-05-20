@@ -46,7 +46,7 @@ const AdminPage = () => {
   const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
 
   // Configure admin emails from environment variables or use safe defaults
-  const adminEmailsStr = process.env.NEXT_PUBLIC_ADMIN_EMAILS || "support@ydafashions.com,admin@ydafashions.com,ydafashions@gmail.com";
+  const adminEmailsStr = process.env.NEXT_PUBLIC_ADMIN_EMAILS || "support@ydafashions.com,admin@ydafashions.com,ydafashions@gmail.com,harshitnaiwal@zohomail.in";
   const adminEmails = React.useMemo(() => {
     return adminEmailsStr.split(",").map(e => e.trim().toLowerCase());
   }, [adminEmailsStr]);
