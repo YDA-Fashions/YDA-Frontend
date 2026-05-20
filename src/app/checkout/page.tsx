@@ -109,6 +109,25 @@ const CheckoutPage = () => {
     }
   }, [activeItems.length, router, isAuthLoading]);
 
+  useEffect(() => {
+    const couponParam = searchParams?.get("coupon");
+    if (couponParam) {
+      const autoApply = async () => {
+        setIsValidatingCoupon(true);
+        setCouponError("");
+        try {
+          const coupon = await couponService.validateCoupon(couponParam);
+          setAppliedCoupon({ code: coupon.code, percent: coupon.discount_percent });
+        } catch (err: any) {
+          console.error("Failed to auto-apply coupon from URL:", err);
+        } finally {
+          setIsValidatingCoupon(false);
+        }
+      };
+      autoApply();
+    }
+  }, [searchParams]);
+
   const handleApplyCoupon = async () => {
     if (!couponCode.trim()) return;
     setIsValidatingCoupon(true);
