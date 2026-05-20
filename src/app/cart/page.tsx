@@ -10,6 +10,7 @@ import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import { useCartStore } from "@/store/useCartStore";
 import { useUIStore } from "@/store/useUIStore";
+import { PRODUCTS } from "@/data/products";
 
 const URGENCY_MESSAGES = [
   "🔥 Limited Stock. Buy Within",
@@ -20,7 +21,7 @@ const URGENCY_MESSAGES = [
 
 const CartPage = () => {
   const router = useRouter();
-  const { items, removeItem, updateQuantity, getTotalPrice, getTotalItems, clearCart, cartTimerExpiresAt } = useCartStore();
+  const { items, removeItem, updateQuantity, getTotalPrice, getTotalItems, clearCart, cartTimerExpiresAt, addItem } = useCartStore();
   const { setOrderModalOpen } = useUIStore();
   const [isProcessing, setIsProcessing] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -71,6 +72,13 @@ const CartPage = () => {
   const handleCheckout = () => {
     router.push("/checkout");
   };
+
+  // Get 3 items not currently in the cart for cross-selling
+  const recommendedItems = React.useMemo(() => {
+    const cartIds = new Set(items.map(item => item.id));
+    const filtered = PRODUCTS.filter(product => !cartIds.has(product.id));
+    return filtered.slice(0, 3);
+  }, [items]);
 
   return (
     <div className="min-h-screen bg-[#FCFBFA]">
@@ -213,33 +221,78 @@ const CartPage = () => {
                     Subtotal ({getTotalItems()} items): <span className="font-bold">₹{subtotal.toLocaleString()}</span>
                   </p>
                 </div>
+
+                {/* Frequently Bought Together Widget */}
+                {recommendedItems.length > 0 && (
+                  <div className="mt-12 pt-8 border-t border-black/10">
+                    <h3 className="text-sm font-sans font-bold uppercase tracking-[0.2em] text-black/80 mb-6">
+                      Frequently Bought Together
+                    </h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      {recommendedItems.map((product) => (
+                        <div key={product.id} className="border border-[#EBE3D5] bg-[#FCFBFA] p-4 rounded-sm flex flex-col justify-between group">
+                          <div>
+                            <Link href={`/product/${product.id}`}>
+                              <div className="relative w-full aspect-square bg-[#F5F5F0] rounded-sm overflow-hidden mb-3">
+                                <Image 
+                                  src={product.colors?.[0]?.images?.[0] || "/images/placeholder.jpg"} 
+                                  alt={product.name} 
+                                  fill 
+                                  className="object-contain p-2 group-hover:scale-105 transition-transform duration-300"
+                                />
+                              </div>
+                            </Link>
+                            <Link href={`/product/${product.id}`}>
+                              <h4 className="text-xs font-sans font-bold text-black/80 hover:text-amber-800 line-clamp-1">
+                                {product.name}
+                              </h4>
+                            </Link>
+                            <p className="text-[9px] text-black/50 uppercase tracking-widest mt-0.5">{product.category}</p>
+                            <p className="text-xs font-sans font-black text-black mt-1.5">₹{product.selling_price.toLocaleString()}</p>
+                          </div>
+                          <button
+                            onClick={() => addItem(product)}
+                            className="mt-4 w-full bg-white hover:bg-black hover:text-white border border-black/20 text-black py-2.5 text-[9px] uppercase tracking-widest font-sans font-black transition-colors rounded-sm"
+                          >
+                            + Add to Cart
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Right Column: Order Summary (Amazon Style) */}
               <div className="lg:col-span-3 space-y-6">
                 
                 <div className="bg-white border border-black/5 p-5 rounded-sm">
-                  <div className="mb-4">
-                    <div className="flex gap-2 items-start mb-2">
-                      {subtotal >= threshold ? (
-                        <>
-                          <CheckCircle size={20} className="text-emerald-600 mt-0.5 flex-shrink-0" />
-                          <p className="text-sm font-sans text-emerald-800">
-                            Your order is eligible for FREE Delivery.
-                          </p>
-                        </>
-                      ) : (
-                        <>
-                          <Truck size={20} className="text-amber-600 mt-0.5 flex-shrink-0" />
-                          <p className="text-sm font-sans text-amber-800">
-                            Add ₹{awayAmount.toLocaleString()} more for FREE Delivery.
-                          </p>
-                        </>
-                      )}
+                  {/* Interactive Gold Progress Bar */}
+                  <div className="mb-6 space-y-2">
+                    <div className="flex justify-between items-center text-[10px] font-sans uppercase tracking-wider">
+                      <span className="font-black text-black/80">
+                        {subtotal >= threshold ? "🎉 Free Delivery Unlocked" : "Delivery Progress"}
+                      </span>
+                      <span className="text-black/50 font-bold">
+                        {subtotal >= threshold ? "100%" : `${Math.floor((subtotal / threshold) * 100)}%`}
+                      </span>
                     </div>
+                    {/* Visual Bar */}
+                    <div className="w-full h-2 bg-[#F5F4F0] rounded-full overflow-hidden border border-[#EBE3D5]">
+                      <div 
+                        className="h-full bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-600 rounded-full transition-all duration-500" 
+                        style={{ width: `${Math.min((subtotal / threshold) * 100, 100)}%` }}
+                      />
+                    </div>
+                    <p className="text-[10px] font-sans text-black/60 leading-relaxed pt-0.5">
+                      {subtotal >= threshold 
+                        ? "Your curation qualifies for FREE delivery and a surprise handcrafted gift!" 
+                        : `Add ₹${awayAmount.toLocaleString()} more to unlock FREE delivery and surprise gift.`
+                      }
+                    </p>
                   </div>
 
-                  <h2 className="text-lg font-sans mb-1">
+                  <h2 className="text-base font-sans mb-1 uppercase tracking-wide">
                     Subtotal ({getTotalItems()} items): <span className="font-bold">₹{subtotal.toLocaleString()}</span>
                   </h2>
                   <p className="text-xs text-black/60 font-sans mb-5">
@@ -249,34 +302,43 @@ const CartPage = () => {
                   <button 
                     onClick={handleCheckout}
                     disabled={isProcessing}
-                    className="w-full bg-[#FFD814] hover:bg-[#F7CA00] border border-[#FCD200] rounded-full py-2.5 px-4 text-sm font-sans shadow-sm transition-all text-black mb-4 disabled:opacity-50"
+                    className="w-full bg-black text-white hover:bg-black/90 border border-black rounded-sm py-3.5 px-4 text-xs font-sans font-black uppercase tracking-widest shadow-sm transition-all mb-4 disabled:opacity-50"
                   >
                     {isProcessing ? "Authenticating..." : "Proceed to Buy"}
                   </button>
 
-                  <div className="space-y-3 pt-4 border-t border-black/10">
+                  <div className="space-y-3.5 pt-4 border-t border-black/10">
                     <div className="flex items-center gap-3">
-                      <ShieldCheck size={16} className="text-black/40" />
-                      <span className="text-xs font-sans text-black/60">Secure checkout via SSL</span>
+                      <ShieldCheck size={16} className="text-emerald-600" />
+                      <span className="text-[9px] font-sans font-black text-black/70 uppercase tracking-widest">Secure 256-Bit Checkout</span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <Truck size={16} className="text-black/40" />
-                      <span className="text-xs font-sans text-black/60">Dispatches from YDA Studio</span>
+                      <Truck size={16} className="text-black/60" />
+                      <span className="text-[9px] font-sans font-black text-black/70 uppercase tracking-widest">Studio Dispatch Verified</span>
+                    </div>
+                    
+                    {/* Payment methods list */}
+                    <div className="pt-3 border-t border-black/5 flex flex-wrap gap-1.5 justify-center opacity-60">
+                      {["VISA", "MC", "UPI", "GPAY", "RUPAY"].map((pay) => (
+                        <span key={pay} className="text-[8px] font-sans font-black tracking-widest border border-black/25 px-2 py-0.5 rounded-sm bg-[#FCFBFA]">
+                          {pay}
+                        </span>
+                      ))}
                     </div>
                   </div>
                 </div>
 
-                {/* AOV Booster Alert (Styled like Amazon deals) */}
+                {/* AOV Booster Alert */}
                 {!isFreeGiftEligible && (
-                  <div className="bg-white border border-black/5 p-4 rounded-sm">
-                    <h3 className="text-sm font-bold font-sans mb-2 flex items-center gap-2">
-                      <Gift size={16} className="text-amber-600" /> Unlock a Free Gift
+                  <div className="bg-white border border-[#EBE3D5] p-5 rounded-sm">
+                    <h3 className="text-xs font-bold font-sans uppercase tracking-widest mb-2 flex items-center gap-2">
+                      <Gift size={15} className="text-amber-700" /> Complimentary Gift
                     </h3>
-                    <p className="text-xs font-sans text-black/80 mb-3">
-                      Add ₹{awayAmount.toLocaleString()} more to your order to receive a complimentary handcrafted surprise gift!
+                    <p className="text-xs font-sans text-black/70 leading-relaxed mb-3">
+                      Add ₹{awayAmount.toLocaleString()} more to your curation to receive an exclusive surprise handcrafted gift!
                     </p>
-                    <Link href="/shop" className="text-xs text-cyan-700 hover:text-amber-700 hover:underline">
-                      Shop more items
+                    <Link href="/shop" className="text-xs text-amber-800 hover:text-black font-sans font-bold hover:underline uppercase tracking-wider">
+                      Shop more creations →
                     </Link>
                   </div>
                 )}
