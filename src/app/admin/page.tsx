@@ -45,9 +45,33 @@ const AdminPage = () => {
   });
   const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
 
+  // Configure admin emails from environment variables or use safe defaults
+  const adminEmailsStr = process.env.NEXT_PUBLIC_ADMIN_EMAILS || "support@ydafashions.com,admin@ydafashions.com,ydafashions@gmail.com";
+  const adminEmails = React.useMemo(() => {
+    return adminEmailsStr.split(",").map(e => e.trim().toLowerCase());
+  }, [adminEmailsStr]);
+
+  const isAdmin = React.useMemo(() => {
+    if (!user) return false;
+    const email = user.email?.toLowerCase();
+    return (
+      adminEmails.includes(email) || 
+      email?.endsWith("@ydafashions.com") ||
+      user.app_metadata?.role === "admin" ||
+      user.user_metadata?.role === "admin"
+    );
+  }, [user, adminEmails]);
+
   React.useEffect(() => {
-    if (!isAuthLoading && !user) {
+    if (isAuthLoading) return;
+
+    if (!user) {
       router.push("/login?redirect=/admin");
+      return;
+    }
+    
+    if (!isAdmin) {
+      console.warn("🔐 Access Denied: User is not authorized as admin:", user.email);
       return;
     }
     
@@ -55,7 +79,7 @@ const AdminPage = () => {
     loadOrders();
     loadCoupons();
     fetchProducts();
-  }, [user, isAuthLoading, router]);
+  }, [user, isAuthLoading, isAdmin, router]);
 
   const loadCoupons = async () => {
     try {
@@ -213,6 +237,55 @@ const AdminPage = () => {
     { label: "Total Products", value: products.length.toString(), icon: Package },
     { label: "Customers", value: totalCustomers.toString(), icon: Users },
   ];
+
+  if (isAuthLoading) {
+    return (
+      <div className="min-h-screen bg-[#FDFBF7] flex flex-col items-center justify-center font-serif text-xl italic opacity-40 animate-pulse">
+        Verifying security access...
+      </div>
+    );
+  }
+
+  if (!user) {
+    return null;
+  }
+
+  if (!isAdmin) {
+    return (
+      <div className="min-h-screen bg-[#FDFBF7] flex flex-col items-center justify-center px-6 text-center">
+        <div className="max-w-md w-full space-y-8 bg-white border border-border-beige p-8 shadow-sm">
+          <div className="space-y-4">
+            <span className="text-[10px] uppercase tracking-[0.5em] font-black text-red-600 block">Security Alert</span>
+            <h1 className="text-3xl font-serif tracking-tight text-black italic">
+              Access Denied
+            </h1>
+            <div className="w-12 h-[1px] bg-black/10 mx-auto my-6" />
+            <p className="text-sm font-sans text-foreground/60 leading-relaxed">
+              This terminal is reserved for YDA Fashions team members only. Your account ({user.email}) does not possess administrative privileges.
+            </p>
+          </div>
+          <div className="flex flex-col gap-3 pt-4">
+            <button 
+              onClick={() => router.push("/")}
+              className="w-full bg-foreground text-background py-4 text-[10px] uppercase tracking-[0.3em] font-sans font-bold hover:bg-accent-dark transition-all duration-300"
+            >
+              Return to Curation
+            </button>
+            <button 
+              onClick={async () => {
+                const { useAuthStore } = await import("@/store/useAuthStore");
+                await useAuthStore.getState().signOut();
+                router.push("/login?redirect=/admin");
+              }}
+              className="w-full border border-foreground/10 py-4 text-[10px] uppercase tracking-[0.3em] font-sans font-bold hover:bg-foreground hover:text-background transition-all duration-300"
+            >
+              Sign in with another account
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#FDFBF7] flex flex-col lg:flex-row">
