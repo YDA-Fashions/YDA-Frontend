@@ -307,23 +307,59 @@ const CartPage = () => {
                     {isProcessing ? "Authenticating..." : "Proceed to Buy"}
                   </button>
 
-                  <div className="space-y-3.5 pt-4 border-t border-black/10">
-                    <div className="flex items-center gap-3">
-                      <ShieldCheck size={16} className="text-emerald-600" />
-                      <span className="text-[9px] font-sans font-black text-black/70 uppercase tracking-widest">Secure 256-Bit Checkout</span>
+                  <div className="space-y-4 pt-4 border-t border-black/10">
+                    <div className="flex items-center gap-2.5">
+                      <ShieldCheck size={18} className="text-emerald-600 flex-shrink-0" />
+                      <span className="text-xs font-sans font-bold text-black/70 uppercase tracking-wider">Secure 256-Bit Checkout</span>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <Truck size={16} className="text-black/60" />
-                      <span className="text-[9px] font-sans font-black text-black/70 uppercase tracking-widest">Studio Dispatch Verified</span>
+                    <div className="flex items-center gap-2.5">
+                      <Truck size={18} className="text-black/60 flex-shrink-0" />
+                      <span className="text-xs font-sans font-bold text-black/70 uppercase tracking-wider">Studio Dispatch Verified</span>
                     </div>
                     
-                    {/* Payment methods list */}
-                    <div className="pt-3 border-t border-black/5 flex flex-wrap gap-1.5 justify-center opacity-60">
-                      {["VISA", "MC", "UPI", "GPAY", "RUPAY"].map((pay) => (
-                        <span key={pay} className="text-[8px] font-sans font-black tracking-widest border border-black/25 px-2 py-0.5 rounded-sm bg-[#FCFBFA]">
-                          {pay}
-                        </span>
-                      ))}
+                    {/* Stylized Brand Payment Logos */}
+                    <div className="pt-3.5 border-t border-black/5 flex flex-wrap gap-2 justify-center items-center">
+                      {/* Visa */}
+                      <svg className="w-10 h-6.5 shadow-[0_1px_2px_rgba(0,0,0,0.06)] rounded-[3px] border border-black/[0.03]" viewBox="0 0 40 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="40" height="24" rx="2" fill="#1A1F71"/>
+                        <path d="M12.5 15.5l1.2-7h1.6l-1.2 7h-1.6zm7.2-6.8c-.3-.1-.7-.2-1.2-.2-1.3 0-2.2.7-2.2 1.6 0 .7.6 1.1 1.2 1.4.5.2.7.4.7.6 0 .3-.4.5-.8.5-.6 0-.9-.1-1.4-.3l-.2-.1-.2 1.3c.4.2 1 .3 1.5.3 1.4 0 2.3-.7 2.3-1.7 0-.8-.7-1.2-1.4-1.5-.5-.2-.7-.4-.7-.6 0-.3.3-.5.7-.5.5 0 .8.1 1.2.2l.2.1.2-1.3zm6 6.8l-1.5-7h-1.5l-.8 4.5-.4-2.5c-.1-.7-.7-1.5-1.5-1.5h-1.3l.2 1 1 .5c.6.3.8.7.9 1.1l1.1 3.9h1.8zm4.8 0l1.2-7h-1.3l-.9 5-.1-.7-.6-4.3h-1.5l1.6 7h1.6z" fill="#FFF"/>
+                      </svg>
+
+                      {/* Mastercard */}
+                      <svg className="w-10 h-6.5 shadow-[0_1px_2px_rgba(0,0,0,0.06)] rounded-[3px] border border-black/[0.03]" viewBox="0 0 40 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="40" height="24" rx="2" fill="#222222"/>
+                        <circle cx="15" cy="12" r="6" fill="#EB001B"/>
+                        <circle cx="23" cy="12" r="6" fill="#FF5F00" fillOpacity="0.85"/>
+                      </svg>
+
+                      {/* UPI */}
+                      <svg className="w-10 h-6.5 shadow-[0_1px_2px_rgba(0,0,0,0.06)] rounded-[3px] border border-black/[0.08]" viewBox="0 0 48 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="48" height="24" rx="2" fill="#FFFFFF"/>
+                        <text x="4" y="16" fontFamily="sans-serif" fontWeight="900" fontSize="10" fill="#000000" fontStyle="italic" letterSpacing="-0.5">UPI</text>
+                        <path d="M28 8l3 3-3 3" stroke="#097939" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        <path d="M33 8l-3 3 3 3" stroke="#0072b2" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+
+                      {/* Paytm */}
+                      <svg className="w-10 h-6.5 shadow-[0_1px_2px_rgba(0,0,0,0.06)] rounded-[3px] border border-black/[0.08]" viewBox="0 0 48 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="48" height="24" rx="2" fill="#FFFFFF"/>
+                        <text x="3" y="16" fontFamily="sans-serif" fontWeight="900" fontSize="11" fill="#00baf2" letterSpacing="-0.5">Pay</text>
+                        <text x="23" y="16" fontFamily="sans-serif" fontWeight="900" fontSize="11" fill="#002e6e" letterSpacing="-0.5">tm</text>
+                      </svg>
+
+                      {/* PhonePe */}
+                      <svg className="w-10 h-6.5 shadow-[0_1px_2px_rgba(0,0,0,0.06)] rounded-[3px] border border-black/[0.03]" viewBox="0 0 48 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="48" height="24" rx="2" fill="#5f259f"/>
+                        <text x="5" y="15" fontFamily="sans-serif" fontWeight="900" fontSize="8" fill="#FFFFFF" letterSpacing="0.3">PhonePe</text>
+                      </svg>
+
+                      {/* RuPay */}
+                      <svg className="w-10 h-6.5 shadow-[0_1px_2px_rgba(0,0,0,0.06)] rounded-[3px] border border-black/[0.08]" viewBox="0 0 48 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="48" height="24" rx="2" fill="#FFFFFF"/>
+                        <text x="3" y="15" fontFamily="sans-serif" fontWeight="900" fontSize="8" fill="#0a3973" fontStyle="italic" letterSpacing="-0.3">RuPay</text>
+                        <path d="M37 9h3l-1.5 3h-3z" fill="#f7941d"/>
+                        <path d="M38.5 6h3l-1.5 3h-3z" fill="#0a3973"/>
+                      </svg>
                     </div>
                   </div>
                 </div>
