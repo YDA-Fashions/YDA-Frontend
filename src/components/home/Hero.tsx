@@ -11,25 +11,29 @@ const BANNERS = [
     image: "/images/Slider-image-C/Slider-image-C1.jpg",
     mobileImage: "/images/mobile-slider-/mobile-slider-1.jpg",
     title: "Hand-Block Heritage",
-    subtitle: "Jaipur's soul in every stitch."
+    subtitle: "Jaipur's soul in every stitch",
+    cta: "Explore Collection"
   },
   {
     image: "/images/Slider-image-C/Slider-image-C2.jpg",
     mobileImage: "/images/mobile-slider-/mobile-slider-2.jpg",
-    title: "Manoj's Mastery",
-    subtitle: "20 years of tailoring excellence."
+    title: "Master Craftsmanship",
+    subtitle: "20 years of tailoring excellence",
+    cta: "Shop Now"
   },
   {
     image: "/images/Slider-image-C/Slider-image-C3.jpg",
     mobileImage: "/images/mobile-slider-/mobile-slider-3.jpg",
     title: "The Art of Detail",
-    subtitle: "Reviving Sanganeri Chapai Culture."
+    subtitle: "Reviving Sanganeri Chapai Culture",
+    cta: "Discover More"
   },
   {
     image: "/images/Slider-image-C/Slider-image-C4.jpg",
     mobileImage: "/images/mobile-slider-/mobile-slider-4.jpg",
     title: "Timeless Luxury",
-    subtitle: "Crafted for the modern wardrobe."
+    subtitle: "Crafted for the modern wardrobe",
+    cta: "View Collection"
   },
 ];
 
@@ -46,7 +50,7 @@ const Hero = () => {
 
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % BANNERS.length);
-    }, 6000);
+    }, 7000);
 
     return () => {
       window.removeEventListener("resize", checkMobile);
@@ -54,28 +58,28 @@ const Hero = () => {
     };
   }, []);
 
-  if (!isMounted) return <div className="h-[95vh] bg-black" />;
+  if (!isMounted) return <div className="h-screen bg-foreground" />;
 
   const currentBanner = BANNERS[currentIndex];
   const bannerImage = isMobile ? currentBanner.mobileImage : currentBanner.image;
 
   return (
-    <section className="relative h-[85vh] md:h-[95vh] w-full overflow-hidden bg-black">
-      {/* Background Section */}
+    <section className="relative h-[100svh] w-full overflow-hidden bg-foreground">
+      {/* Background Images with Ken Burns Effect */}
       <div className="absolute inset-0 z-0">
-        <AnimatePresence initial={false}>
+        <AnimatePresence initial={false} mode="wait">
           <motion.div
             key={currentIndex}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 1.5, ease: "easeInOut" }}
+            transition={{ duration: 1.2, ease: "easeInOut" }}
             className="absolute inset-0"
           >
             <motion.div
               initial={{ scale: 1.1 }}
               animate={{ scale: 1 }}
-              transition={{ duration: 8, ease: "easeOut" }}
+              transition={{ duration: 10, ease: "linear" }}
               className="absolute inset-0"
             >
               <Image
@@ -83,105 +87,120 @@ const Hero = () => {
                 alt={currentBanner.title}
                 fill
                 priority
-                className="object-cover brightness-[0.75]"
+                className="object-cover"
                 sizes="100vw"
               />
             </motion.div>
-            {/* Global Overlays for better contrast */}
-            <div className="absolute inset-0 bg-black/30 md:bg-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20 md:bg-gradient-to-b md:from-black/30 md:via-transparent md:to-black/60" />
-            <div className="absolute inset-0 bg-gradient-to-tr from-black/60 via-transparent to-transparent opacity-60" />
+            {/* Cinematic overlay gradients */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/70" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-transparent" />
           </motion.div>
         </AnimatePresence>
       </div>
 
-      {/* Text Overlay - Premium Brand Style (Bottom-Left Aligned) */}
-      <div className="absolute inset-0 z-10 flex items-end justify-start text-left px-6 md:px-24 pb-20 md:pb-48">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentIndex}
-            className="max-w-4xl"
-          >
-            <motion.p 
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1, delay: 0.2 }}
-              className="text-[8px] md:text-sm uppercase text-white tracking-[0.6em] md:tracking-[0.8em] mb-4 md:mb-8 font-black drop-shadow-lg"
-            >
-              Handcrafted Heritage
-            </motion.p>
-            
-            <motion.h1 
-              initial={{ opacity: 0, x: -40 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 40 }}
-              transition={{ duration: 1, ease: [0.19, 1, 0.22, 1] }}
-              className="text-4xl md:text-[8rem] font-serif italic text-white leading-[0.9] mb-6 md:mb-12 tracking-tighter font-black drop-shadow-2xl"
-            >
-              {currentBanner.title}
-            </motion.h1>
+      {/* Content Overlay */}
+      <div className="absolute inset-0 z-10 flex flex-col justify-end">
+        <div className="container mx-auto px-6 md:px-12 pb-24 md:pb-32">
+          <div className="max-w-3xl">
+            <AnimatePresence mode="wait">
+              <motion.div key={currentIndex}>
+                {/* Eyebrow */}
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                  className="text-[10px] md:text-xs uppercase tracking-[0.4em] text-white/70 mb-4 md:mb-6 font-sans font-medium"
+                >
+                  Handcrafted Heritage
+                </motion.p>
 
-            <motion.p 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5, duration: 1 }}
-              className="text-[9px] md:text-base uppercase tracking-[0.2em] md:tracking-[0.3em] text-white/90 mb-8 md:mb-14 font-black max-w-xl leading-relaxed drop-shadow-md"
-            >
-              {currentBanner.subtitle}
-            </motion.p>
+                {/* Main Headline */}
+                <motion.h1
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.3, ease: [0.19, 1, 0.22, 1] }}
+                  className="text-4xl md:text-7xl lg:text-8xl font-serif text-white leading-[0.95] mb-4 md:mb-6 tracking-tight"
+                >
+                  {currentBanner.title}
+                </motion.h1>
 
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.7, duration: 0.8 }}
-            >
-              <Link 
-                href="/shop"
-                className="inline-block px-8 md:px-16 py-4 md:py-7 bg-white text-black text-[9px] md:text-[11px] uppercase tracking-[0.4em] md:tracking-[0.5em] font-black rounded-full md:rounded-none transition-all hover:bg-black hover:text-white hover:scale-105 active:scale-95 shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
-              >
-                Explore
-              </Link>
-            </motion.div>
-          </motion.div>
-        </AnimatePresence>
-      </div>
+                {/* Subtitle */}
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.5 }}
+                  className="text-sm md:text-lg text-white/80 mb-8 md:mb-10 max-w-lg font-sans"
+                >
+                  {currentBanner.subtitle}
+                </motion.p>
 
-      {/* Premium Slider Indicators */}
-      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-30 flex items-center gap-8">
-        {BANNERS.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrentIndex(index)}
-            className="group relative flex items-center py-4"
-            aria-label={`Go to slide ${index + 1}`}
-          >
-            <span className={`text-[8px] font-black mr-3 transition-colors ${currentIndex === index ? "text-white" : "text-white/20"}`}>
-              0{index + 1}
-            </span>
-            <div className="relative w-16 h-[1px] bg-white/10 overflow-hidden">
-              {currentIndex === index && (
-                <motion.div 
-                  initial={{ x: "-100%" }}
-                  animate={{ x: "0%" }}
-                  transition={{ duration: 6, ease: "linear" }}
-                  className="absolute inset-0 bg-white"
-                />
-              )}
-              <div className="absolute inset-0 bg-white/20 translate-y-[1px] group-hover:translate-y-0 transition-transform" />
+                {/* CTA Button */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.7 }}
+                >
+                  <Link
+                    href="/shop"
+                    className="group inline-flex items-center gap-3 bg-white text-foreground px-8 py-4 text-xs md:text-sm uppercase tracking-[0.15em] font-sans font-semibold transition-all duration-300 hover:bg-foreground hover:text-white"
+                  >
+                    <span>{currentBanner.cta}</span>
+                    <ArrowRight 
+                      size={16} 
+                      className="transition-transform duration-300 group-hover:translate-x-1" 
+                    />
+                  </Link>
+                </motion.div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </div>
+
+        {/* Bottom Progress Bar Navigation */}
+        <div className="absolute bottom-0 left-0 right-0 z-20">
+          <div className="container mx-auto px-6 md:px-12 pb-8">
+            <div className="flex items-center gap-2 md:gap-4">
+              {BANNERS.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentIndex(index)}
+                  className="group relative flex-1 h-[2px] bg-white/20 overflow-hidden"
+                  aria-label={`Go to slide ${index + 1}`}
+                >
+                  {currentIndex === index && (
+                    <motion.div
+                      initial={{ scaleX: 0 }}
+                      animate={{ scaleX: 1 }}
+                      transition={{ duration: 7, ease: "linear" }}
+                      className="absolute inset-0 bg-white origin-left"
+                    />
+                  )}
+                  <div className="absolute inset-0 bg-white/40 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+                </button>
+              ))}
             </div>
-          </button>
-        ))}
+          </div>
+        </div>
       </div>
 
-      {/* Side Label */}
-      <div className="absolute right-12 top-1/2 -translate-y-1/2 z-20 hidden xl:block">
-        <p className="text-[9px] uppercase tracking-[0.8em] text-white/20 font-black vertical-text rotate-180">
-          Spring Summer Collection 24
-        </p>
-      </div>
+      {/* Scroll Indicator */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5, duration: 0.6 }}
+        className="absolute bottom-8 right-6 md:right-12 z-20 hidden md:flex flex-col items-center gap-2"
+      >
+        <span className="text-[10px] uppercase tracking-[0.3em] text-white/50 font-sans [writing-mode:vertical-lr]">
+          Scroll
+        </span>
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          className="w-[1px] h-12 bg-gradient-to-b from-white/50 to-transparent"
+        />
+      </motion.div>
     </section>
   );
 };
-
 
 export default Hero;

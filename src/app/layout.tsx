@@ -79,9 +79,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${prata.variable} h-full antialiased`}
+      className={`${inter.variable} ${prata.variable} h-full antialiased bg-background`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col bg-background text-foreground">
         <JsonLd
           data={{
             "@context": "https://schema.org",
