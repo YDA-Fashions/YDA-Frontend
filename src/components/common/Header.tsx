@@ -167,7 +167,7 @@ const Header = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setIsMobileMenuOpen(false)}
-            className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[90] md:hidden"
+            className="fixed inset-0 bg-black/45 backdrop-blur-md z-[90] md:hidden"
           />
         )}
       </AnimatePresence>
@@ -180,27 +180,27 @@ const Header = () => {
             animate={{ x: 0 }}
             exit={{ x: "-100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed inset-0 w-full h-full bg-white z-[100] md:hidden"
+            className="fixed inset-0 w-full h-full bg-white z-[100] md:hidden border-r border-[#E8E2D6]"
           >
             <div className="p-8 flex flex-col h-full overflow-y-auto">
-              <div className="flex items-center justify-between mb-12">
+              <div className="flex items-center justify-between mb-12 pb-6 border-b border-[#E8E2D6]/60">
                 <div className="scale-75 origin-left">
                   <Logo variant="horizontal" />
                 </div>
                 <button 
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="p-2 -mr-2 text-black/40 hover:text-black transition-colors"
+                  className="p-2.5 -mr-2 text-black/40 hover:text-black border border-black/8 rounded-full transition-colors"
                 >
                   <X size={28} strokeWidth={1} />
                 </button>
               </div>
               <nav className="flex flex-col gap-6 mt-4">
-                <p className="text-[10px] uppercase tracking-[0.3em] font-black text-black/20 mb-2">Collections</p>
+                <p className="text-[9px] uppercase tracking-[0.35em] font-sans font-semibold text-[#8B7D6B] mb-2">Collections</p>
                 {navLinks.map((link) => (
                   <Link 
                     key={link.name} 
                     href={link.href}
-                    className="text-2xl font-serif tracking-tight text-black hover:italic transition-all border-b border-black/5 pb-4 last:border-0"
+                    className="text-2xl font-serif tracking-tight text-black hover:italic transition-all border-b border-[#E8E2D6]/70 pb-4 last:border-0"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {link.name}
@@ -208,12 +208,12 @@ const Header = () => {
                 ))}
               </nav>
 
-              <div className="mt-auto pt-12 border-t border-black/5">
-                <div className="flex items-center gap-4 mb-8">
-                  <div className="w-10 h-10 rounded-full bg-[#F5F5F0] flex items-center justify-center font-serif italic text-lg shadow-inner">Y</div>
+              <div className="mt-auto pt-12 border-t border-[#E8E2D6]/60">
+                <div className="flex items-center gap-4 mb-8 p-4 bg-[#F5F1E8] border border-[#E8E2D6] rounded-sm">
+                  <div className="w-10 h-10 rounded-full bg-[#F5F1E8] border border-[#E8E2D6] flex items-center justify-center font-serif italic text-lg text-[#8B7D6B]">Y</div>
                   <div>
-                    <p className="text-[10px] uppercase tracking-widest font-black">YDA Studio</p>
-                    <p className="text-[10px] text-black/40 uppercase tracking-widest">Handcrafted Heritage</p>
+                    <p className="text-[9px] uppercase tracking-[0.3em] font-sans font-semibold text-black/80">YDA Studio</p>
+                    <p className="text-[9px] text-[#8B7D6B] uppercase tracking-[0.25em] font-sans mt-0.5">Handcrafted Heritage</p>
                   </div>
                 </div>
               </div>
@@ -235,7 +235,7 @@ const Header = () => {
                 setIsSearchOpen(false);
                 setSearchQuery("");
               }}
-              className="fixed inset-0 z-[200] bg-black/40 backdrop-blur-sm"
+              className="fixed inset-0 z-[200] bg-black/45 backdrop-blur-md"
             />
 
             {/* Side Drawer Panel */}
@@ -244,11 +244,11 @@ const Header = () => {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "tween", duration: 0.3, ease: "easeOut" }}
-              className="fixed right-0 top-0 bottom-0 z-[201] w-full max-w-md bg-[#FDFBF7] h-full flex flex-col p-6 md:p-8 shadow-2xl border-l border-[#EBE3D5] overflow-y-auto"
+              className="fixed right-0 top-0 bottom-0 z-[201] w-full max-w-md bg-white h-full flex flex-col p-6 md:p-8 shadow-2xl border-l border-[#E8E2D6] overflow-y-auto"
             >
               {/* Header inside Drawer */}
-              <div className="flex justify-between items-center pb-6 border-b border-black/5">
-                <span className="text-[10px] uppercase tracking-[0.4em] font-black text-black/40">Search Curation</span>
+              <div className="flex justify-between items-center pb-6 border-b border-[#E8E2D6]/80">
+                <span className="text-[11px] uppercase tracking-[0.3em] font-sans font-semibold text-[#8B7D6B]">Search Curation</span>
                 <button 
                   onClick={() => {
                     setIsSearchOpen(false);
@@ -393,12 +393,13 @@ const Header = () => {
       <header 
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           isScrolled 
-            ? "bg-white/80 backdrop-blur-xl backdrop-saturate-150 shadow-[0_1px_24px_rgba(0,0,0,0.06)] border-b border-white/40" 
-            : "bg-white"
+            ? "bg-white shadow-[0_2px_20px_rgba(0,0,0,0.06)] border-b border-[#E8E2D6]" 
+            : "bg-white border-b border-[#E8E2D6]/60"
         } ${showHeader ? "translate-y-0" : "-translate-y-full md:translate-y-0"}`}
       >
         {/* Announcement Bar */}
-        <div className="bg-[#F5F1E8] py-1.5 h-8 overflow-hidden flex items-center justify-center">
+        <div className="relative bg-gradient-to-r from-[#F5F1E8] via-[#FAF6EE] to-[#F5F1E8] py-2 min-h-[36px] overflow-hidden flex items-center justify-center border-b border-[#E8E2D6]/50">
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-300/40 to-transparent pointer-events-none" />
           <AnimatePresence mode="wait">
             <motion.p
               key={announcementIndex}
@@ -406,23 +407,24 @@ const Header = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.5 }}
-              className="text-[10px] md:text-xs uppercase tracking-[0.2em] font-sans font-bold text-black"
+              className="text-[11px] md:text-xs uppercase tracking-[0.22em] font-sans font-semibold text-black/90"
             >
               {announcements[announcementIndex]}
             </motion.p>
           </AnimatePresence>
         </div>
 
-        <div className="container mx-auto px-6">
-          <div className="flex items-center justify-between py-2 md:py-4 min-h-[50px] md:min-h-[70px] relative">
+        <div className="container mx-auto px-6 lg:px-8">
+          <div className="flex items-center justify-between py-2.5 md:py-4 min-h-[50px] md:min-h-[72px] relative">
             
             {/* LEFT: Menu Toggle (Mobile) / Desktop Logo (when scrolled) */}
             <div className={`flex items-center justify-start gap-4 ${isScrolled ? "flex-1" : "flex-1 lg:max-w-[200px]"}`}>
               <button 
-                className="lg:hidden p-2 text-foreground/80 -ml-2"
+                className="lg:hidden p-2.5 text-foreground/70 hover:text-black -ml-2 rounded-full border border-[#E8E2D6]/50 hover:border-[#E8E2D6] hover:bg-[#F5F1E8] transition-colors"
                 onClick={() => setIsMobileMenuOpen(true)}
+                aria-label="Open menu"
               >
-                <Menu size={22} strokeWidth={1.5} />
+                <Menu size={24} strokeWidth={1.5} />
               </button>
 
               {isScrolled && (
@@ -452,7 +454,7 @@ const Header = () => {
                       href={link.href}
                       label={link.name}
                       image={link.previewImage}
-                      className="group relative text-[10px] uppercase tracking-[0.2em] font-sans font-black text-foreground/50 hover:text-black transition-colors whitespace-nowrap"
+                      className="group relative text-[11px] uppercase tracking-[0.18em] font-sans font-semibold text-foreground/55 hover:text-black transition-colors whitespace-nowrap"
                     />
                   ))}
                 </nav>
@@ -460,23 +462,23 @@ const Header = () => {
             </div>
 
             {/* RIGHT: Utility Icons */}
-            <div className={`flex items-center justify-end gap-1 md:gap-2 ${isScrolled ? "flex-1" : "flex-1 lg:max-w-[200px]"}`}>
+            <div className={`flex items-center justify-end gap-1 md:gap-2 ${isScrolled ? "flex-1" : "flex-1 lg:max-w-[220px]"}`}>
               <button 
                 onClick={() => setIsSearchOpen(true)}
-                className="p-2 text-foreground/80 hover:text-black transition-colors"
+                className="p-3 text-foreground/70 hover:text-black rounded-full border border-[#E8E2D6]/50 hover:border-[#E8E2D6] hover:bg-[#F5F1E8] transition-colors"
                 aria-label="Search"
               >
-                <Search size={18} strokeWidth={1.2} />
+                <Search size={22} strokeWidth={1.5} />
               </button>
               
               <Link 
                 href="/cart"
-                className="p-2 text-foreground/80 hover:text-black transition-colors relative" 
+                className="p-3 text-foreground/70 hover:text-black rounded-full border border-[#E8E2D6]/50 hover:border-[#E8E2D6] hover:bg-[#F5F1E8] transition-colors relative" 
                 aria-label="Cart"
               >
-                <ShoppingBag size={18} strokeWidth={1.2} />
+                <ShoppingBag size={22} strokeWidth={1.5} />
                 {isMounted && cartItemCount > 0 && (
-                  <span className="absolute top-1 right-0 bg-[#FFD700] text-black text-[8px] w-4 h-4 flex items-center justify-center rounded-full font-black shadow-sm">
+                  <span className="absolute top-0 right-0 min-w-[18px] h-[18px] px-1 bg-[#C9A84C] text-white text-[9px] flex items-center justify-center rounded-full font-sans font-bold shadow-sm ring-2 ring-[#FDFBF7]">
                     {cartItemCount}
                   </span>
                 )}
@@ -485,15 +487,16 @@ const Header = () => {
               <div className="relative">
                 <button 
                   onClick={() => user ? setIsAccountOpen(!isAccountOpen) : router.push("/login")}
-                  className="p-2 text-foreground/80 hover:text-black transition-colors"
-                  aria-label="Account"
+                  className={`p-3 text-foreground/70 hover:text-black rounded-full border transition-colors flex items-center justify-center ${
+                    user && isAccountOpen
+                      ? "border-[#8B7D6B] bg-[#F5F1E8] shadow-sm"
+                      : "border-[#E8E2D6]/50 hover:border-[#E8E2D6] hover:bg-[#F5F1E8]"
+                  }`}
+                  aria-label={user ? "Account menu" : "Sign in"}
                 >
-                  {user ? (
-                    <div className="w-5 h-5 bg-foreground text-background text-[8px] flex items-center justify-center rounded-full font-black uppercase">
-                      {user.email?.[0]}
-                    </div>
-                  ) : (
-                    <User size={18} strokeWidth={1.2} />
+                  <User size={22} strokeWidth={1.5} />
+                  {user && (
+                    <span className="absolute bottom-1 right-1 w-2 h-2 bg-emerald-600 rounded-full ring-2 ring-[#FDFBF7]" aria-hidden />
                   )}
                 </button>
 
@@ -503,21 +506,33 @@ const Header = () => {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
-                      className="absolute right-0 mt-4 w-64 bg-white border border-border-beige p-6 shadow-xl"
+                      className="absolute right-0 mt-3 w-80 bg-white border border-[#E8E2D6] p-7 shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-[60]"
                     >
-                      <div className="mb-6 pb-6 border-b border-border-beige">
-                        <p className="text-[10px] uppercase tracking-widest text-foreground/40 mb-1">Authenticated as</p>
-                        <p className="text-sm font-serif italic truncate">{user.email}</p>
+                      <div className="mb-6 pb-6 border-b border-[#E8E2D6]">
+                        <p className="text-[10px] uppercase tracking-[0.25em] font-sans font-semibold text-[#8B7D6B] mb-2">Signed in as</p>
+                        <p className="text-base font-serif italic truncate text-black">{user.email}</p>
                       </div>
-                      <div className="space-y-4">
-                        <Link href="/account" className="block text-[10px] uppercase tracking-widest font-black hover:text-accent-dark transition-colors">Account Settings</Link>
-                        <Link href="/orders" className="block text-[10px] uppercase tracking-widest font-black hover:text-accent-dark transition-colors">Order History</Link>
+                      <div className="space-y-5">
+                        <Link
+                          href="/account"
+                          onClick={() => setIsAccountOpen(false)}
+                          className="block text-[11px] uppercase tracking-[0.2em] font-sans font-semibold text-black/75 hover:text-black transition-colors"
+                        >
+                          Account Settings
+                        </Link>
+                        <Link
+                          href="/orders"
+                          onClick={() => setIsAccountOpen(false)}
+                          className="block text-[11px] uppercase tracking-[0.2em] font-sans font-semibold text-black/75 hover:text-black transition-colors"
+                        >
+                          Collector&apos;s Vault
+                        </Link>
                         <button 
                           onClick={() => {
                             signOut();
                             setIsAccountOpen(false);
                           }}
-                          className="block w-full text-left text-[10px] uppercase tracking-widest font-black text-red-500 hover:text-red-700 transition-colors pt-4 border-t border-border-beige"
+                          className="block w-full text-left text-[11px] uppercase tracking-[0.2em] font-sans font-semibold text-red-600 hover:text-red-700 transition-colors pt-5 border-t border-[#E8E2D6]"
                         >
                           Sign Out From Studio
                         </button>

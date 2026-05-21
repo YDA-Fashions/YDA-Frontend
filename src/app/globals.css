@@ -8,9 +8,6 @@
     --accent-dark: #8B7D6B; /* Muted Beige / Taupe */
     --border: #E8E2D6;     /* Subtle beige border */
     
-    /* Font families */
-    --font-serif: "Prata", serif;
-    --font-sans: "Inter", sans-serif;
   }
 
   @media (prefers-color-scheme: dark) {
@@ -33,15 +30,16 @@
   body {
     background-color: var(--background);
     color: var(--foreground);
-    line-height: 1.6;
+    line-height: 1.65;
     -webkit-font-smoothing: antialiased;
-    font-family: var(--font-sans);
+    -moz-osx-font-smoothing: grayscale;
+    font-family: var(--font-inter), system-ui, sans-serif;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-serif);
+    font-family: var(--font-prata), Georgia, "Times New Roman", serif;
     letter-spacing: -0.02em;
-    font-weight: 500;
+    font-weight: 400;
   }
 
   /* Global UI Polish: Subtle premium rounded corners */
@@ -57,6 +55,6 @@
   --color-accent-dark: var(--accent-dark);
   --color-border-beige: var(--border);
   
-  --font-serif: var(--font-serif);
-  --font-sans: var(--font-sans);
+  --font-serif: var(--font-prata), Georgia, serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
 }

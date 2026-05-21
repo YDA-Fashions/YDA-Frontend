@@ -1,4 +1,6 @@
 import { supabase } from "@/lib/supabase";
+import { productService } from "@/services/productService";
+import { Product } from "@/data/products";
 
 /**
  * Order Service
@@ -129,6 +131,32 @@ export const orderService = {
         } : null
       }))
     }));
+  },
+
+  async getRelatedProducts(order: {
+    order_items?: Array<{
+      product_id?: string;
+      products?: { id?: string; product_code?: string; category?: string } | null;
+    }>;
+  }): Promise<Product[]> {
+    const firstItem = order.order_items?.[0];
+    const category = firstItem?.products?.category;
+    if (!category) return [];
+
+    const orderProductIds = new Set(
+      (order.order_items || []).map(
+        (item) =>
+          item.products?.product_code ||
+          item.products?.id ||
+          item.product_id ||
+          ""
+      )
+    );
+
+    const related = await productService.getProductsByCategory(category, 12);
+    return related
+      .filter((p) => !orderProductIds.has(p.id) && !orderProductIds.has(p.product_code || ""))
+      .slice(0, 3);
   },
 
   async updateOrderStatus(orderId: string, status: string) {

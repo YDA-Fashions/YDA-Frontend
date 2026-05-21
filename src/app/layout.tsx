@@ -3,14 +3,14 @@ import { Inter, Prata } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
-  variable: "--font-sans",
+  variable: "--font-inter",
   subsets: ["latin"],
   display: "swap",
 });
 
 const prata = Prata({
   weight: "400",
-  variable: "--font-serif",
+  variable: "--font-prata",
   subsets: ["latin"],
   display: "swap",
 });
@@ -79,7 +79,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${prata.variable} h-full antialiased`}
+      className={`${inter.variable} ${prata.variable} h-full antialiased font-sans`}
     >
       <body className="min-h-full flex flex-col">
         <JsonLd

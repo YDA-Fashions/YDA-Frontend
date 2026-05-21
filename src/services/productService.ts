@@ -7,6 +7,13 @@ import { Product } from "../data/products";
  * Handles CRUD operations and image uploads for the production catalog.
  */
 export const productService = {
+  async getProductsByCategory(category: string, limit = 10) {
+    const products = await this.getProducts();
+    return products
+      .filter((p) => p.category?.toLowerCase() === category.toLowerCase())
+      .slice(0, limit);
+  },
+
   async getProducts() {
     const { data, error } = await supabase
       .from("products")

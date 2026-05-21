@@ -43,6 +43,8 @@ const CartPage = () => {
       return;
     }
 
+    let interval: ReturnType<typeof setInterval>;
+
     const updateTimer = () => {
       const remaining = cartTimerExpiresAt - Date.now();
       if (remaining <= 0) {
@@ -58,8 +60,8 @@ const CartPage = () => {
       }
     };
 
-    updateTimer(); // Run once immediately
-    const interval = setInterval(updateTimer, 1000);
+    updateTimer();
+    interval = setInterval(updateTimer, 1000);
     return () => clearInterval(interval);
   }, [cartTimerExpiresAt, items, clearCart, isMounted]);
 

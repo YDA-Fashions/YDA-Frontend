@@ -10,22 +10,19 @@ const FooterAccordion = ({ title, children }: { title: string; children: React.R
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="border-b border-border-beige/40 md:border-none">
-      {/* Mobile: Clickable Header */}
+    <div className="border-b border-[#E8E2D6]/50 md:border-none">
       <button
         className="w-full flex items-center justify-between py-4 md:hidden"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <h4 className="text-[10px] uppercase tracking-[0.4em] font-bold text-foreground/30">{title}</h4>
+        <h4 className="text-[9px] uppercase tracking-[0.35em] font-sans font-semibold text-[#8B7D6B]">{title}</h4>
         <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.3 }}>
-          <ChevronDown size={14} className="text-foreground/30" />
+          <ChevronDown size={14} className="text-[#8B7D6B]" />
         </motion.div>
       </button>
 
-      {/* Desktop: Always visible title */}
-      <h4 className="hidden md:block text-[10px] uppercase tracking-[0.4em] font-bold text-foreground/30 mb-10">{title}</h4>
+      <h4 className="hidden md:block text-[9px] uppercase tracking-[0.35em] font-sans font-semibold text-[#8B7D6B] mb-10">{title}</h4>
 
-      {/* Mobile: Animated dropdown */}
       <AnimatePresence initial={false}>
         {isOpen && (
           <motion.div
@@ -41,7 +38,6 @@ const FooterAccordion = ({ title, children }: { title: string; children: React.R
         )}
       </AnimatePresence>
 
-      {/* Desktop: Always visible content */}
       <div className="hidden md:block">{children}</div>
     </div>
   );
@@ -62,86 +58,126 @@ const Footer = () => {
     { name: "Contact Us", href: "/contact" },
   ];
 
+  const policyLinks = [
+    { name: "Privacy", href: "/privacy" },
+    { name: "Terms", href: "/terms" },
+    { name: "Shipping", href: "/shipping" },
+    { name: "Returns", href: "/returns" },
+  ];
+
   return (
-    <footer className="bg-background border-t border-border-beige/50 pt-16 md:pt-32 pb-16 font-sans">
-      <div className="container mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0 md:gap-16 mb-16 md:mb-32">
+    <footer className="relative bg-[#F9F6F0] border-t border-[#E8E2D6] pt-16 md:pt-28 pb-12 md:pb-16 font-sans">
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-300/35 to-transparent pointer-events-none" />
+
+      <div className="container mx-auto px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-0 md:gap-12 mb-14 md:mb-24">
           {/* Brand Identity */}
-          <div className="flex flex-col gap-8 md:col-span-1 pb-8 md:pb-0 border-b border-border-beige/40 md:border-none">
+          <div className="flex flex-col gap-6 lg:col-span-4 pb-10 md:pb-0 border-b border-[#E8E2D6]/50 md:border-none">
             <Logo variant="horizontal" theme="dark" />
-            <p className="text-[11px] leading-relaxed text-foreground/50 max-w-[240px] uppercase tracking-widest font-bold">
-              Premium Indian Prints <br /> 
-              Meet Modern Luxury.
+            <p className="text-sm font-serif italic text-black/75 leading-relaxed max-w-[280px]">
+              Premium Indian prints, lovingly handcrafted in Jaipur.
             </p>
+            <p className="text-[9px] leading-relaxed text-[#8B7D6B] max-w-[260px] uppercase tracking-[0.22em] font-sans font-medium">
+              Sanganeri & Gujarati heritage · Artisan finishing · Modern luxury
+            </p>
+            <div className="flex gap-3 pt-2">
+              <a
+                href="https://www.instagram.com/ydafashions"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[9px] uppercase tracking-[0.25em] font-sans font-semibold text-black/50 hover:text-black border border-[#E8E2D6] px-4 py-2 bg-white/50 transition-colors"
+                aria-label="YDA on Instagram"
+              >
+                Instagram
+              </a>
+              <a
+                href="https://wa.me/917877646756"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[9px] uppercase tracking-[0.25em] font-sans font-semibold text-black/50 hover:text-black border border-[#E8E2D6] px-4 py-2 bg-white/50 transition-colors"
+                aria-label="Contact on WhatsApp"
+              >
+                WhatsApp
+              </a>
+            </div>
           </div>
 
-          {/* Collective Links */}
-          <FooterAccordion title="Collective">
-            <ul className="flex flex-col gap-4">
-              {shopLinks.map((link) => (
-                <li key={link.name}>
-                  <Link href={link.href} className="text-[11px] uppercase tracking-[0.2em] hover:text-accent-dark transition-colors font-medium">
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </FooterAccordion>
+          <div className="lg:col-span-2 md:pt-0 pt-2">
+            <FooterAccordion title="Collective">
+              <ul className="flex flex-col gap-3.5">
+                {shopLinks.map((link) => (
+                  <li key={link.name}>
+                    <Link
+                      href={link.href}
+                      className="text-[10px] uppercase tracking-[0.18em] text-black/60 hover:text-black transition-colors font-sans font-medium"
+                    >
+                      {link.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </FooterAccordion>
+          </div>
 
-          {/* Studio Links */}
-          <FooterAccordion title="Studio">
-            <ul className="flex flex-col gap-4">
-              {brandLinks.map((link) => (
-                <li key={link.name}>
-                  <Link href={link.href} className="text-[11px] uppercase tracking-[0.2em] hover:text-accent-dark transition-colors font-medium">
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </FooterAccordion>
+          <div className="lg:col-span-2">
+            <FooterAccordion title="Studio">
+              <ul className="flex flex-col gap-3.5">
+                {brandLinks.map((link) => (
+                  <li key={link.name}>
+                    <Link
+                      href={link.href}
+                      className="text-[10px] uppercase tracking-[0.18em] text-black/60 hover:text-black transition-colors font-sans font-medium"
+                    >
+                      {link.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </FooterAccordion>
+          </div>
 
-          {/* Newsletter */}
-          <FooterAccordion title="L'Atelier">
-            <div className="flex flex-col gap-6">
-              <p className="text-[11px] leading-relaxed text-foreground/50 uppercase tracking-widest font-semibold">
-                Join our exclusive circle for latest arrivals and cultural narratives.
-              </p>
-              <form className="relative border-b border-border-beige py-2 group">
-                <input 
-                  type="email" 
-                  placeholder="EMAIL ADDRESS" 
-                  className="w-full bg-transparent text-[9px] tracking-[0.3em] font-bold focus:outline-none placeholder:text-foreground/20"
-                />
-                <button className="absolute right-0 top-1/2 -translate-y-1/2 text-[9px] tracking-[0.2em] font-bold text-accent-dark hover:text-foreground transition-all duration-300">
-                  SUBSCRIBE
-                </button>
-              </form>
-            </div>
-          </FooterAccordion>
+          <div className="lg:col-span-4">
+            <FooterAccordion title="L'Atelier">
+              <div className="flex flex-col gap-5">
+                <p className="text-[10px] leading-relaxed text-black/55 font-sans max-w-sm">
+                  Join our circle for new arrivals, studio stories, and exclusive offers.
+                </p>
+                <form className="relative border-b border-[#8B7D6B]/40 py-3 group max-w-sm">
+                  <input
+                    type="email"
+                    placeholder="Email address"
+                    className="w-full bg-transparent text-[10px] tracking-[0.12em] font-sans font-medium text-black placeholder:text-black/25 focus:outline-none pr-24"
+                  />
+                  <button
+                    type="button"
+                    className="absolute right-0 top-1/2 -translate-y-1/2 text-[9px] tracking-[0.2em] font-sans font-semibold text-[#8B7D6B] hover:text-black transition-colors"
+                  >
+                    Subscribe
+                  </button>
+                </form>
+              </div>
+            </FooterAccordion>
+          </div>
         </div>
 
         {/* Bottom Metadata */}
-        <div className="border-t border-border-beige/30 pt-12 flex flex-col md:flex-row justify-between items-center gap-8">
-          <p className="text-[9px] uppercase tracking-[0.4em] text-foreground/30 font-bold">
-            &copy; {new Date().getFullYear()} YDA FASHION STUDIO.
+        <div className="border-t border-[#E8E2D6]/70 pt-10 flex flex-col lg:flex-row justify-between items-center gap-6 lg:gap-8">
+          <p className="text-[9px] uppercase tracking-[0.32em] text-[#8B7D6B] font-sans font-medium order-2 lg:order-1">
+            &copy; {new Date().getFullYear()} YDA Fashion Studio
           </p>
-          <div className="flex gap-6 md:gap-12 flex-wrap justify-center">
-            <Link href="/privacy" className="text-[9px] uppercase tracking-[0.4em] text-foreground/30 hover:text-foreground transition-colors font-bold">
-              Privacy
-            </Link>
-            <Link href="/terms" className="text-[9px] uppercase tracking-[0.4em] text-foreground/30 hover:text-foreground transition-colors font-bold">
-              Terms
-            </Link>
-            <Link href="/shipping" className="text-[9px] uppercase tracking-[0.4em] text-foreground/30 hover:text-foreground transition-colors font-bold">
-              Shipping
-            </Link>
-            <Link href="/returns" className="text-[9px] uppercase tracking-[0.4em] text-foreground/30 hover:text-foreground transition-colors font-bold">
-              Returns
-            </Link>
+          <div className="flex gap-5 md:gap-8 flex-wrap justify-center order-1 lg:order-2">
+            {policyLinks.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                className="text-[9px] uppercase tracking-[0.28em] text-black/45 hover:text-black transition-colors font-sans font-medium"
+              >
+                {link.name}
+              </Link>
+            ))}
           </div>
-          <p className="text-[9px] uppercase tracking-[0.4em] text-foreground/30 font-bold hidden lg:block">
-            Sanganeri / Gujarati / Artisan Heritage
+          <p className="text-[9px] uppercase tracking-[0.28em] text-[#8B7D6B] font-sans font-medium hidden lg:block order-3 text-right">
+            Handcrafted in India
           </p>
         </div>
       </div>

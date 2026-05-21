@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Heart, ShoppingBag } from "lucide-react";
+import { ShoppingBag } from "lucide-react";
 import { motion } from "framer-motion";
 import { Product } from "../../data/products";
 import { useCartStore } from "../../store/useCartStore";
@@ -47,7 +47,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickAdd }) => {
       <div className="relative overflow-hidden">
         <Link href={`/product/${product.id}`} className="block">
           <div className="relative aspect-[4/5] overflow-hidden bg-[#F8F8F5]">
-            {/* Primary Image */}
             <Image
               src={product.colors?.[0]?.images?.[0] || "/images/placeholder.jpg"}
               alt={product.name}
@@ -56,7 +55,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickAdd }) => {
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
             />
             
-            {/* Hover Image */}
             {product.colors?.[0]?.images?.[1] && !isSoldOut && (
               <Image
                 src={product.colors[0].images[1]}
@@ -67,7 +65,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickAdd }) => {
               />
             )}
             
-            {/* Heritage Badge */}
             <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
               <span className="text-[8px] uppercase tracking-[0.2em] font-bold bg-white/90 backdrop-blur-md text-black px-3 py-1.5 shadow-sm w-fit">
                 Jaipur Heritage
@@ -108,15 +105,16 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickAdd }) => {
           </div>
         </Link>
 
-        {/* Action Button */}
         <div className="px-3 md:px-5 pb-4 md:pb-6">
-          <motion.button 
+          <motion.button
+            type="button"
             whileTap={!isSoldOut ? { scale: 0.98 } : {}}
             onClick={!isSoldOut ? handleAddToCart : undefined}
             disabled={isSoldOut}
+            aria-label={isSoldOut ? "Sold out" : `Add ${product.name} to cart`}
             className={`w-full py-3 md:py-4 text-[8px] md:text-[9px] tracking-[0.2em] md:tracking-[0.3em] font-black uppercase transition-all flex items-center justify-center gap-2 group/btn rounded-full md:rounded-none ${
-              isSoldOut 
-                ? "bg-black/10 text-black/40 cursor-not-allowed" 
+              isSoldOut
+                ? "bg-black/10 text-black/40 cursor-not-allowed"
                 : "bg-black text-white hover:bg-accent-dark"
             }`}
           >
