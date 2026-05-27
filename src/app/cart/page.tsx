@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -21,7 +21,7 @@ const URGENCY_MESSAGES = [
 
 const CartPage = () => {
   const router = useRouter();
-  const { items, removeItem, updateQuantity, getTotalPrice, getTotalItems, clearCart, cartTimerExpiresAt, addItem } = useCartStore();
+  const { items, removeItem, updateQuantity, getTotalPrice, getTotalItems, cartTimerExpiresAt, setCartTimerExpiresAt, addItem } = useCartStore();
   const { setOrderModalOpen } = useUIStore();
   const [isProcessing, setIsProcessing] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -29,6 +29,9 @@ const CartPage = () => {
   const [timeLeft, setTimeLeft] = useState<string>("");
   const [showExpiredModal, setShowExpiredModal] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState<string>("");
+  const hasTriggeredExpiry = useRef(false);
+
+  const RESERVATION_MS = 20 * 60 * 1000;
 
   useEffect(() => {
     setIsMounted(true);
@@ -38,20 +41,53 @@ const CartPage = () => {
   }, []);
 
   useEffect(() => {
-    if (!isMounted || !cartTimerExpiresAt || items.length === 0) {
+    if (!isMounted || items.length === 0) {
       setTimeLeft("");
+      if (items.length === 0) {
+        hasTriggeredExpiry.current = false;
+        setShowExpiredModal(false);
+      }
       return;
+    }
+
+    const now = Date.now();
+    let expiresAt = cartTimerExpiresAt;
+
+    if (!expiresAt) {
+      if (hasTriggeredExpiry.current) {
+        setTimeLeft("");
+        return;
+      }
+      expiresAt = now + RESERVATION_MS;
+      setCartTimerExpiresAt(expiresAt);
+    } else if (expiresAt <= now) {
+      if (hasTriggeredExpiry.current) {
+        setTimeLeft("");
+        return;
+      }
+      // Stale persisted timer — start a fresh 20-minute window (no instant modal + empty cart)
+      expiresAt = now + RESERVATION_MS;
+      setCartTimerExpiresAt(expiresAt);
     }
 
     let interval: ReturnType<typeof setInterval>;
 
     const updateTimer = () => {
-      const remaining = cartTimerExpiresAt - Date.now();
+      const currentExpires = useCartStore.getState().cartTimerExpiresAt;
+      if (!currentExpires) {
+        setTimeLeft("");
+        return;
+      }
+
+      const remaining = currentExpires - Date.now();
       if (remaining <= 0) {
         setTimeLeft("00:00");
-        setShowExpiredModal(true);
+        if (!hasTriggeredExpiry.current) {
+          hasTriggeredExpiry.current = true;
+          setShowExpiredModal(true);
+          setCartTimerExpiresAt(null);
+        }
         clearInterval(interval);
-        clearCart();
       } else {
         const minutes = Math.floor(remaining / 60000);
         const seconds = Math.floor((remaining % 60000) / 1000);
@@ -63,7 +99,7 @@ const CartPage = () => {
     updateTimer();
     interval = setInterval(updateTimer, 1000);
     return () => clearInterval(interval);
-  }, [cartTimerExpiresAt, items, clearCart, isMounted]);
+  }, [cartTimerExpiresAt, items, isMounted, setCartTimerExpiresAt]);
 
   const subtotal = getTotalPrice();
   const threshold = 1000;
@@ -436,17 +472,25 @@ const CartPage = () => {
                 <span className="text-[10px] uppercase tracking-[0.4em] font-black text-red-600">Reservation Expired</span>
                 <h3 className="text-2xl font-serif italic text-black">Curation Released</h3>
                 <p className="text-sm font-sans text-black/60 leading-relaxed">
-                  Due to high demand for YDA handcrafted creations, your 20-minute reservation has expired and the items have been released.
+                  Due to high demand for YDA handcrafted creations, your 20-minute reservation window has ended. Your pieces are still in your curation—please checkout soon to secure them.
                 </p>
-                <div className="pt-4">
+                <div className="pt-4 flex flex-col gap-3">
                   <button
                     onClick={() => {
                       setShowExpiredModal(false);
-                      router.push("/shop");
+                      router.push("/checkout");
                     }}
                     className="w-full bg-black text-white py-4 text-[10px] uppercase tracking-[0.3em] font-sans font-bold hover:bg-black/80 transition-all duration-300"
                   >
-                    Browse Collections
+                    Continue Checkout
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowExpiredModal(false);
+                    }}
+                    className="w-full border border-black/15 text-black py-3 text-[10px] uppercase tracking-[0.25em] font-sans font-bold hover:bg-black/5 transition-colors"
+                  >
+                    Stay on Cart
                   </button>
                 </div>
               </div>
