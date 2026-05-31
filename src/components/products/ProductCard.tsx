@@ -51,8 +51,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickAdd }) => {
               src={product.colors?.[0]?.images?.[0] || "/images/placeholder.jpg"}
               alt={product.name}
               fill
-              className={`object-cover transition-opacity duration-700 ease-in-out ${!isSoldOut ? "group-hover:opacity-0" : ""}`}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+              quality={75}
+              loading="lazy"
+              className={`object-cover transition-opacity duration-700 ease-in-out ${!isSoldOut ? "group-hover:opacity-0" : ""}`}
             />
             
             {product.colors?.[0]?.images?.[1] && !isSoldOut && (
@@ -60,8 +62,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickAdd }) => {
                 src={product.colors[0].images[1]}
                 alt={`${product.name} alternate view`}
                 fill
-                className="object-cover opacity-0 transition-opacity duration-700 ease-in-out group-hover:opacity-100"
+                loading="lazy"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                quality={75}
+                className="object-cover opacity-0 transition-opacity duration-700 ease-in-out group-hover:opacity-100"
               />
             )}
             

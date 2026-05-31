@@ -54,6 +54,8 @@ export async function generateMetadata(
   };
 }
 
+export const revalidate = 3600;
+
 export default async function ProductPage({ params }: Props) {
   const id = (await params).id;
   const allProducts = await productService.getProducts();
@@ -71,6 +73,7 @@ export default async function ProductPage({ params }: Props) {
     (p) => p.id !== product.id && p.category !== product.category
   ).slice(0, 7);
   const relatedProducts = [...sameCategory, ...otherCategory];
+  const lcpImage = product.colors[0]?.images[0];
 
   // Breadcrumb Schema
   const breadcrumbSchema = {
@@ -152,6 +155,7 @@ export default async function ProductPage({ params }: Props) {
 
   return (
     <>
+      {lcpImage ? <link rel="preload" as="image" href={lcpImage} /> : null}
       <JsonLd data={breadcrumbSchema} />
       <JsonLd data={productSchema} />
       <ProductDetailClient 

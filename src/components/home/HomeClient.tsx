@@ -11,6 +11,8 @@ import Hero from "@/components/home/Hero";
 import ProductCard from "@/components/products/ProductCard";
 import QuickAddDrawer from "@/components/products/QuickAddDrawer";
 import BrandStory from "@/components/home/BrandStory";
+import LazyVideo from "@/components/common/LazyVideo";
+import type { LazyVideoHandle } from "@/components/common/LazyVideo";
 import { useProductStore } from "@/store/useProductStore";
 import { Product } from "@/data/products";
 
@@ -18,18 +20,27 @@ interface HomeClientProps {
   initialProducts: Product[];
 }
 
-const VideoCard = ({ video }: { video: any }) => {
-  const videoRef = React.useRef<HTMLVideoElement>(null);
-  const [isPlaying, setIsPlaying] = React.useState(true);
+const VideoCard = ({ video }: { video: { id: number; title: string; tag: string } }) => {
+  const videoRef = React.useRef<LazyVideoHandle>(null);
+  const [isPlaying, setIsPlaying] = React.useState(false);
 
-  const togglePlay = () => {
-    if (videoRef.current) {
-      if (isPlaying) {
-        videoRef.current.pause();
-      } else {
-        videoRef.current.play();
-      }
-      setIsPlaying(!isPlaying);
+  const togglePlay = async () => {
+    const handle = videoRef.current;
+    if (!handle) return;
+
+    const el = handle.getVideo();
+    if (!el) {
+      await handle.play();
+      setIsPlaying(true);
+      return;
+    }
+
+    if (isPlaying) {
+      handle.pause();
+      setIsPlaying(false);
+    } else {
+      await handle.play();
+      setIsPlaying(true);
     }
   };
 
@@ -42,21 +53,20 @@ const VideoCard = ({ video }: { video: any }) => {
       onClick={togglePlay}
       className="flex-shrink-0 w-[240px] md:w-[380px] aspect-[9/16] relative bg-[#F8F8F5] overflow-hidden snap-center group shadow-xl hover:shadow-2xl transition-all duration-700 cursor-pointer"
     >
-      <video
+      <LazyVideo
         ref={videoRef}
         src="/videos/YDA-VIDEO-1.mp4"
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-[2s]"
+        poster="/images/home-page-image/small-tote.jpg"
+        className="absolute inset-0 w-full h-full"
+        videoClassName="group-hover:scale-105 transition-transform duration-[2s]"
+        autoPlayWhenVisible={video.id === 1}
       />
 
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
 
       <div className="absolute inset-0 p-8 flex flex-col justify-end">
         <span className="text-[10px] uppercase tracking-widest font-black text-white/60 mb-2">{video.tag}</span>
-        <h4 className="text-xl md:text-2xl font-serif italic text-white group-hover:translate-x-2 transition-transform duration-500">{video.title}</h4>
+        <h3 className="text-xl md:text-2xl font-serif italic text-white group-hover:translate-x-2 transition-transform duration-500">{video.title}</h3>
       </div>
 
       <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full border border-white/20 flex items-center justify-center backdrop-blur-sm transition-all duration-500 ${isPlaying ? "opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100" : "opacity-100 scale-100"}`}>
@@ -194,6 +204,7 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
                     src={cat.image}
                     alt={cat.title}
                     fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
                     className="object-cover transition-transform duration-[1.5s] group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors duration-500" />
@@ -278,7 +289,7 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
               transition={{ duration: 0.8 }}
               className="text-center mb-20"
             >
-              <p className="text-[10px] uppercase tracking-[0.5em] font-black text-accent-dark mb-6">Our Selection</p>
+              <p className="text-[10px] uppercase tracking-[0.5em] font-black text-[#5c5042] mb-6">Our Selection</p>
               <h2 className="text-4xl md:text-6xl font-serif tracking-tight mb-6 italic text-foreground">Latest Pieces</h2>
               <div className="w-12 h-[1px] bg-black/10 mx-auto" />
             </motion.div>
@@ -310,11 +321,11 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
         <section className="py-24 md:py-32 bg-[#F8F8F5] overflow-hidden border-t border-border-beige/50">
           <div className="container mx-auto px-6 mb-16 flex items-end justify-between">
             <div>
-              <p className="text-[10px] uppercase tracking-[0.6em] font-black text-accent-dark mb-4">Client Stories</p>
+              <p className="text-[10px] uppercase tracking-[0.6em] font-black text-[#5c5042] mb-4">Client Stories</p>
               <h2 className="text-4xl md:text-6xl font-serif tracking-tight italic text-foreground">What our collectors say.</h2>
             </div>
             <div className="hidden md:flex gap-4">
-              <span className="text-[10px] uppercase tracking-widest font-bold opacity-40 italic">Swipe to explore</span>
+              <span className="text-[10px] uppercase tracking-widest font-bold opacity-60 italic">Swipe to explore</span>
             </div>
           </div>
 
@@ -353,12 +364,14 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
                   src={review.image}
                   alt={review.name}
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-cover transition-all duration-1000 group-hover:opacity-0 group-hover:scale-105"
                 />
                 <Image
                   src={review.styledImage}
                   alt={`${review.name} styled setting`}
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-cover absolute inset-0 opacity-0 group-hover:opacity-100 scale-105 group-hover:scale-100 transition-all duration-1000"
                 />
                 
@@ -406,15 +419,16 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
           <div className="container mx-auto px-6 text-center">
             <div className="max-w-5xl mx-auto space-y-16">
                <div>
-                  <p className="text-[10px] uppercase tracking-[0.5em] font-black text-accent-dark mb-6 text-center">Artistry in Motion</p>
+                  <p className="text-[10px] uppercase tracking-[0.5em] font-black text-[#5c5042] mb-6 text-center">Artistry in Motion</p>
                   <h2 className="text-4xl md:text-6xl font-serif italic text-foreground text-center leading-tight">The Making of <br/> Modern Luxury</h2>
                </div>
                
                <div className="relative w-full aspect-video shadow-2xl overflow-hidden rounded-sm border border-border-beige/30">
                  <iframe 
-                   src="https://www.youtube.com/embed/Bt0S0hqjVX4"
+                   src="https://www.youtube-nocookie.com/embed/Bt0S0hqjVX4"
                    title="YDA Luxury Handcrafted Fashion"
                    className="absolute inset-0 w-full h-full"
+                   loading="lazy"
                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                    allowFullScreen
                  />
@@ -434,8 +448,10 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
               src="/images/home-page-image/sanganeri-print-1.jpg.png" 
               alt="Sanganeri Flora Collection" 
               fill 
+              loading="lazy"
+              sizes="100vw"
+              quality={75}
               className="object-cover scale-105 transition-transform duration-[3s] group-hover:scale-100"
-              priority
             />
             <div className="absolute inset-0 bg-black/30" />
             
@@ -511,7 +527,7 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
         <section className="py-24 md:py-40 text-center bg-white overflow-hidden">
           <div className="container mx-auto px-6">
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }}>
-              <p className="text-[10px] uppercase tracking-[0.5em] font-black text-accent-dark mb-10 italic">Your Journey Begins Here</p>
+              <p className="text-[10px] uppercase tracking-[0.5em] font-black text-[#5c5042] mb-10 italic">Your Journey Begins Here</p>
               <h2 className="text-4xl md:text-7xl font-serif italic mb-16 max-w-3xl mx-auto leading-tight">
                 Discover pieces that <br/> tell your story.
               </h2>
@@ -571,8 +587,8 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
                     alt="Exclusive Offer" 
                     width={1240}
                     height={1748}
+                    loading="lazy"
                     className="w-full h-auto object-contain transition-transform duration-700 group-hover:scale-105"
-                    priority
                   />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-500" />
                 </div>

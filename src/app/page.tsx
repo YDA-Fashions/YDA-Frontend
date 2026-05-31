@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import HomeClient from "@/components/home/HomeClient";
 import { productService } from "@/services/productService";
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "YDA | Premium Sanganeri & Gujarati Handcrafted Bags",

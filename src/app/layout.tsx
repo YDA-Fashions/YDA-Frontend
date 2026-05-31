@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Prata } from "next/font/google";
-import "./globals.css";
-import Head from "next/head";
 import Script from "next/script";
+import "./globals.css";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -63,8 +62,7 @@ export const metadata: Metadata = {
 export const viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
+  maximumScale: 5,
 };
 
 import GlobalInit from "@/components/common/GlobalInit";
@@ -83,17 +81,22 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${prata.variable} h-full antialiased font-sans`}
     >
-      <Head>
+      <body className="min-h-full flex flex-col">
         <Script
           id="gtm-script"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
-            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MWVBGWZQ');`
+            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MWVBGWZQ');`,
           }}
         />
-      </Head>
-      <body className="min-h-full flex flex-col">
-        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MWVBGWZQ" height="0" width="0" style={{display: "none", visibility: "hidden"}}></iframe></noscript>
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-MWVBGWZQ"
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          />
+        </noscript>
         <JsonLd
           data={{
             "@context": "https://schema.org",

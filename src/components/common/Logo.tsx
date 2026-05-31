@@ -36,8 +36,8 @@ const Logo: React.FC<LogoProps> = ({
       <div className={`relative ${getLogoStyles()} transition-transform duration-500 md:group-hover:scale-105`}>
         <Image 
           src="/images/logo/yda-logo-1-.png"
-          width={400}
-          height={100}
+          width={120}
+          height={30}
           alt="YDA Logo"
           className="object-contain h-full w-auto"
           priority

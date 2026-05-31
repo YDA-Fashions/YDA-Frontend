@@ -161,7 +161,9 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                   <AnimatePresence mode="wait">
                     <motion.div
                       key={`${selectedColor}-${selectedImage}`}
-                      initial={{ opacity: 0 }}
+                      initial={
+                        selectedColor === 0 && selectedImage === 0 ? false : { opacity: 0 }
+                      }
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                       transition={{ duration: 0.4 }}
@@ -172,7 +174,9 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                         alt={product.name}
                         fill
                         className="object-contain"
-                        priority
+                        priority={selectedColor === 0 && selectedImage === 0}
+                        sizes="(max-width: 1024px) 100vw, 700px"
+                        quality={80}
                       />
                     </motion.div>
                   </AnimatePresence>
@@ -216,7 +220,15 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                       className={`relative aspect-square w-20 md:w-24 flex-shrink-0 snap-start transition-all duration-300 rounded-sm border-2 ${selectedImage === idx ? "border-black opacity-100" : "border-transparent opacity-40 hover:opacity-100"
                         }`}
                     >
-                      <Image src={img} alt={`${product.name} thumbnail ${idx + 1}`} fill className="object-cover" />
+                      <Image
+                        src={img}
+                        alt={`${product.name} thumbnail ${idx + 1}`}
+                        fill
+                        loading="lazy"
+                        sizes="96px"
+                        quality={70}
+                        className="object-cover"
+                      />
                     </button>
                   ))}
                 </div>
