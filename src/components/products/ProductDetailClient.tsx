@@ -32,6 +32,10 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
   const [viewers, setViewers] = useState(12);
 
   useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, [product.id]);
+
+  useEffect(() => {
     setViewers(Math.floor(Math.random() * 11) + 12); // random between 12 and 22
     const interval = setInterval(() => {
       setViewers(prev => {
@@ -350,7 +354,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
               </div>
 
               <div className="pt-12 border-t border-black/5 space-y-2">
-                <details className="group border-b border-black/10 pb-4 cursor-pointer" open>
+                <details className="group border-b border-black/10 pb-4 cursor-pointer">
                   <summary className="flex justify-between items-center text-xs uppercase tracking-widest font-black text-black list-none [&::-webkit-details-marker]:hidden">
                     Product Description
                     <ChevronDown className="w-4 h-4 transition-transform group-open:rotate-180" />

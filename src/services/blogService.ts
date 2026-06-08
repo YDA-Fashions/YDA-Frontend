@@ -28,8 +28,25 @@ export function normalizeSlug(slug: string): string {
     .toLowerCase();
 }
 
+function isValidPost(row: unknown): row is BlogPost {
+  return (
+    typeof row === "object" &&
+    row !== null &&
+    !Array.isArray(row) &&
+    typeof (row as BlogPost).title === "string" &&
+    (row as BlogPost).title.length > 0
+  );
+}
+
 function mapPost(row: BlogPost): BlogPost {
-  return { ...row, slug: normalizeSlug(row.slug || "") };
+  return {
+    ...row,
+    slug: normalizeSlug(row.slug || ""),
+    author: row.author || "YDA Studio",
+    category: row.category || "News",
+    excerpt: row.excerpt || "",
+    content: row.content || "",
+  };
 }
 
 /**
@@ -87,7 +104,7 @@ export const blogService = {
         .eq("published", true)
         .maybeSingle();
 
-      if (!error && data) return mapPost(data);
+      if (!error && isValidPost(data)) return mapPost(data);
     }
 
     // Last resort: match from all published posts
@@ -96,8 +113,9 @@ export const blogService = {
       .select("*")
       .eq("published", true);
 
-    const match = (all || []).find(
-      (p) => normalizeSlug(p.slug || "") === normalized
+    const rows = Array.isArray(all) ? all : [];
+    const match = rows.find(
+      (p) => isValidPost(p) && normalizeSlug(p.slug || "") === normalized
     );
     return match ? mapPost(match) : null;
   },

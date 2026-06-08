@@ -206,7 +206,7 @@ export default async function BlogPostPage({ params }: Props) {
             ) : (
               <div className="w-20 h-20 rounded-full bg-black/10 flex items-center justify-center shrink-0">
                 <span className="font-serif text-2xl text-black/40">
-                  {post.author.charAt(0)}
+                  {(post.author || "Y").charAt(0)}
                 </span>
               </div>
             )}
@@ -215,7 +215,7 @@ export default async function BlogPostPage({ params }: Props) {
               <p className="text-[10px] uppercase tracking-[0.2em] font-black text-black/45 mb-1.5">
                 Written by
               </p>
-              <h2 className="text-xl font-serif mb-2">{post.author}</h2>
+              <h2 className="text-xl font-serif mb-2">{post.author || "YDA Studio"}</h2>
               <p className="text-sm leading-relaxed text-black/65">
                 {post.author_bio ||
                   "Contributor to the YDA Fashions Journal. Exploring heritage, style, and craftsmanship."}

@@ -58,9 +58,39 @@ export const useCartStore = create<CartStore>()(
         set({ userId, isLoading: true } as any);
         try {
           const backendItems = await cartService.getCart(userId);
-          if (backendItems) {
-            set({ items: backendItems });
+          const localItems = get().items;
+
+          // Never wipe a local cart with an empty/pending backend response
+          if (!backendItems || backendItems.length === 0) {
+            if (localItems.length > 0) {
+              await Promise.all(
+                localItems.map((item) =>
+                  cartService.syncItem(userId, item.id, item.quantity)
+                )
+              );
+            }
+            return;
           }
+
+          const merged = new Map(
+            backendItems.map((item) => [item.id, item as CartItem])
+          );
+          for (const local of localItems) {
+            const existing = merged.get(local.id);
+            if (!existing) {
+              merged.set(local.id, local);
+              cartService
+                .syncItem(userId, local.id, local.quantity)
+                .catch(console.error);
+            } else if (local.quantity > existing.quantity) {
+              merged.set(local.id, { ...existing, quantity: local.quantity });
+              cartService
+                .syncItem(userId, local.id, local.quantity)
+                .catch(console.error);
+            }
+          }
+
+          set({ items: Array.from(merged.values()) });
         } catch (err) {
           console.error("🛒 Cart: Sync failed", err);
         } finally {
@@ -86,7 +116,6 @@ export const useCartStore = create<CartStore>()(
           if (session?.user) {
             userId = session.user.id;
             set({ userId });
-            get().syncCart(userId); // Sync in background
           } else {
             alert("Identification Required: Please log in to add this masterpiece to your curation.");
             return;
@@ -120,8 +149,6 @@ export const useCartStore = create<CartStore>()(
 
         // Sync to backend
         cartService.syncItem(userId, product.id, newQuantity).catch(console.error);
-
-        setTimeout(() => set({ isCartToastOpen: false }), 3000);
       },
 
       removeItem: (productId) => {
