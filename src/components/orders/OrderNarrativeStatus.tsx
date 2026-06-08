@@ -50,7 +50,7 @@ export default function OrderNarrativeStatus({ status, className = "" }: OrderNa
           {narrative.title}
         </p>
       </div>
-      <p className="text-xs font-sans text-black/50 mt-1 leading-relaxed">
+      <p className="text-xs font-sans text-black/70 mt-1 leading-relaxed">
         {narrative.description}
       </p>
     </div>

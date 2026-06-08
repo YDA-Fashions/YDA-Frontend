@@ -1,0 +1,37 @@
+/* Blog editor fonts — loaded only on /admin/blog (keeps globals.css valid) */
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Lora:ital,wght@0,400..700;1,400..700&family=Merriweather:ital,wght@0,300..900;1,300..900&family=DM+Serif+Display&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=Outfit:wght@100..900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
+
+.ql-font-prata { font-family: "Prata", Georgia, serif; }
+.ql-font-playfair { font-family: "Playfair Display", Georgia, serif; }
+.ql-font-cormorant { font-family: "Cormorant Garamond", Georgia, serif; }
+.ql-font-lora { font-family: "Lora", Georgia, serif; }
+.ql-font-merriweather { font-family: "Merriweather", Georgia, serif; }
+.ql-font-dm-serif { font-family: "DM Serif Display", Georgia, serif; }
+.ql-font-libre-baskerville { font-family: "Libre Baskerville", Georgia, serif; }
+.ql-font-crimson-pro { font-family: "Crimson Pro", Georgia, serif; }
+.ql-font-outfit { font-family: "Outfit", system-ui, sans-serif; }
+.ql-font-raleway { font-family: "Raleway", system-ui, sans-serif; }
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="prata"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="prata"]::before { content: "Prata"; font-family: "Prata", serif; }
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="playfair"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="playfair"]::before { content: "Playfair Display"; font-family: "Playfair Display", serif; }
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="cormorant"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="cormorant"]::before { content: "Cormorant"; font-family: "Cormorant Garamond", serif; }
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="lora"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="lora"]::before { content: "Lora"; font-family: "Lora", serif; }
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="merriweather"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="merriweather"]::before { content: "Merriweather"; font-family: "Merriweather", serif; }
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="dm-serif"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="dm-serif"]::before { content: "DM Serif"; font-family: "DM Serif Display", serif; }
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="libre-baskerville"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="libre-baskerville"]::before { content: "Libre Baskerville"; font-family: "Libre Baskerville", serif; }
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="crimson-pro"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="crimson-pro"]::before { content: "Crimson Pro"; font-family: "Crimson Pro", serif; }
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="outfit"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="outfit"]::before { content: "Outfit"; font-family: "Outfit", sans-serif; }
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="raleway"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="raleway"]::before { content: "Raleway"; font-family: "Raleway", sans-serif; }
+
+.fixed .ql-container.ql-snow { flex: 1; overflow-y: auto; }
+.fixed .ql-toolbar.ql-snow { position: sticky; top: 0; z-index: 10; background: white; }

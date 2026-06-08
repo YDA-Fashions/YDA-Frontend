@@ -158,15 +158,15 @@ const CartPage = () => {
           ) : items.length === 0 ? (
             <div className="py-32 text-center bg-white border border-black/5 p-12 max-w-xl mx-auto rounded-sm">
               <div className="w-20 h-20 bg-black/5 rounded-full flex items-center justify-center mx-auto mb-6">
-                <ShoppingBag size={32} className="text-black/30" strokeWidth={1} />
+                <ShoppingBag size={32} className="text-black/60" strokeWidth={1} />
               </div>
               <h1 className="text-3xl font-serif italic mb-3">Your Curation is Empty</h1>
-              <p className="text-sm font-sans text-black/50 mb-8 max-w-sm mx-auto leading-relaxed">
+              <p className="text-sm font-sans text-black/70 mb-8 max-w-sm mx-auto leading-relaxed">
                 Add handcrafted masterworks, cushions, or luxury accessories from YDA collections to start your curation.
               </p>
               <Link 
                 href="/shop"
-                className="inline-block bg-black hover:bg-black/80 text-white px-8 py-3.5 text-[10px] font-sans font-bold uppercase tracking-widest rounded-sm transition-all"
+                className="inline-block bg-black hover:bg-black/80 text-white px-8 py-3.5 text-xs font-sans font-bold uppercase tracking-widest rounded-sm transition-all"
               >
                 Browse Collections
               </Link>
@@ -175,7 +175,7 @@ const CartPage = () => {
             <div>
               {/* Cinematic Luxury Page Header */}
               <div className="text-center max-w-2xl mx-auto mb-16">
-                <span className="text-[9px] uppercase tracking-[0.4em] font-black text-black/40">Boutique Checkout</span>
+                <span className="text-xs uppercase tracking-widest font-black text-black/60">Boutique Checkout</span>
                 <h1 className="text-4xl md:text-5xl font-serif italic text-black mt-2 mb-4">Your Curation</h1>
                 <p className="text-sm font-sans text-black/60 leading-relaxed">
                   A carefully selected range of YDA handcrafted luxury creations, reserved for your private collection.
@@ -209,7 +209,7 @@ const CartPage = () => {
                           <div className="space-y-2">
                             <div className="flex justify-between items-start gap-4">
                               <div>
-                                <span className="text-[8px] uppercase tracking-widest font-black text-black/40 block mb-1">
+                                <span className="text-[11px] uppercase tracking-widest font-black text-black/60 block mb-1">
                                   {item.category}
                                 </span>
                                 <Link href={`/product/${item.id}`}>
@@ -223,7 +223,7 @@ const CartPage = () => {
                                   ₹{(item.selling_price * item.quantity).toLocaleString()}
                                 </p>
                                 {item.original_price > item.selling_price && (
-                                  <p className="text-xs text-black/40 line-through mt-0.5">
+                                  <p className="text-xs text-black/60 line-through mt-0.5">
                                     ₹{(item.original_price * item.quantity).toLocaleString()}
                                   </p>
                                 )}
@@ -231,7 +231,7 @@ const CartPage = () => {
                             </div>
                             
                             <p className="text-xs text-emerald-700 font-sans font-medium">In Stock • Dispatches in 24 Hours</p>
-                            <p className="text-[10px] text-black/50 font-sans tracking-wide">
+                            <p className="text-xs text-black/70 font-sans tracking-wide">
                               Complimentary wrapping & gift message available
                             </p>
                           </div>
@@ -241,7 +241,7 @@ const CartPage = () => {
                             <div className="flex items-center gap-1 bg-[#F5F4F0] border border-black/[0.06] rounded-sm px-1 py-0.5">
                               <button 
                                 onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                                className="p-1 hover:text-black text-black/40 transition-colors"
+                                className="p-1 hover:text-black text-black/60 transition-colors"
                               >
                                 <Minus size={11} />
                               </button>
@@ -250,7 +250,7 @@ const CartPage = () => {
                               </span>
                               <button 
                                 onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                className="p-1 hover:text-black text-black/40 transition-colors"
+                                className="p-1 hover:text-black text-black/60 transition-colors"
                               >
                                 <Plus size={11} />
                               </button>
@@ -259,7 +259,7 @@ const CartPage = () => {
                             <div className="flex items-center gap-4">
                               <button 
                                 onClick={() => removeItem(item.id)}
-                                className="text-[9px] font-sans font-black tracking-widest text-black/30 hover:text-red-700 uppercase transition-colors"
+                                className="text-xs font-sans font-black tracking-widest text-black/60 hover:text-red-700 uppercase transition-colors"
                               >
                                 [ Remove Piece ]
                               </button>
@@ -278,17 +278,17 @@ const CartPage = () => {
                     
                     {/* Invoice Header */}
                     <div className="border-b border-black/[0.06] pb-4 mb-6">
-                      <span className="text-[9px] uppercase tracking-[0.3em] font-black text-black/40 block mb-1">Curation Slip</span>
+                      <span className="text-xs uppercase tracking-wider font-black text-black/60 block mb-1">Curation Slip</span>
                       <h3 className="text-lg font-serif italic text-black">Summary of Pieces</h3>
                     </div>
 
                     {/* Interactive Gold Progress Bar */}
                     <div className="mb-6 bg-[#FCFBFA] border border-[#EBE3D5] p-4 rounded-sm space-y-2">
-                      <div className="flex justify-between items-center text-[9px] font-sans font-black uppercase tracking-wider">
+                      <div className="flex justify-between items-center text-xs font-sans font-black uppercase tracking-wider">
                         <span className="text-black/80">
                           {subtotal >= threshold ? "🎉 Free Delivery Unlocked" : "Delivery Progress"}
                         </span>
-                        <span className="text-black/50">
+                        <span className="text-black/70">
                           {subtotal >= threshold ? "100%" : `${Math.floor((subtotal / threshold) * 100)}%`}
                         </span>
                       </div>
@@ -298,7 +298,7 @@ const CartPage = () => {
                           style={{ width: `${Math.min((subtotal / threshold) * 100, 100)}%` }}
                         />
                       </div>
-                      <p className="text-[9px] font-sans text-black/50 leading-relaxed">
+                      <p className="text-xs font-sans text-black/70 leading-relaxed">
                         {subtotal >= threshold 
                           ? "Qualifies for free priority courier dispatch & surprise artisan gift." 
                           : `Add ₹${awayAmount.toLocaleString()} more for free shipping & a surprise handcrafted gift.`
@@ -314,11 +314,11 @@ const CartPage = () => {
                       </div>
                       <div className="flex justify-between items-center text-black/60">
                         <span>Luxury Gift Wrapping</span>
-                        <span className="text-[9px] uppercase font-bold text-emerald-700 tracking-wider">Complimentary</span>
+                        <span className="text-xs uppercase font-bold text-emerald-700 tracking-wider">Complimentary</span>
                       </div>
                       <div className="flex justify-between items-center text-black/60">
                         <span>Courier Dispatch</span>
-                        <span>{shippingFee === 0 ? <span className="text-[9px] uppercase font-bold text-emerald-700 tracking-wider">Free</span> : `₹${shippingFee}`}</span>
+                        <span>{shippingFee === 0 ? <span className="text-xs uppercase font-bold text-emerald-700 tracking-wider">Free</span> : `₹${shippingFee}`}</span>
                       </div>
                       <div className="flex justify-between items-center text-black/60 border-t border-dashed border-black/10 pt-3">
                         <span>Estimated GST (Included)</span>
@@ -338,7 +338,7 @@ const CartPage = () => {
                     <button 
                       onClick={handleCheckout}
                       disabled={isProcessing}
-                      className="w-full bg-black text-white hover:bg-black/90 border border-black rounded-sm py-4 px-6 text-[10px] font-sans font-black uppercase tracking-[0.2em] shadow-md transition-all duration-300 mb-6 disabled:opacity-50"
+                      className="w-full bg-black text-white hover:bg-black/90 border border-black rounded-sm py-4 px-6 text-xs font-sans font-black uppercase tracking-[0.2em] shadow-md transition-all duration-300 mb-6 disabled:opacity-50"
                     >
                       {isProcessing ? "Authenticating..." : "Proceed to Checkout"}
                     </button>
@@ -347,11 +347,11 @@ const CartPage = () => {
                     <div className="space-y-4 pt-4 border-t border-black/[0.06]">
                       <div className="flex items-center gap-3">
                         <ShieldCheck size={16} className="text-emerald-700 flex-shrink-0" />
-                        <span className="text-[10px] font-sans font-bold text-black/75 uppercase tracking-wider">Secure 256-Bit Checkout</span>
+                        <span className="text-xs font-sans font-bold text-black/75 uppercase tracking-wider">Secure 256-Bit Checkout</span>
                       </div>
                       <div className="flex items-center gap-3">
                         <Truck size={16} className="text-black/60 flex-shrink-0" />
-                        <span className="text-[10px] font-sans font-bold text-black/75 uppercase tracking-wider">Studio Dispatch Verified</span>
+                        <span className="text-xs font-sans font-bold text-black/75 uppercase tracking-wider">Studio Dispatch Verified</span>
                       </div>
                       
                       {/* Stylized Brand Payment Logos */}
@@ -407,7 +407,7 @@ const CartPage = () => {
               {/* Frequently Bought Together - BELOW the grid so it appears after summary on mobile */}
               {recommendedItems.length > 0 && (
                 <div className="mt-12 pt-8 border-t border-black/[0.08]">
-                  <span className="text-[9px] uppercase tracking-[0.3em] font-black text-black/40 block mb-2">Complements</span>
+                  <span className="text-xs uppercase tracking-wider font-black text-black/60 block mb-2">Complements</span>
                   <h3 className="text-lg font-serif italic text-black mb-6">
                     Frequently Bought Together
                   </h3>
@@ -429,16 +429,16 @@ const CartPage = () => {
                             </div>
                           </Link>
                           <Link href={`/product/${product.id}`}>
-                            <h4 className="text-[10px] sm:text-xs font-sans font-bold text-black/85 hover:text-amber-800 line-clamp-1">
+                            <h4 className="text-xs sm:text-xs font-sans font-bold text-black/85 hover:text-amber-800 line-clamp-1">
                               {product.name}
                             </h4>
                           </Link>
-                          <p className="text-[7px] sm:text-[8px] text-black/40 uppercase tracking-widest mt-0.5">{product.category}</p>
-                          <p className="text-[10px] sm:text-xs font-sans font-black text-black mt-1">₹{product.selling_price.toLocaleString()}</p>
+                          <p className="text-[7px] sm:text-[11px] text-black/60 uppercase tracking-widest mt-0.5">{product.category}</p>
+                          <p className="text-xs sm:text-xs font-sans font-black text-black mt-1">₹{product.selling_price.toLocaleString()}</p>
                         </div>
                         <button
                           onClick={() => addItem(product)}
-                          className="mt-2 w-full bg-white hover:bg-black hover:text-white border border-black/20 text-black py-1.5 text-[8px] sm:text-[9px] uppercase tracking-widest font-sans font-black transition-colors rounded-sm"
+                          className="mt-2 w-full bg-white hover:bg-black hover:text-white border border-black/20 text-black py-1.5 text-[11px] sm:text-xs uppercase tracking-widest font-sans font-black transition-colors rounded-sm"
                         >
                           + Add
                         </button>
@@ -469,7 +469,7 @@ const CartPage = () => {
                 <div className="w-16 h-16 bg-red-50 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4 border border-red-100">
                   <ShoppingBag size={28} strokeWidth={1.5} />
                 </div>
-                <span className="text-[10px] uppercase tracking-[0.4em] font-black text-red-600">Reservation Expired</span>
+                <span className="text-xs uppercase tracking-widest font-black text-red-600">Reservation Expired</span>
                 <h3 className="text-2xl font-serif italic text-black">Curation Released</h3>
                 <p className="text-sm font-sans text-black/60 leading-relaxed">
                   Due to high demand for YDA handcrafted creations, your 20-minute reservation window has ended. Your pieces are still in your curation—please checkout soon to secure them.
@@ -480,7 +480,7 @@ const CartPage = () => {
                       setShowExpiredModal(false);
                       router.push("/checkout");
                     }}
-                    className="w-full bg-black text-white py-4 text-[10px] uppercase tracking-[0.3em] font-sans font-bold hover:bg-black/80 transition-all duration-300"
+                    className="w-full bg-black text-white py-4 text-xs uppercase tracking-wider font-sans font-bold hover:bg-black/80 transition-all duration-300"
                   >
                     Continue Checkout
                   </button>
@@ -488,7 +488,7 @@ const CartPage = () => {
                     onClick={() => {
                       setShowExpiredModal(false);
                     }}
-                    className="w-full border border-black/15 text-black py-3 text-[10px] uppercase tracking-[0.25em] font-sans font-bold hover:bg-black/5 transition-colors"
+                    className="w-full border border-black/15 text-black py-3 text-xs uppercase tracking-[0.25em] font-sans font-bold hover:bg-black/5 transition-colors"
                   >
                     Stay on Cart
                   </button>

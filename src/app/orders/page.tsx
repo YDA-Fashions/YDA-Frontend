@@ -68,17 +68,17 @@ const OrdersPage = () => {
           <div className="mb-12 md:mb-16 border-b border-black/5 pb-8">
             <Link
               href="/"
-              className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] font-black text-black/40 hover:text-black transition-colors mb-8"
+              className="inline-flex items-center gap-2 text-xs uppercase tracking-wider font-black text-black/60 hover:text-black transition-colors mb-8"
             >
               <ArrowLeft size={14} /> Back to Studio
             </Link>
             <h1 className="text-4xl md:text-5xl font-serif tracking-tight text-black">
               Collector&apos;s Vault
             </h1>
-            <p className="text-sm text-black/50 mt-4 font-sans max-w-xl leading-relaxed">
+            <p className="text-sm text-black/70 mt-4 font-sans max-w-xl leading-relaxed">
               Your curated heritage pieces, lovingly preserved.
             </p>
-            <p className="text-xs uppercase tracking-widest text-black/40 mt-4 font-sans font-bold">
+            <p className="text-xs uppercase tracking-widest text-black/60 mt-4 font-sans font-bold">
               {orders.length} {orders.length === 1 ? "Curation" : "Curations"} in Your Vault
             </p>
           </div>
@@ -96,7 +96,7 @@ const OrdersPage = () => {
                 <h2 className="text-2xl font-serif mb-4 text-black/60">
                   Your vault awaits its first treasure.
                 </h2>
-                <p className="text-sm text-black/40 mb-8 max-w-md mx-auto">
+                <p className="text-sm text-black/60 mb-8 max-w-md mx-auto">
                   Each piece you collect will live here with certificates and curated
                   recommendations.
                 </p>
@@ -117,13 +117,13 @@ const OrdersPage = () => {
                     transition={{ delay: idx * 0.1 }}
                     className="border border-amber-200/30 rounded-sm bg-white p-6 md:p-10 shadow-sm ring-1 ring-amber-100/50"
                   >
-                    <h2 className="text-[10px] uppercase tracking-[0.35em] font-black text-black/30 mb-6">
+                    <h2 className="text-xs uppercase tracking-[0.35em] font-black text-black/60 mb-6">
                       Heritage Curation · #{order.id.slice(0, 12).toUpperCase()}
                     </h2>
 
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 pb-8 border-b border-black/10 mb-8">
                       <div className="space-y-1">
-                        <p className="text-[10px] uppercase tracking-widest font-black text-black/40">
+                        <p className="text-xs uppercase tracking-widest font-black text-black/60">
                           Order Placed
                         </p>
                         <p className="text-sm font-sans font-semibold">
@@ -135,7 +135,7 @@ const OrdersPage = () => {
                         </p>
                       </div>
                       <div className="space-y-1">
-                        <p className="text-[10px] uppercase tracking-widest font-black text-black/40">
+                        <p className="text-xs uppercase tracking-widest font-black text-black/60">
                           Total
                         </p>
                         <p className="text-sm font-sans font-semibold text-emerald-800">
@@ -143,7 +143,7 @@ const OrdersPage = () => {
                         </p>
                       </div>
                       <div className="space-y-1 col-span-2 md:col-span-1">
-                        <p className="text-[10px] uppercase tracking-widest font-black text-black/40">
+                        <p className="text-xs uppercase tracking-widest font-black text-black/60">
                           Order Reference
                         </p>
                         <p className="text-sm font-sans font-semibold">
@@ -151,7 +151,7 @@ const OrdersPage = () => {
                         </p>
                       </div>
                       <div className="space-y-1 col-span-2 md:col-span-1">
-                        <p className="text-[10px] uppercase tracking-widest font-black text-black/40 mb-2">
+                        <p className="text-xs uppercase tracking-widest font-black text-black/60 mb-2">
                           Journey
                         </p>
                         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
@@ -159,7 +159,7 @@ const OrdersPage = () => {
                           <button
                             type="button"
                             onClick={() => setCertificateOrderId(order.id)}
-                            className="inline-flex items-center gap-2 self-start border border-amber-300/60 bg-amber-50/40 hover:bg-amber-100/60 px-3 py-2 text-[9px] uppercase tracking-[0.2em] font-black text-amber-900 transition-colors"
+                            className="inline-flex items-center gap-2 self-start border border-amber-300/60 bg-amber-50/40 hover:bg-amber-100/60 px-3 py-2 text-xs uppercase tracking-[0.2em] font-black text-amber-900 transition-colors"
                             aria-label={`View certificate for order ${order.id.slice(0, 8)}`}
                           >
                             <Award size={12} aria-hidden />
@@ -171,7 +171,7 @@ const OrdersPage = () => {
 
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
                       <div className="lg:col-span-2 space-y-8">
-                        <p className="text-[11px] uppercase tracking-widest font-black text-black/30 border-b border-black/5 pb-2">
+                        <p className="text-[11px] uppercase tracking-widest font-black text-black/60 border-b border-black/5 pb-2">
                           Pieces in This Curation
                         </p>
 
@@ -207,7 +207,7 @@ const OrdersPage = () => {
                                 </p>
                                 <p className="text-lg font-sans font-bold text-black mb-4">
                                   ₹{item.price_at_purchase.toLocaleString()}{" "}
-                                  <span className="text-xs font-normal text-black/40">
+                                  <span className="text-xs font-normal text-black/60">
                                     (per item)
                                   </span>
                                 </p>
@@ -229,7 +229,7 @@ const OrdersPage = () => {
 
                       <div className="lg:col-span-1">
                         <div className="bg-[#FBF9F4] border border-black/5 p-6 rounded-sm">
-                          <p className="text-[11px] uppercase tracking-widest font-black text-black/30 mb-6 border-b border-black/5 pb-2">
+                          <p className="text-[11px] uppercase tracking-widest font-black text-black/60 mb-6 border-b border-black/5 pb-2">
                             Fulfillment Details
                           </p>
                           <div className="space-y-2 font-sans text-sm text-black/80">

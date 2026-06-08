@@ -56,7 +56,7 @@ export default function RelatedProductsCarousel({ order }: RelatedProductsCarous
     >
       <h3
         id={`upsell-${order.id}`}
-        className="text-[11px] uppercase tracking-[0.3em] font-black text-black/40 mb-6"
+        className="text-[11px] uppercase tracking-wider font-black text-black/60 mb-6"
       >
         Complete Your Curation
       </h3>
@@ -77,7 +77,7 @@ export default function RelatedProductsCarousel({ order }: RelatedProductsCarous
           </Link>
 
           <div className="flex-grow min-w-0">
-            <p className="text-[8px] uppercase tracking-widest font-black text-black/40">
+            <p className="text-[11px] uppercase tracking-widest font-black text-black/60">
               {current.category}
             </p>
             <Link href={`/product/${current.id}`}>
@@ -94,7 +94,7 @@ export default function RelatedProductsCarousel({ order }: RelatedProductsCarous
               whileTap={{ scale: 0.98 }}
               onClick={() => addItem(current)}
               disabled={current.stock <= 0}
-              className="mt-3 bg-white hover:bg-black hover:text-white border border-black/20 text-black py-1.5 px-4 text-[8px] uppercase tracking-widest font-black transition-colors rounded-sm disabled:opacity-40 disabled:cursor-not-allowed"
+              className="mt-3 bg-white hover:bg-black hover:text-white border border-black/20 text-black py-1.5 px-4 text-[11px] uppercase tracking-widest font-black transition-colors rounded-sm disabled:opacity-40 disabled:cursor-not-allowed"
               aria-label={`Add ${current.name} to cart`}
             >
               + Add
@@ -126,7 +126,7 @@ export default function RelatedProductsCarousel({ order }: RelatedProductsCarous
         </div>
 
         {products.length > 1 && (
-          <p className="text-[9px] text-black/30 mt-3 text-center font-sans">
+          <p className="text-xs text-black/60 mt-3 text-center font-sans">
             {index + 1} of {products.length}
           </p>
         )}

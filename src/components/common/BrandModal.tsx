@@ -37,10 +37,25 @@ const BrandModal: React.FC<BrandModalProps> = ({
     error: <AlertCircle size={40} strokeWidth={1} className="text-red-500" />,
   };
 
+  // Handle Escape key close
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
+
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[300] flex items-center justify-center p-6">
+        <div 
+          className="fixed inset-0 z-[300] flex items-center justify-center p-6"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="brand-modal-title"
+        >
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -56,17 +71,18 @@ const BrandModal: React.FC<BrandModalProps> = ({
           >
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 p-2 text-black/20 hover:text-black transition-colors"
+              className="absolute top-4 right-4 p-2 text-black/20 hover:text-black transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+              aria-label="Close modal"
             >
               <X size={20} strokeWidth={1.5} />
             </button>
 
             <div className="flex justify-center mb-8">{icons[type]}</div>
-            <h2 className="text-2xl md:text-3xl font-serif italic mb-4">{title}</h2>
-            <p className="text-sm text-black/50 leading-relaxed mb-2">{subtitle}</p>
+            <h2 id="brand-modal-title" className="text-2xl md:text-3xl font-serif italic mb-4">{title}</h2>
+            <p className="text-sm text-black/70 leading-relaxed mb-2">{subtitle}</p>
 
             {productName && (
-              <p className="text-[10px] uppercase tracking-widest font-black text-black/40 mt-4">
+              <p className="text-xs uppercase tracking-widest font-black text-black/60 mt-4">
                 {productName}
               </p>
             )}
@@ -76,7 +92,7 @@ const BrandModal: React.FC<BrandModalProps> = ({
 
             <button
               onClick={onClose}
-              className="mt-10 w-full bg-black text-white py-4 text-[11px] uppercase tracking-[0.3em] font-black hover:bg-black/90 transition-all"
+              className="mt-10 w-full bg-black text-white py-4 text-[11px] uppercase tracking-wider font-black hover:bg-black/90 transition-all"
             >
               {buttonText}
             </button>

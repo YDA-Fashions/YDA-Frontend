@@ -52,7 +52,7 @@ export default function GiftButton({ product, className = "" }: GiftButtonProps)
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
       onClick={handleGift}
-      className={`inline-flex items-center gap-2 border border-amber-400/70 text-amber-900 bg-amber-50/50 hover:bg-amber-100/80 px-4 py-2 text-[9px] uppercase tracking-[0.2em] font-black transition-colors ${className}`}
+      className={`inline-flex items-center gap-2 border border-amber-400/70 text-amber-900 bg-amber-50/50 hover:bg-amber-100/80 px-4 py-2 text-xs uppercase tracking-[0.2em] font-black transition-colors ${className}`}
       aria-label={`Gift ${product.name} via WhatsApp or copy link`}
     >
       <Gift size={12} strokeWidth={2} aria-hidden />

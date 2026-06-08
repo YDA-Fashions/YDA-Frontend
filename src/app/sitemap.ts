@@ -1,13 +1,15 @@
 import { MetadataRoute } from "next";
 import { PRODUCTS } from "@/data/products";
+import { blogService } from "@/services/blogService";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://ydafashions.com";
 
   // Static routes
   const staticRoutes = [
     "",
     "/shop",
+    "/blog",
     "/big-tote-bags",
     "/small-tote-bags",
     "/new-arrivals",
@@ -30,5 +32,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [...staticRoutes, ...productRoutes];
+  let blogRoutes: MetadataRoute.Sitemap = [];
+  try {
+    const posts = await blogService.getPosts();
+    blogRoutes = posts.map((post) => ({
+      url: `${baseUrl}/blog/${post.slug}`,
+      lastModified: new Date(post.created_at),
+      changeFrequency: "weekly" as const,
+      priority: 0.6,
+    }));
+  } catch {
+    blogRoutes = [];
+  }
+
+  return [...staticRoutes, ...productRoutes, ...blogRoutes];
 }

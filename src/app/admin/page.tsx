@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { Edit2, Trash2, LayoutDashboard, Package, ShoppingCart, Users, ArrowUpRight, X, Upload, Loader2, Plus, Banknote } from "lucide-react";
+import { Edit2, Trash2, LayoutDashboard, Package, ShoppingCart, Users, ArrowUpRight, X, Upload, Loader2, Plus, Banknote, BookOpen } from "lucide-react";
+import Link from "next/link";
 import { useProductStore } from "@/store/useProductStore";
 import { productService } from "@/services/productService";
 import { orderService } from "@/services/orderService";
@@ -46,7 +47,7 @@ const AdminPage = () => {
   const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
 
   // Configure admin emails from environment variables or use safe defaults
-  const adminEmailsStr = process.env.NEXT_PUBLIC_ADMIN_EMAILS || "support@ydafashions.com,admin@ydafashions.com,ydafashions@gmail.com,harshitnaiwal@zohomail.in";
+  const adminEmailsStr = process.env.NEXT_PUBLIC_ADMIN_EMAILS || "support@ydafashions.com,admin@ydafashions.com,ydafashions@gmail.com,harshitnaiwal@zohomail.in,naiwalharshit@gmail.com";
   const adminEmails = React.useMemo(() => {
     return adminEmailsStr.split(",").map(e => e.trim().toLowerCase());
   }, [adminEmailsStr]);
@@ -255,7 +256,7 @@ const AdminPage = () => {
       <div className="min-h-screen bg-[#FDFBF7] flex flex-col items-center justify-center px-6 text-center">
         <div className="max-w-md w-full space-y-8 bg-white border border-border-beige p-8 shadow-sm">
           <div className="space-y-4">
-            <span className="text-[10px] uppercase tracking-[0.5em] font-black text-red-600 block">Security Alert</span>
+            <span className="text-xs uppercase tracking-widest font-black text-red-600 block">Security Alert</span>
             <h1 className="text-3xl font-serif tracking-tight text-black italic">
               Access Denied
             </h1>
@@ -267,7 +268,7 @@ const AdminPage = () => {
           <div className="flex flex-col gap-3 pt-4">
             <button 
               onClick={() => { window.location.href = "/"; }}
-              className="w-full bg-foreground text-background py-4 text-[10px] uppercase tracking-[0.3em] font-sans font-bold hover:bg-accent-dark transition-all duration-300"
+              className="w-full bg-foreground text-background py-4 text-xs uppercase tracking-wider font-sans font-bold hover:bg-accent-dark transition-all duration-300"
             >
               Return to Curation
             </button>
@@ -282,7 +283,7 @@ const AdminPage = () => {
                   window.location.href = "/login?redirect=/admin";
                 }
               }}
-              className="w-full border border-foreground/10 py-4 text-[10px] uppercase tracking-[0.3em] font-sans font-bold hover:bg-foreground hover:text-background transition-all duration-300"
+              className="w-full border border-foreground/10 py-4 text-xs uppercase tracking-wider font-sans font-bold hover:bg-foreground hover:text-background transition-all duration-300"
             >
               Sign in with another account
             </button>
@@ -303,7 +304,7 @@ const AdminPage = () => {
         <nav className="flex lg:flex-col gap-2 w-full overflow-x-auto lg:overflow-visible">
           <button 
             onClick={() => setActiveTab("dashboard")}
-            className={`flex-1 lg:w-full flex items-center justify-center lg:justify-start gap-4 px-4 py-3 text-[10px] tracking-widest font-bold uppercase transition-colors whitespace-nowrap ${
+            className={`flex-1 lg:w-full flex items-center justify-center lg:justify-start gap-4 px-4 py-3 text-xs tracking-widest font-bold uppercase transition-colors whitespace-nowrap ${
               activeTab === "dashboard" ? "bg-foreground text-background" : "text-foreground/40 hover:bg-accent/10"
             }`}
           >
@@ -311,7 +312,7 @@ const AdminPage = () => {
           </button>
           <button 
             onClick={() => setActiveTab("products")}
-            className={`flex-1 lg:w-full flex items-center justify-center lg:justify-start gap-4 px-4 py-3 text-[10px] tracking-widest font-bold uppercase transition-colors whitespace-nowrap ${
+            className={`flex-1 lg:w-full flex items-center justify-center lg:justify-start gap-4 px-4 py-3 text-xs tracking-widest font-bold uppercase transition-colors whitespace-nowrap ${
               activeTab === "products" ? "bg-foreground text-background" : "text-foreground/40 hover:bg-accent/10"
             }`}
           >
@@ -319,7 +320,7 @@ const AdminPage = () => {
           </button>
           <button 
             onClick={() => setActiveTab("orders")}
-            className={`flex-1 lg:w-full flex items-center justify-center lg:justify-start gap-4 px-4 py-3 text-[10px] tracking-widest font-bold uppercase transition-colors whitespace-nowrap ${
+            className={`flex-1 lg:w-full flex items-center justify-center lg:justify-start gap-4 px-4 py-3 text-xs tracking-widest font-bold uppercase transition-colors whitespace-nowrap ${
               activeTab === "orders" ? "bg-foreground text-background" : "text-foreground/40 hover:bg-accent/10"
             }`}
           >
@@ -327,18 +328,24 @@ const AdminPage = () => {
           </button>
           <button 
             onClick={() => setActiveTab("coupons")}
-            className={`flex-1 lg:w-full flex items-center justify-center lg:justify-start gap-4 px-4 py-3 text-[10px] tracking-widest font-bold uppercase transition-colors whitespace-nowrap ${
+            className={`flex-1 lg:w-full flex items-center justify-center lg:justify-start gap-4 px-4 py-3 text-xs tracking-widest font-bold uppercase transition-colors whitespace-nowrap ${
               activeTab === "coupons" ? "bg-foreground text-background" : "text-foreground/40 hover:bg-accent/10"
             }`}
           >
             <Banknote size={18} /> <span className="hidden sm:inline">Coupons</span>
           </button>
+          <Link
+            href="/admin/blog"
+            className="flex-1 lg:w-full flex items-center justify-center lg:justify-start gap-4 px-4 py-3 text-xs tracking-widest font-bold uppercase transition-colors whitespace-nowrap text-foreground/40 hover:bg-accent/10"
+          >
+            <BookOpen size={18} /> <span className="hidden sm:inline">Journal</span>
+          </Link>
         </nav>
       </aside>
 
       {/* Main Content */}
       <main className="flex-1 p-8 lg:p-12 overflow-y-auto">
-        <div className="bg-red-600 text-white text-center py-2 text-[10px] font-black uppercase tracking-[0.5em] mb-8 rounded-sm">
+        <div className="bg-red-600 text-white text-center py-2 text-xs font-black uppercase tracking-widest mb-8 rounded-sm">
           🚀 Admin Panel V2 - Latest Options Enabled (Size & Featured)
         </div>
         <div className="flex justify-between items-center mb-12">
@@ -347,10 +354,10 @@ const AdminPage = () => {
               <h1 className="text-3xl font-serif tracking-tight uppercase">Studio Control</h1>
               <div className="flex items-center gap-2 px-3 py-1 bg-green-50 border border-green-100 rounded-full">
                 <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                <span className="text-[8px] uppercase tracking-widest font-black text-green-700">Database Live - V2</span>
+                <span className="text-[11px] uppercase tracking-widest font-black text-green-700">Database Live - V2</span>
               </div>
             </div>
-            <p className="text-[10px] uppercase tracking-[0.4em] font-sans font-bold text-foreground/40">
+            <p className="text-xs uppercase tracking-widest font-sans font-bold text-foreground/40">
               {activeTab} Management
             </p>
           </div>
@@ -359,13 +366,13 @@ const AdminPage = () => {
             <button 
               onClick={handleSync}
               disabled={isSyncing}
-              className="border border-border-beige text-foreground/60 px-8 py-4 text-[10px] uppercase tracking-widest font-bold hover:bg-accent/5 transition-colors flex items-center gap-3 disabled:opacity-50"
+              className="border border-border-beige text-foreground/60 px-8 py-4 text-xs uppercase tracking-widest font-bold hover:bg-accent/5 transition-colors flex items-center gap-3 disabled:opacity-50"
             >
               {isSyncing ? "Syncing..." : "Sync Static Data"}
             </button>
             <button 
               onClick={handleOpenAdd}
-              className="bg-accent-dark text-white px-8 py-4 text-[10px] uppercase tracking-widest font-bold hover:bg-foreground transition-colors flex items-center gap-3"
+              className="bg-accent-dark text-white px-8 py-4 text-xs uppercase tracking-widest font-bold hover:bg-foreground transition-colors flex items-center gap-3"
             >
               <Plus size={16} /> New Entry
             </button>
@@ -376,10 +383,10 @@ const AdminPage = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {stats.map((stat) => (
             <div key={stat.label} className="bg-white p-6 border border-border-beige flex flex-col gap-4">
-              <span className="text-[10px] uppercase tracking-widest font-bold text-foreground/40">{stat.label}</span>
+              <span className="text-xs uppercase tracking-widest font-bold text-foreground/40">{stat.label}</span>
               <div className="flex justify-between items-end">
                 <span className="text-2xl font-serif">{stat.value}</span>
-                {stat.change && <span className={`text-[10px] font-sans font-bold ${stat.color}`}>{stat.change}</span>}
+                {stat.change && <span className={`text-xs font-sans font-bold ${stat.color}`}>{stat.change}</span>}
               </div>
             </div>
           ))}
@@ -390,18 +397,18 @@ const AdminPage = () => {
             <div className="bg-white border border-border-beige p-8">
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-sm font-bold uppercase tracking-widest">Recent Activity</h3>
-                <button onClick={() => setActiveTab("orders")} className="text-[10px] uppercase font-bold text-accent-dark hover:underline">View All</button>
+                <button onClick={() => setActiveTab("orders")} className="text-xs uppercase font-bold text-accent-dark hover:underline">View All</button>
               </div>
               <div className="space-y-4">
                 {orders.slice(0, 5).map((order) => (
                   <div key={order.id} className="flex justify-between items-center py-3 border-b border-border-beige last:border-0">
                     <div className="flex flex-col">
-                      <span className="text-[10px] font-mono text-foreground/40">{order.id}</span>
+                      <span className="text-xs font-mono text-foreground/40">{order.id}</span>
                       <span className="text-sm font-bold">{order.customer_name || "Unknown Guest"}</span>
                     </div>
                     <div className="text-right">
                       <div className="text-sm font-bold">₹{order.total_amount.toLocaleString()}</div>
-                      <div className="text-[9px] uppercase tracking-tighter text-foreground/40">{new Date(order.created_at).toLocaleDateString()}</div>
+                      <div className="text-xs uppercase tracking-tighter text-foreground/40">{new Date(order.created_at).toLocaleDateString()}</div>
                     </div>
                   </div>
                 ))}
@@ -418,11 +425,11 @@ const AdminPage = () => {
             <table className="w-full text-left">
               <thead>
                 <tr className="bg-accent/10 border-b border-border-beige">
-                  <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-foreground/40">Product</th>
-                  <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-foreground/40 text-center">Stock</th>
-                  <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-foreground/40 text-center">Size</th>
-                  <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-foreground/40 text-center">Price</th>
-                  <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-foreground/40 text-center">Actions</th>
+                  <th className="px-6 py-4 text-xs uppercase tracking-widest font-bold text-foreground/40">Product</th>
+                  <th className="px-6 py-4 text-xs uppercase tracking-widest font-bold text-foreground/40 text-center">Stock</th>
+                  <th className="px-6 py-4 text-xs uppercase tracking-widest font-bold text-foreground/40 text-center">Size</th>
+                  <th className="px-6 py-4 text-xs uppercase tracking-widest font-bold text-foreground/40 text-center">Price</th>
+                  <th className="px-6 py-4 text-xs uppercase tracking-widest font-bold text-foreground/40 text-center">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border-beige/40">
@@ -434,13 +441,13 @@ const AdminPage = () => {
                       </div>
                       <div>
                         <h4 className="text-sm font-bold font-sans">{product.name}</h4>
-                        <p className="text-[10px] text-foreground/40 uppercase tracking-widest">{product.product_code}</p>
+                        <p className="text-xs text-foreground/40 uppercase tracking-widest">{product.product_code}</p>
                       </div>
                     </td>
                     <td className="px-6 py-4 text-center text-sm font-sans">
                       {product.stock_quantity ?? "—"}
                     </td>
-                    <td className="px-6 py-4 text-center text-[10px] font-bold uppercase tracking-widest text-foreground/60">
+                    <td className="px-6 py-4 text-center text-xs font-bold uppercase tracking-widest text-foreground/60">
                       {product.size || "—"}
                     </td>
                     <td className="px-6 py-4 text-center text-sm font-sans font-bold">
@@ -450,7 +457,7 @@ const AdminPage = () => {
                       <div className="flex justify-center gap-4">
                         <button 
                           onClick={() => handleOpenEdit(product)} 
-                          className="flex items-center gap-2 px-3 py-1 bg-black text-white text-[10px] font-black uppercase tracking-widest rounded-sm hover:bg-accent-dark transition-all"
+                          className="flex items-center gap-2 px-3 py-1 bg-black text-white text-xs font-black uppercase tracking-widest rounded-sm hover:bg-accent-dark transition-all"
                         >
                           <Edit2 size={12} /> Edit
                         </button>
@@ -470,19 +477,19 @@ const AdminPage = () => {
               <table className="w-full text-left min-w-[1000px]">
                 <thead>
                   <tr className="bg-accent/10 border-b border-border-beige">
-                    <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-foreground/40">Reference & Date</th>
-                    <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-foreground/40">Customer Details</th>
-                    <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-foreground/40">Ordered Masterpieces</th>
-                    <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-foreground/40 text-right">Total Amount</th>
-                    <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-foreground/40 text-center">Status</th>
+                    <th className="px-6 py-4 text-xs uppercase tracking-widest font-bold text-foreground/40">Reference & Date</th>
+                    <th className="px-6 py-4 text-xs uppercase tracking-widest font-bold text-foreground/40">Customer Details</th>
+                    <th className="px-6 py-4 text-xs uppercase tracking-widest font-bold text-foreground/40">Ordered Masterpieces</th>
+                    <th className="px-6 py-4 text-xs uppercase tracking-widest font-bold text-foreground/40 text-right">Total Amount</th>
+                    <th className="px-6 py-4 text-xs uppercase tracking-widest font-bold text-foreground/40 text-center">Status</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border-beige/40">
                   {orders.map((order) => (
                     <tr key={order.id} className="hover:bg-accent/5 transition-colors text-xs align-top">
                       <td className="px-6 py-6">
-                        <p className="font-mono text-[10px] text-black mb-1">#{order.id.slice(0, 12).toUpperCase()}</p>
-                        <p className="text-[10px] text-foreground/40">
+                        <p className="font-mono text-xs text-black mb-1">#{order.id.slice(0, 12).toUpperCase()}</p>
+                        <p className="text-xs text-foreground/40">
                           {new Date(order.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
                           <br />
                           {new Date(order.created_at).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
@@ -490,8 +497,8 @@ const AdminPage = () => {
                       </td>
                       <td className="px-6 py-6">
                         <p className="font-bold text-black uppercase mb-1">{order.customer_name || 'Anonymous'}</p>
-                        <p className="text-[10px] text-foreground/60 mb-2">{order.customer_phone ? `+91 ${order.customer_phone}` : 'No Phone'}</p>
-                        <div className="max-w-[200px] p-2 bg-[#F5F5F0] rounded-sm text-[9px] text-foreground/60 leading-relaxed italic border border-black/5">
+                        <p className="text-xs text-foreground/60 mb-2">{order.customer_phone ? `+91 ${order.customer_phone}` : 'No Phone'}</p>
+                        <div className="max-w-[200px] p-2 bg-[#F5F5F0] rounded-sm text-xs text-foreground/60 leading-relaxed italic border border-black/5">
                           {order.shipping_address}
                         </div>
                       </td>
@@ -507,8 +514,8 @@ const AdminPage = () => {
                                 />
                               </div>
                               <div className="overflow-hidden">
-                                <p className="text-[10px] font-bold text-black uppercase truncate">{item.products?.name}</p>
-                                <p className="text-[9px] text-foreground/40 font-mono">QTY: {item.quantity} × ₹{item.price_at_purchase?.toLocaleString()}</p>
+                                <p className="text-xs font-bold text-black uppercase truncate">{item.products?.name}</p>
+                                <p className="text-xs text-foreground/40 font-mono">QTY: {item.quantity} × ₹{item.price_at_purchase?.toLocaleString()}</p>
                               </div>
                             </div>
                           ))}
@@ -532,7 +539,7 @@ const AdminPage = () => {
                               loadOrders(); // Revert on failure
                             }
                           }}
-                          className={`text-[9px] uppercase tracking-widest font-black px-3 py-1.5 rounded-sm shadow-sm border-0 cursor-pointer appearance-none text-center ${
+                          className={`text-xs uppercase tracking-widest font-black px-3 py-1.5 rounded-sm shadow-sm border-0 cursor-pointer appearance-none text-center ${
                             order.status === 'paid' ? 'bg-green-600 text-white' : 
                             order.status === 'delivered' ? 'bg-emerald-100 text-emerald-700' :
                             'bg-orange-500 text-white'
@@ -546,7 +553,7 @@ const AdminPage = () => {
                     </tr>
                   ))}
                   {orders.length === 0 && !isLoadingOrders && (
-                    <tr><td colSpan={5} className="px-6 py-24 text-center text-foreground/40 italic uppercase tracking-[0.2em] text-[10px]">No orders recorded in the archives yet.</td></tr>
+                    <tr><td colSpan={5} className="px-6 py-24 text-center text-foreground/40 italic uppercase tracking-[0.2em] text-xs">No orders recorded in the archives yet.</td></tr>
                   )}
                 </tbody>
               </table>
@@ -568,33 +575,33 @@ const AdminPage = () => {
               <form onSubmit={handleSubmit} className="p-8 space-y-6 max-h-[70vh] overflow-y-auto">
                 <div className="grid grid-cols-2 gap-6">
                   <div>
-                    <label className="text-[10px] uppercase tracking-widest font-bold text-foreground/40 mb-2 block">Product Name</label>
+                    <label className="text-xs uppercase tracking-widest font-bold text-foreground/40 mb-2 block">Product Name</label>
                     <input required type="text" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="w-full bg-[#F5F5F0] border-0 p-4 text-sm focus:ring-1 ring-accent-dark outline-none" />
                   </div>
                   <div>
-                    <label className="text-[10px] uppercase tracking-widest font-bold text-foreground/40 mb-2 block">Product Code</label>
+                    <label className="text-xs uppercase tracking-widest font-bold text-foreground/40 mb-2 block">Product Code</label>
                     <input type="text" placeholder="e.g. YDA-TB-001" value={formData.product_code} onChange={e => setFormData({...formData, product_code: e.target.value})} className="w-full bg-[#F5F5F0] border-0 p-4 text-sm focus:ring-1 ring-accent-dark outline-none" />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-3 gap-6">
                   <div>
-                    <label className="text-[10px] uppercase tracking-widest font-bold text-foreground/40 mb-2 block">Price (₹)</label>
+                    <label className="text-xs uppercase tracking-widest font-bold text-foreground/40 mb-2 block">Price (₹)</label>
                     <input required type="number" value={formData.selling_price || ""} onChange={e => setFormData({...formData, selling_price: parseFloat(e.target.value) || 0})} className="w-full bg-[#F5F5F0] border-0 p-4 text-sm focus:ring-1 ring-accent-dark outline-none" />
                   </div>
                   <div>
-                    <label className="text-[10px] uppercase tracking-widest font-bold text-foreground/40 mb-2 block">Old Price (₹)</label>
+                    <label className="text-xs uppercase tracking-widest font-bold text-foreground/40 mb-2 block">Old Price (₹)</label>
                     <input type="number" value={formData.original_price || ""} onChange={e => setFormData({...formData, original_price: parseFloat(e.target.value) || 0})} className="w-full bg-[#F5F5F0] border-0 p-4 text-sm focus:ring-1 ring-accent-dark outline-none" />
                   </div>
                   <div>
-                    <label className="text-[10px] uppercase tracking-widest font-bold text-foreground/40 mb-2 block">Stock</label>
+                    <label className="text-xs uppercase tracking-widest font-bold text-foreground/40 mb-2 block">Stock</label>
                     <input required type="number" value={formData.stock || 0} onChange={e => setFormData({...formData, stock: parseInt(e.target.value) || 0})} className="w-full bg-[#F5F5F0] border-0 p-4 text-sm focus:ring-1 ring-accent-dark outline-none" />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-6">
                   <div>
-                    <label className="text-[10px] uppercase tracking-widest font-bold text-foreground/40 mb-2 block">Category</label>
+                    <label className="text-xs uppercase tracking-widest font-bold text-foreground/40 mb-2 block">Category</label>
                     <select value={formData.category} onChange={e => setFormData({...formData, category: e.target.value as any})} className="w-full bg-[#F5F5F0] border-0 p-4 text-sm focus:ring-1 ring-accent-dark outline-none appearance-none">
                       <option value="bags">Bags</option>
                       <option value="cushions">Cushions</option>
@@ -602,7 +609,7 @@ const AdminPage = () => {
                   </div>
                   {formData.category === "bags" && (
                     <div>
-                      <label className="text-[10px] uppercase tracking-widest font-bold text-foreground/40 mb-2 block">Size (for Totes)</label>
+                      <label className="text-xs uppercase tracking-widest font-bold text-foreground/40 mb-2 block">Size (for Totes)</label>
                       <select value={formData.size} onChange={e => setFormData({...formData, size: e.target.value})} className="w-full bg-[#F5F5F0] border-0 p-4 text-sm focus:ring-1 ring-accent-dark outline-none appearance-none">
                         <option value="small">Small</option>
                         <option value="large">Large</option>
@@ -610,7 +617,7 @@ const AdminPage = () => {
                     </div>
                   )}
                   <div className="flex flex-col">
-                    <label className="text-[10px] uppercase tracking-widest font-bold text-foreground/40 mb-2 block">Featured Piece?</label>
+                    <label className="text-xs uppercase tracking-widest font-bold text-foreground/40 mb-2 block">Featured Piece?</label>
                     <div className="flex-1 flex items-center bg-[#F5F5F0] px-4">
                       <input 
                         type="checkbox" 
@@ -618,23 +625,23 @@ const AdminPage = () => {
                         onChange={e => setFormData({...formData, isFeatured: e.target.checked})} 
                         className="w-4 h-4 text-accent-dark focus:ring-0 border-0 rounded-none" 
                       />
-                      <span className="ml-3 text-[10px] uppercase tracking-widest font-bold text-foreground/40">Show on Homepage</span>
+                      <span className="ml-3 text-xs uppercase tracking-widest font-bold text-foreground/40">Show on Homepage</span>
                     </div>
                   </div>
                 </div>
 
                 <div>
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-foreground/40 mb-2 block">Type (Floral, Tote, etc.)</label>
+                  <label className="text-xs uppercase tracking-widest font-bold text-foreground/40 mb-2 block">Type (Floral, Tote, etc.)</label>
                   <input type="text" value={formData.type} onChange={e => setFormData({...formData, type: e.target.value})} className="w-full bg-[#F5F5F0] border-0 p-4 text-sm focus:ring-1 ring-accent-dark outline-none" />
                 </div>
 
                 <div>
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-foreground/40 mb-2 block">Description</label>
+                  <label className="text-xs uppercase tracking-widest font-bold text-foreground/40 mb-2 block">Description</label>
                   <textarea rows={3} value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} className="w-full bg-[#F5F5F0] border-0 p-4 text-sm focus:ring-1 ring-accent-dark outline-none" />
                 </div>
 
                 <div>
-                  <label className="text-[10px] uppercase tracking-widest font-black text-foreground/40 mb-4 block">
+                  <label className="text-xs uppercase tracking-widest font-black text-foreground/40 mb-4 block">
                     Product Masterpieces (Images)
                   </label>
                   
@@ -663,10 +670,10 @@ const AdminPage = () => {
                   <div className="relative border-2 border-dashed border-border-beige p-10 text-center hover:border-accent-dark transition-all cursor-pointer group bg-accent/5">
                     <input type="file" multiple onChange={e => setSelectedFiles(e.target.files)} className="absolute inset-0 opacity-0 cursor-pointer" />
                     <Upload size={32} className="mx-auto mb-4 text-foreground/20 group-hover:text-accent-dark transition-all" />
-                    <p className="text-[10px] uppercase tracking-widest font-black text-foreground/40 italic">
+                    <p className="text-xs uppercase tracking-widest font-black text-foreground/40 italic">
                       {selectedFiles ? `${selectedFiles.length} new files ready` : "Drag & Drop New Art Assets"}
                     </p>
-                    <p className="text-[8px] text-foreground/20 mt-2 uppercase tracking-widest">JPG, PNG up to 5MB</p>
+                    <p className="text-[11px] text-foreground/20 mt-2 uppercase tracking-widest">JPG, PNG up to 5MB</p>
                   </div>
                 </div>
 
@@ -674,7 +681,7 @@ const AdminPage = () => {
                   <button 
                     type="submit" 
                     disabled={isSubmitting}
-                    className="bg-accent-dark text-white px-12 py-5 text-[10px] uppercase tracking-[0.3em] font-black hover:bg-foreground transition-all flex items-center gap-4 disabled:opacity-50"
+                    className="bg-accent-dark text-white px-12 py-5 text-xs uppercase tracking-wider font-black hover:bg-foreground transition-all flex items-center gap-4 disabled:opacity-50"
                   >
                     {isSubmitting ? (
                       <>
@@ -694,14 +701,14 @@ const AdminPage = () => {
               <h3 className="text-sm font-bold uppercase tracking-widest mb-6">Create New Artflow Code</h3>
               <form onSubmit={handleAddCoupon} className="flex flex-wrap gap-4 items-end">
                 <div className="flex-1 min-w-[200px]">
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-foreground/40 mb-2 block">Code</label>
+                  <label className="text-xs uppercase tracking-widest font-bold text-foreground/40 mb-2 block">Code</label>
                   <input required type="text" placeholder="e.g. FESTIVE50" value={newCoupon.code} onChange={e => setNewCoupon({...newCoupon, code: e.target.value.toUpperCase()})} className="w-full bg-[#F5F5F0] border-0 p-4 text-sm focus:ring-1 ring-accent-dark outline-none" />
                 </div>
                 <div className="w-32">
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-foreground/40 mb-2 block">Discount %</label>
+                  <label className="text-xs uppercase tracking-widest font-bold text-foreground/40 mb-2 block">Discount %</label>
                   <input required type="number" value={newCoupon.percent} onChange={e => setNewCoupon({...newCoupon, percent: parseInt(e.target.value)})} className="w-full bg-[#F5F5F0] border-0 p-4 text-sm focus:ring-1 ring-accent-dark outline-none" />
                 </div>
-                <button type="submit" className="bg-foreground text-white px-8 py-4 text-[10px] uppercase tracking-widest font-bold hover:bg-accent-dark transition-colors">Generate Code</button>
+                <button type="submit" className="bg-foreground text-white px-8 py-4 text-xs uppercase tracking-widest font-bold hover:bg-accent-dark transition-colors">Generate Code</button>
               </form>
             </div>
 
@@ -709,9 +716,9 @@ const AdminPage = () => {
               <table className="w-full text-left">
                 <thead>
                   <tr className="bg-accent/10 border-b border-border-beige">
-                    <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-foreground/40">Active Code</th>
-                    <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-foreground/40 text-center">Value</th>
-                    <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-foreground/40 text-center">Actions</th>
+                    <th className="px-6 py-4 text-xs uppercase tracking-widest font-bold text-foreground/40">Active Code</th>
+                    <th className="px-6 py-4 text-xs uppercase tracking-widest font-bold text-foreground/40 text-center">Value</th>
+                    <th className="px-6 py-4 text-xs uppercase tracking-widest font-bold text-foreground/40 text-center">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border-beige/40">

@@ -52,7 +52,7 @@ const StickyCartBar = ({ product, onAddToCart, triggerRef, alreadyInCart }: Stic
                 />
               </div>
               <div className="min-w-0">
-                <p className="text-[10px] uppercase tracking-widest font-black text-foreground/40 hidden sm:block">
+                <p className="text-xs uppercase tracking-widest font-black text-foreground/40 hidden sm:block">
                   {product.type}
                 </p>
                 <p className="text-sm font-serif truncate">{product.name}</p>
@@ -68,7 +68,7 @@ const StickyCartBar = ({ product, onAddToCart, triggerRef, alreadyInCart }: Stic
             {alreadyInCart || isRecentlyAdded ? (
               <a 
                 href="/cart"
-                className="flex-shrink-0 py-2.5 px-6 text-[9px] uppercase tracking-[0.3em] font-black transition-colors duration-300 bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm flex items-center gap-2"
+                className="flex-shrink-0 py-2.5 px-6 text-xs uppercase tracking-wider font-black transition-colors duration-300 bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm flex items-center gap-2"
               >
                 Go to Cart
               </a>
@@ -82,9 +82,9 @@ const StickyCartBar = ({ product, onAddToCart, triggerRef, alreadyInCart }: Stic
                   }
                 }}
                 disabled={product.stock <= 0}
-                className={`flex-shrink-0 py-2.5 px-6 text-[9px] uppercase tracking-[0.3em] font-black transition-colors duration-300 shadow-sm ${
+                className={`flex-shrink-0 py-2.5 px-6 text-xs uppercase tracking-wider font-black transition-colors duration-300 shadow-sm ${
                   product.stock <= 0
-                    ? "bg-black/10 text-black/40 cursor-not-allowed shadow-none"
+                    ? "bg-black/10 text-black/60 cursor-not-allowed shadow-none"
                     : "bg-[#FFD700] hover:bg-[#F2CC00] text-black"
                 }`}
               >

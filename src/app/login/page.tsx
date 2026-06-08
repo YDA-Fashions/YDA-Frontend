@@ -75,7 +75,7 @@ const LoginContent = () => {
             <h1 className="text-4xl md:text-6xl font-serif tracking-tight mb-4">
               {isLogin ? "Welcome" : "Join"} <br /> <span className="italic ml-8 md:ml-16">The Studio.</span>
             </h1>
-            <p className="text-[10px] uppercase tracking-[0.4em] font-sans font-bold text-foreground/40">
+            <p className="text-xs uppercase tracking-widest font-sans font-bold text-foreground/40">
               Access your curated collections
             </p>
           </motion.div>
@@ -83,7 +83,7 @@ const LoginContent = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             {!isLogin && (
               <div>
-                <label className="text-[10px] uppercase tracking-widest font-bold text-foreground/60 mb-2 block">Full Name</label>
+                <label className="text-xs uppercase tracking-widest font-bold text-foreground/60 mb-2 block">Full Name</label>
                 <input 
                   type="text" 
                   placeholder="Enter your name" 
@@ -96,7 +96,7 @@ const LoginContent = () => {
             )}
             
             <div>
-              <label className="text-[10px] uppercase tracking-widest font-bold text-foreground/60 mb-2 block">Email Address</label>
+              <label className="text-xs uppercase tracking-widest font-bold text-foreground/60 mb-2 block">Email Address</label>
               <input 
                 type="email" 
                 placeholder="email@example.com" 
@@ -108,7 +108,7 @@ const LoginContent = () => {
             </div>
             
             <div>
-              <label className="text-[10px] uppercase tracking-widest font-bold text-foreground/60 mb-2 block">Password</label>
+              <label className="text-xs uppercase tracking-widest font-bold text-foreground/60 mb-2 block">Password</label>
               <input 
                 type="password" 
                 placeholder="••••••••" 
@@ -121,12 +121,12 @@ const LoginContent = () => {
 
             {isLogin && (
               <div className="text-right">
-                <Link href="#" className="text-[10px] uppercase tracking-widest text-foreground/40 hover:text-foreground">Forgot Password?</Link>
+                <Link href="#" className="text-xs uppercase tracking-widest text-foreground/40 hover:text-foreground">Forgot Password?</Link>
               </div>
             )}
 
             {error && (
-              <div className="bg-red-50 text-red-500 text-[10px] p-4 uppercase tracking-widest font-bold text-center">
+              <div className="bg-red-50 text-red-500 text-xs p-4 uppercase tracking-widest font-bold text-center">
                 {error}
               </div>
             )}
@@ -134,7 +134,7 @@ const LoginContent = () => {
             <button 
               type="submit"
               disabled={isLoading}
-              className="w-full bg-foreground text-background py-5 px-8 text-[12px] uppercase tracking-[0.3em] font-sans font-bold hover:bg-accent-dark transition-all duration-500 disabled:opacity-50"
+              className="w-full bg-foreground text-background py-5 px-8 text-[12px] uppercase tracking-wider font-sans font-bold hover:bg-accent-dark transition-all duration-500 disabled:opacity-50"
             >
               {isLoading ? "Synchronizing..." : (isLogin ? "Sign In" : "Create Account")}
             </button>
@@ -143,7 +143,7 @@ const LoginContent = () => {
           <div className="mt-12 pt-8 border-t border-border-beige/40 text-center">
             <button 
               onClick={() => setIsLogin(!isLogin)}
-              className="text-[10px] uppercase tracking-widest font-bold text-accent-dark hover:text-foreground px-4 py-2 transition-colors"
+              className="text-xs uppercase tracking-widest font-bold text-accent-dark hover:text-foreground px-4 py-2 transition-colors"
             >
               {isLogin ? "Haven't joined yet? Sign Up" : "Already a member? Sign In"}
             </button>

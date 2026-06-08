@@ -34,21 +34,21 @@ const VideoSection = () => {
           
           <div className="flex flex-col md:flex-row items-center justify-center gap-12 mt-16 md:mt-24">
             <div className="flex flex-col items-center gap-4 group cursor-help">
-              <span className="text-[10px] md:text-[12px] uppercase tracking-[0.4em] text-white/40 font-bold group-hover:text-white transition-colors duration-500">
+              <span className="text-xs md:text-[12px] uppercase tracking-widest text-white/60 font-bold group-hover:text-white transition-colors duration-500">
                 Crafted in Jaipur
               </span>
               <div className="w-16 md:w-24 h-[1px] bg-white/20 group-hover:w-32 md:group-hover:w-40 transition-all duration-700" />
             </div>
             
             <div className="flex flex-col items-center gap-4 group cursor-help">
-              <span className="text-[10px] md:text-[12px] uppercase tracking-[0.4em] text-white/40 font-bold group-hover:text-white transition-colors duration-500">
+              <span className="text-xs md:text-[12px] uppercase tracking-widest text-white/60 font-bold group-hover:text-white transition-colors duration-500">
                 Ethical Materials
               </span>
               <div className="w-16 md:w-24 h-[1px] bg-white/20 group-hover:w-32 md:group-hover:w-40 transition-all duration-700" />
             </div>
             
             <div className="flex flex-col items-center gap-4 group cursor-help">
-              <span className="text-[10px] md:text-[12px] uppercase tracking-[0.4em] text-white/40 font-bold group-hover:text-white transition-colors duration-500">
+              <span className="text-xs md:text-[12px] uppercase tracking-widest text-white/60 font-bold group-hover:text-white transition-colors duration-500">
                 Heritage Sourcing
               </span>
               <div className="w-16 md:w-24 h-[1px] bg-white/20 group-hover:w-32 md:group-hover:w-40 transition-all duration-700" />

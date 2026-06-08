@@ -84,7 +84,7 @@ export default function ContactPage() {
             <h1 className="text-4xl md:text-6xl font-serif tracking-tight mb-4 italic">
               Client Care
             </h1>
-            <p className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-black opacity-80">
+            <p className="text-xs md:text-xs uppercase tracking-widest font-black opacity-80">
               Personalized Assistance & Inquiries
             </p>
           </motion.div>
@@ -113,7 +113,7 @@ export default function ContactPage() {
                   href="https://wa.me/917877646756?text=Hello%20YDA!%20I%20need%20assistance." 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-3 w-full bg-emerald-600 text-white py-4 text-[10px] uppercase tracking-[0.3em] font-black hover:bg-emerald-700 transition-colors shadow-lg"
+                  className="flex items-center justify-center gap-3 w-full bg-emerald-600 text-white py-4 text-xs uppercase tracking-wider font-black hover:bg-emerald-700 transition-colors shadow-lg"
                 >
                   <MessageCircle size={16} />
                   WhatsApp Us
@@ -128,18 +128,18 @@ export default function ContactPage() {
                 className="space-y-10 dark:text-white"
               >
                 <div>
-                  <div className="flex items-center gap-3 mb-4 text-black/40 dark:text-white/40">
+                  <div className="flex items-center gap-3 mb-4 text-black/60 dark:text-white/60">
                     <Clock size={16} />
-                    <h3 className="text-[10px] uppercase tracking-[0.3em] font-black">Operating Hours</h3>
+                    <h3 className="text-xs uppercase tracking-wider font-black">Operating Hours</h3>
                   </div>
                   <p className="font-serif text-lg">Mon - Sat, 10:00 AM — 7:00 PM (IST)</p>
-                  <p className="text-xs text-black/50 dark:text-white/50 mt-2 font-sans">We aim to respond to all inquiries within 24 hours.</p>
+                  <p className="text-xs text-black/70 dark:text-white/70 mt-2 font-sans">We aim to respond to all inquiries within 24 hours.</p>
                 </div>
 
                 <div>
-                  <div className="flex items-center gap-3 mb-4 text-black/40 dark:text-white/40">
+                  <div className="flex items-center gap-3 mb-4 text-black/60 dark:text-white/60">
                     <Mail size={16} />
-                    <h3 className="text-[10px] uppercase tracking-[0.3em] font-black">Digital Correspondence</h3>
+                    <h3 className="text-xs uppercase tracking-wider font-black">Digital Correspondence</h3>
                   </div>
                   <a href="mailto:support@ydafashions.com" className="text-xl font-serif hover:text-accent-dark transition-colors">
                     support@ydafashions.com
@@ -147,9 +147,9 @@ export default function ContactPage() {
                 </div>
 
                 <div>
-                  <div className="flex items-center gap-3 mb-4 text-black/40 dark:text-white/40">
+                  <div className="flex items-center gap-3 mb-4 text-black/60 dark:text-white/60">
                     <Phone size={16} />
-                    <h3 className="text-[10px] uppercase tracking-[0.3em] font-black">Direct Lines</h3>
+                    <h3 className="text-xs uppercase tracking-wider font-black">Direct Lines</h3>
                   </div>
                   <div className="space-y-3 font-serif text-lg">
                     <p className="flex justify-between max-w-xs"><span>Client Care:</span> <a href="tel:+917877646756" className="hover:text-accent-dark transition-colors">+91 78776 46756</a></p>
@@ -158,19 +158,19 @@ export default function ContactPage() {
                 </div>
 
                 <div>
-                  <div className="flex items-center gap-3 mb-4 text-black/40 dark:text-white/40">
+                  <div className="flex items-center gap-3 mb-4 text-black/60 dark:text-white/60">
                     <MapPin size={16} />
-                    <h3 className="text-[10px] uppercase tracking-[0.3em] font-black">Our Studios</h3>
+                    <h3 className="text-xs uppercase tracking-wider font-black">Our Studios</h3>
                   </div>
                   <div className="grid grid-cols-2 gap-8 font-sans text-sm text-black/70 dark:text-white/70 leading-relaxed">
                     <div>
-                      <strong className="block text-black dark:text-white mb-2 uppercase tracking-widest text-[9px] font-black">Main Office</strong>
+                      <strong className="block text-black dark:text-white mb-2 uppercase tracking-widest text-xs font-black">Main Office</strong>
                       Mangalam City<br />
                       Jaipur, Rajasthan<br />
                       India
                     </div>
                     <div>
-                      <strong className="block text-black dark:text-white mb-2 uppercase tracking-widest text-[9px] font-black">Artisan Studio</strong>
+                      <strong className="block text-black dark:text-white mb-2 uppercase tracking-widest text-xs font-black">Artisan Studio</strong>
                       Sanganer<br />
                       Jaipur, Rajasthan<br />
                       India
@@ -191,7 +191,7 @@ export default function ContactPage() {
               >
                 <div className="absolute top-0 left-0 w-full h-1 bg-black/5 dark:bg-white/10" />
                 <h2 className="text-3xl font-serif mb-2 italic dark:text-white">Send a Message</h2>
-                <p className="text-sm text-black/50 dark:text-white/50 mb-10">Prefer email? Fill out the form below and our concierge will get back to you.</p>
+                <p className="text-sm text-black/70 dark:text-white/70 mb-10">Prefer email? Fill out the form below and our concierge will get back to you.</p>
                 
                 <AnimatePresence mode="wait">
                   {status === "success" ? (
@@ -208,7 +208,7 @@ export default function ContactPage() {
                       <p className="text-sm text-black/60 dark:text-white/60 max-w-xs">Thank you for reaching out. Our client care team will review your inquiry and respond shortly.</p>
                       <button 
                         onClick={() => setStatus("idle")}
-                        className="mt-10 text-[9px] uppercase tracking-[0.3em] font-black text-black/40 hover:text-black dark:text-white/40 dark:hover:text-white transition-colors underline underline-offset-4"
+                        className="mt-10 text-xs uppercase tracking-wider font-black text-black/60 hover:text-black dark:text-white/60 dark:hover:text-white transition-colors underline underline-offset-4"
                       >
                         Send another message
                       </button>
@@ -224,7 +224,7 @@ export default function ContactPage() {
                     >
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div>
-                          <label className="text-[9px] uppercase tracking-widest font-black text-black/40 dark:text-white/40 mb-3 block">Full Name</label>
+                          <label className="text-xs uppercase tracking-widest font-black text-black/60 dark:text-white/60 mb-3 block">Full Name</label>
                           <input 
                             type="text" 
                             value={name}
@@ -236,7 +236,7 @@ export default function ContactPage() {
                           />
                         </div>
                         <div>
-                          <label className="text-[9px] uppercase tracking-widest font-black text-black/40 dark:text-white/40 mb-3 block">Email Address</label>
+                          <label className="text-xs uppercase tracking-widest font-black text-black/60 dark:text-white/60 mb-3 block">Email Address</label>
                           <input 
                             type="email" 
                             value={email}
@@ -249,7 +249,7 @@ export default function ContactPage() {
                         </div>
                       </div>
                       <div>
-                        <label className="text-[9px] uppercase tracking-widest font-black text-black/40 dark:text-white/40 mb-3 block">Your Inquiry</label>
+                        <label className="text-xs uppercase tracking-widest font-black text-black/60 dark:text-white/60 mb-3 block">Your Inquiry</label>
                         <textarea 
                           rows={5} 
                           value={message}
@@ -262,7 +262,7 @@ export default function ContactPage() {
                       </div>
 
                       {status === "error" && (
-                        <div className="bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-[10px] p-4 uppercase tracking-widest font-black text-center border border-red-100 dark:border-red-500/20">
+                        <div className="bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-xs p-4 uppercase tracking-widest font-black text-center border border-red-100 dark:border-red-500/20">
                           {errorMessage}
                         </div>
                       )}
@@ -270,7 +270,7 @@ export default function ContactPage() {
                       <button 
                         type="submit" 
                         disabled={status === "loading"}
-                        className="w-full bg-black text-white dark:bg-white dark:text-black py-5 text-[10px] uppercase tracking-[0.4em] font-black hover:bg-accent-dark transition-colors disabled:opacity-50 shadow-xl"
+                        className="w-full bg-black text-white dark:bg-white dark:text-black py-5 text-xs uppercase tracking-widest font-black hover:bg-accent-dark transition-colors disabled:opacity-50 shadow-xl"
                       >
                         {status === "loading" ? "Transmitting..." : "Submit Inquiry"}
                       </button>
@@ -287,7 +287,7 @@ export default function ContactPage() {
           <div className="container mx-auto px-6 max-w-4xl">
             <div className="text-center mb-16">
               <h2 className="text-3xl font-serif italic mb-4 dark:text-white">Frequently Asked Questions</h2>
-              <p className="text-[10px] uppercase tracking-[0.3em] font-black text-black/40 dark:text-white/40">Quick Answers</p>
+              <p className="text-xs uppercase tracking-wider font-black text-black/60 dark:text-white/60">Quick Answers</p>
             </div>
 
             <div className="space-y-4">
@@ -301,7 +301,7 @@ export default function ContactPage() {
                     className="w-full flex items-center justify-between p-6 md:p-8 text-left hover:bg-[#F9F9F7] dark:hover:bg-white/5 transition-colors"
                   >
                     <span className="font-serif text-lg dark:text-white">{faq.question}</span>
-                    <span className="text-black/40 dark:text-white/40 ml-4 shrink-0">
+                    <span className="text-black/60 dark:text-white/60 ml-4 shrink-0">
                       {openFaq === index ? <Minus size={20} /> : <Plus size={20} />}
                     </span>
                   </button>

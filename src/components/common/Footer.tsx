@@ -15,13 +15,13 @@ const FooterAccordion = ({ title, children }: { title: string; children: React.R
         className="w-full flex items-center justify-between py-4 md:hidden"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <h3 className="text-[9px] uppercase tracking-[0.35em] font-sans font-semibold text-[#8B7D6B]">{title}</h3>
+        <h3 className="text-xs uppercase tracking-[0.35em] font-sans font-semibold text-[#8B7D6B]">{title}</h3>
         <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.3 }}>
           <ChevronDown size={14} className="text-[#8B7D6B]" />
         </motion.div>
       </button>
 
-      <h3 className="hidden md:block text-[9px] uppercase tracking-[0.35em] font-sans font-semibold text-[#8B7D6B] mb-10">{title}</h3>
+      <h3 className="hidden md:block text-xs uppercase tracking-[0.35em] font-sans font-semibold text-[#8B7D6B] mb-10">{title}</h3>
 
       <AnimatePresence initial={false}>
         {isOpen && (
@@ -52,6 +52,7 @@ const Footer = () => {
   ];
 
   const brandLinks = [
+    { name: "Journal", href: "/blog" },
     { name: "Our Story", href: "/story" },
     { name: "Craftsmanship", href: "/story#craft" },
     { name: "Sanganeri & Gujarati Prints", href: "/sanganeri-gujarati-prints" },
@@ -77,7 +78,7 @@ const Footer = () => {
             <p className="text-sm font-serif italic text-black/75 leading-relaxed max-w-[280px]">
               Premium Indian prints, lovingly handcrafted in Jaipur.
             </p>
-            <p className="text-[9px] leading-relaxed text-[#8B7D6B] max-w-[260px] uppercase tracking-[0.22em] font-sans font-medium">
+            <p className="text-xs leading-relaxed text-[#8B7D6B] max-w-[260px] uppercase tracking-[0.22em] font-sans font-medium">
               Sanganeri & Gujarati heritage · Artisan finishing · Modern luxury
             </p>
             <div className="flex gap-3 pt-2">
@@ -85,7 +86,7 @@ const Footer = () => {
                 href="https://www.instagram.com/ydafashions"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[9px] uppercase tracking-[0.25em] font-sans font-semibold text-black/65 hover:text-black border border-[#E8E2D6] px-4 py-2 bg-white/50 transition-colors"
+                className="text-xs uppercase tracking-[0.25em] font-sans font-semibold text-black/65 hover:text-black border border-[#E8E2D6] px-4 py-2 bg-white/50 transition-colors"
                 aria-label="YDA on Instagram"
               >
                 Instagram
@@ -94,7 +95,7 @@ const Footer = () => {
                 href="https://wa.me/917877646756"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[9px] uppercase tracking-[0.25em] font-sans font-semibold text-black/65 hover:text-black border border-[#E8E2D6] px-4 py-2 bg-white/50 transition-colors"
+                className="text-xs uppercase tracking-[0.25em] font-sans font-semibold text-black/65 hover:text-black border border-[#E8E2D6] px-4 py-2 bg-white/50 transition-colors"
                 aria-label="Contact on WhatsApp"
               >
                 WhatsApp
@@ -109,7 +110,7 @@ const Footer = () => {
                   <li key={link.name}>
                     <Link
                       href={link.href}
-                      className="text-[10px] uppercase tracking-[0.18em] text-black/75 hover:text-black transition-colors font-sans font-medium"
+                      className="text-xs uppercase tracking-[0.18em] text-black/75 hover:text-black transition-colors font-sans font-medium"
                     >
                       {link.name}
                     </Link>
@@ -126,7 +127,7 @@ const Footer = () => {
                   <li key={link.name}>
                     <Link
                       href={link.href}
-                      className="text-[10px] uppercase tracking-[0.18em] text-black/75 hover:text-black transition-colors font-sans font-medium"
+                      className="text-xs uppercase tracking-[0.18em] text-black/75 hover:text-black transition-colors font-sans font-medium"
                     >
                       {link.name}
                     </Link>
@@ -139,18 +140,18 @@ const Footer = () => {
           <div className="lg:col-span-4">
             <FooterAccordion title="L'Atelier">
               <div className="flex flex-col gap-5">
-                <p className="text-[10px] leading-relaxed text-black/70 font-sans max-w-sm">
+                <p className="text-xs leading-relaxed text-black/70 font-sans max-w-sm">
                   Join our circle for new arrivals, studio stories, and exclusive offers.
                 </p>
                 <form className="relative border-b border-[#8B7D6B]/40 py-3 group max-w-sm">
                   <input
                     type="email"
                     placeholder="Email address"
-                    className="w-full bg-transparent text-[10px] tracking-[0.12em] font-sans font-medium text-black placeholder:text-black/25 focus:outline-none pr-24"
+                    className="w-full bg-transparent text-xs tracking-[0.12em] font-sans font-medium text-black placeholder:text-black/25 focus:outline-none pr-24"
                   />
                   <button
                     type="button"
-                    className="absolute right-0 top-1/2 -translate-y-1/2 text-[9px] tracking-[0.2em] font-sans font-semibold text-[#8B7D6B] hover:text-black transition-colors"
+                    className="absolute right-0 top-1/2 -translate-y-1/2 text-xs tracking-[0.2em] font-sans font-semibold text-[#8B7D6B] hover:text-black transition-colors"
                   >
                     Subscribe
                   </button>
@@ -162,7 +163,7 @@ const Footer = () => {
 
         {/* Bottom Metadata */}
         <div className="border-t border-[#E8E2D6]/70 pt-10 flex flex-col lg:flex-row justify-between items-center gap-6 lg:gap-8">
-          <p className="text-[9px] uppercase tracking-[0.32em] text-[#8B7D6B] font-sans font-medium order-2 lg:order-1">
+          <p className="text-xs uppercase tracking-[0.32em] text-[#8B7D6B] font-sans font-medium order-2 lg:order-1">
             &copy; {new Date().getFullYear()} YDA Fashion Studio
           </p>
           <div className="flex gap-5 md:gap-8 flex-wrap justify-center order-1 lg:order-2">
@@ -170,13 +171,13 @@ const Footer = () => {
               <Link
                 key={link.name}
                 href={link.href}
-                className="text-[9px] uppercase tracking-[0.28em] text-black/65 hover:text-black transition-colors font-sans font-medium"
+                className="text-xs uppercase tracking-[0.28em] text-black/65 hover:text-black transition-colors font-sans font-medium"
               >
                 {link.name}
               </Link>
             ))}
           </div>
-          <p className="text-[9px] uppercase tracking-[0.28em] text-[#8B7D6B] font-sans font-medium hidden lg:block order-3 text-right">
+          <p className="text-xs uppercase tracking-[0.28em] text-[#8B7D6B] font-sans font-medium hidden lg:block order-3 text-right">
             Handcrafted in India
           </p>
         </div>

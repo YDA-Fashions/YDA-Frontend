@@ -22,7 +22,7 @@ export default function StoryPage() {
             transition={{ duration: 1.2 }}
             className="text-center max-w-5xl mx-auto"
           >
-            <p className="text-[10px] uppercase tracking-[0.6em] font-black text-accent-dark mb-10">The Manoj Tailor Legacy</p>
+            <p className="text-xs uppercase tracking-widest font-black text-accent-dark mb-10">The Manoj Tailor Legacy</p>
             <h1 className="text-5xl md:text-9xl font-serif italic mb-16 leading-[1.0] tracking-tighter">
               Crafting a <br/> Modern Heritage
             </h1>
@@ -48,7 +48,7 @@ export default function StoryPage() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
               <div className="absolute bottom-10 left-10 text-white">
-                <p className="text-[10px] uppercase tracking-[0.4em] font-black mb-2 text-white/60">The Mastermind</p>
+                <p className="text-xs uppercase tracking-widest font-black mb-2 text-white/60">The Mastermind</p>
                 <p className="text-3xl font-serif italic drop-shadow-lg">Manoj Tailor</p>
               </div>
             </motion.div>
@@ -79,25 +79,25 @@ export default function StoryPage() {
         <section className="py-32 bg-black text-white overflow-hidden mb-40">
           <div className="container mx-auto px-6">
             <div className="max-w-5xl mx-auto text-center">
-              <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-[10px] uppercase tracking-[0.8em] font-black text-white/30 mb-12">The Meaning of YDA</motion.p>
+              <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-xs uppercase tracking-widest font-black text-white/60 mb-12">The Meaning of YDA</motion.p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-20">
                 <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="flex flex-col items-center">
                   <span className="text-8xl md:text-9xl font-serif italic mb-6">Y</span>
                   <h4 className="text-sm uppercase tracking-widest font-black mb-2">Yashika</h4>
                   <div className="w-8 h-px bg-white/20 mb-4" />
-                  <p className="text-xs text-white/40 uppercase tracking-[0.2em]">The Strength</p>
+                  <p className="text-xs text-white/60 uppercase tracking-widest">The Strength</p>
                 </motion.div>
                 <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="flex flex-col items-center">
                   <span className="text-8xl md:text-9xl font-serif italic mb-6">D</span>
                   <h4 className="text-sm uppercase tracking-widest font-black mb-2">Dimple</h4>
                   <div className="w-8 h-px bg-white/20 mb-4" />
-                  <p className="text-xs text-white/40 uppercase tracking-[0.2em]">The Spirit</p>
+                  <p className="text-xs text-white/60 uppercase tracking-widest">The Spirit</p>
                 </motion.div>
                 <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }} className="flex flex-col items-center">
                   <span className="text-8xl md:text-9xl font-serif italic mb-6">A</span>
                   <h4 className="text-sm uppercase tracking-widest font-black mb-2">Avani</h4>
                   <div className="w-8 h-px bg-white/20 mb-4" />
-                  <p className="text-xs text-white/40 uppercase tracking-[0.2em]">The Soul</p>
+                  <p className="text-xs text-white/60 uppercase tracking-widest">The Soul</p>
                 </motion.div>
               </div>
               <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.6 }} className="mt-24 max-w-2xl mx-auto">
@@ -167,7 +167,7 @@ export default function StoryPage() {
           <div className="container mx-auto px-6 text-center">
             <div className="max-w-5xl mx-auto space-y-16">
               <div>
-                <p className="text-[10px] uppercase tracking-[0.4em] font-black text-black/30 mb-6">Visual Journey</p>
+                <p className="text-xs uppercase tracking-widest font-black text-black/60 mb-6">Visual Journey</p>
                 <h2 className="text-4xl md:text-7xl font-serif italic">The Art of Stillness</h2>
               </div>
               <div className="relative w-full aspect-video shadow-[0_40px_100px_-20px_rgba(0,0,0,0.2)] rounded-sm overflow-hidden">
@@ -194,12 +194,12 @@ export default function StoryPage() {
               <div className="flex flex-col items-center gap-10">
                 <div className="flex items-center gap-4">
                   <div className="w-16 h-px bg-black/10" />
-                  <p className="text-[10px] uppercase tracking-[0.4em] font-black">Manoj Tailor, Founder</p>
+                  <p className="text-xs uppercase tracking-widest font-black">Manoj Tailor, Founder</p>
                   <div className="w-16 h-px bg-black/10" />
                 </div>
                 <Link 
                   href="/shop"
-                  className="px-16 py-6 bg-black text-white text-[11px] uppercase tracking-[0.4em] font-black transition-all hover:bg-accent-dark hover:-translate-y-2 shadow-2xl"
+                  className="px-16 py-6 bg-black text-white text-xs uppercase tracking-widest font-black transition-all hover:bg-accent-dark hover:-translate-y-2 shadow-2xl"
                 >
                   Shop the selection
                 </Link>

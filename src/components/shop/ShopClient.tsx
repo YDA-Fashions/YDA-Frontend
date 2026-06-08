@@ -93,7 +93,7 @@ export default function ShopClient({ initialProducts }: ShopClientProps) {
               >
                 The Studio <br /> <span className="italic ml-8 md:ml-20">Full Selection.</span>
               </motion.h1>
-              <p className="mt-6 text-[10px] uppercase tracking-[0.4em] font-sans font-bold text-foreground/40">
+              <p className="mt-6 text-xs uppercase tracking-widest font-sans font-bold text-foreground/40">
                 Found {filteredProducts.length} Creations
               </p>
             </div>
@@ -104,7 +104,7 @@ export default function ShopClient({ initialProducts }: ShopClientProps) {
               <div className="relative">
                 <button 
                   onClick={() => setIsFilterOpen(!isFilterOpen)}
-                  className="flex items-center gap-3 text-[10px] uppercase tracking-widest font-bold text-foreground/60 hover:text-foreground transition-colors group"
+                  className="flex items-center gap-3 text-xs uppercase tracking-widest font-bold text-foreground/60 hover:text-foreground transition-colors group"
                 >
                   <SlidersHorizontal size={16} className={`transition-transform duration-500 ${isFilterOpen ? "rotate-180" : ""}`} />
                   Filter: {activeCategory}
@@ -122,7 +122,7 @@ export default function ShopClient({ initialProducts }: ShopClientProps) {
                         <button 
                           key={opt}
                           onClick={() => { setActiveCategory(opt); setIsFilterOpen(false); }}
-                          className="w-full text-left text-[10px] uppercase tracking-widest flex items-center justify-between hover:text-accent-dark transition-colors"
+                          className="w-full text-left text-xs uppercase tracking-widest flex items-center justify-between hover:text-accent-dark transition-colors"
                         >
                           {opt}
                           {activeCategory === opt && <Check size={12} />}
@@ -137,7 +137,7 @@ export default function ShopClient({ initialProducts }: ShopClientProps) {
               <div className="relative">
                 <button 
                   onClick={() => setIsSortOpen(!isSortOpen)}
-                  className="flex items-center gap-3 text-[10px] uppercase tracking-widest font-bold text-foreground/60 hover:text-foreground transition-colors group"
+                  className="flex items-center gap-3 text-xs uppercase tracking-widest font-bold text-foreground/60 hover:text-foreground transition-colors group"
                 >
                   Sort By: {activeSort}
                   <ChevronDown size={14} className={`transition-transform duration-300 ${isSortOpen ? "rotate-180" : ""}`} />
@@ -155,7 +155,7 @@ export default function ShopClient({ initialProducts }: ShopClientProps) {
                         <button 
                           key={opt}
                           onClick={() => { setActiveSort(opt); setIsSortOpen(false); }}
-                          className="w-full text-left text-[10px] uppercase tracking-widest flex items-center justify-between hover:text-accent-dark transition-colors"
+                          className="w-full text-left text-xs uppercase tracking-widest flex items-center justify-between hover:text-accent-dark transition-colors"
                         >
                           {opt}
                           {activeSort === opt && <Check size={12} />}
@@ -181,13 +181,13 @@ export default function ShopClient({ initialProducts }: ShopClientProps) {
           )}
           
           <div className="mt-32 pt-16 border-t border-border-beige flex justify-center items-center gap-8">
-             <span className="text-[10px] uppercase tracking-[0.4em] font-sans font-bold text-foreground/20">Prev</span>
+             <span className="text-xs uppercase tracking-widest font-sans font-bold text-foreground/20">Prev</span>
              <div className="flex gap-4">
                 <span className="text-xl font-serif italic border-b border-foreground px-2">1</span>
                 <span className="text-xl font-serif opacity-20 px-2 cursor-pointer hover:opacity-100 transition-opacity">2</span>
                 <span className="text-xl font-serif opacity-20 px-2 cursor-pointer hover:opacity-100 transition-opacity">3</span>
              </div>
-             <span className="text-[10px] uppercase tracking-[0.4em] font-sans font-bold hover:text-foreground transition-colors cursor-pointer">Next Page</span>
+             <span className="text-xs uppercase tracking-widest font-sans font-bold hover:text-foreground transition-colors cursor-pointer">Next Page</span>
           </div>
         </div>
       </main>

@@ -47,7 +47,7 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
 
       {/* Content Area */}
       <div className={`flex-1 flex flex-col justify-center gap-6 ${reverse ? "md:text-left" : "md:text-right md:items-end"} px-6 md:px-0`}>
-        <span className="text-[10px] uppercase tracking-[0.4em] font-sans font-bold text-accent-dark">
+        <span className="text-xs uppercase tracking-widest font-sans font-bold text-accent-dark">
           {subtitle}
         </span>
         <h2 className="text-4xl md:text-6xl lg:text-7xl font-serif tracking-tight leading-[1.1]">
@@ -58,7 +58,7 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
         </p>
         <Link 
           href={href}
-          className="group/link flex items-center gap-4 mt-6 text-xs uppercase tracking-[0.3em] font-sans font-bold"
+          className="group/link flex items-center gap-4 mt-6 text-xs uppercase tracking-wider font-sans font-bold"
         >
           <span className="border-b border-foreground/20 group-hover/link:border-foreground transition-all duration-300">
             {cta}

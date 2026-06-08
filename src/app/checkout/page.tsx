@@ -12,6 +12,7 @@ import { useCartStore } from "@/store/useCartStore";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useUIStore } from "@/store/useUIStore";
 import { useProductStore } from "@/store/useProductStore";
+import { Button } from "@/components/ui/Button";
 import { addressService } from "@/services/addressService";
 import { orderService } from "@/services/orderService";
 import { PRODUCTS } from "@/data/products";
@@ -235,7 +236,7 @@ const CheckoutPage = () => {
       <div className="min-h-screen bg-[#FAF9F6] dark:bg-background flex flex-col items-center justify-center p-6 text-center">
         <Header />
         <div className="w-12 h-12 border-2 border-black dark:border-white border-t-transparent rounded-full animate-spin mx-auto mb-6" />
-        <p className="text-[10px] font-black uppercase tracking-widest opacity-40 dark:text-white">Securing Connection...</p>
+        <p className="text-xs font-black uppercase tracking-widest opacity-40 dark:text-white">Securing Connection...</p>
       </div>
     );
   }
@@ -259,12 +260,12 @@ const CheckoutPage = () => {
                   { step: 3, label: "Payment" }
                 ].map((s) => (
                   <div key={s.step} className="flex items-center gap-2 md:gap-4 shrink-0">
-                    <div className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center text-[9px] md:text-[10px] font-black transition-all duration-700 ${
+                    <div className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center text-xs md:text-xs font-black transition-all duration-700 ${
                       currentStep === s.step ? "bg-black text-white dark:bg-white dark:text-black scale-105 shadow-xl" : currentStep > s.step ? "bg-emerald-500 text-white" : "bg-black/5 dark:bg-white/5 text-black/20 dark:text-white/20"
                     }`}>
                       {currentStep > s.step ? <CheckCircle2 size={14} /> : s.step}
                     </div>
-                    <span className={`text-[8px] md:text-[10px] uppercase tracking-[0.2em] md:tracking-[0.3em] font-black ${currentStep >= s.step ? "opacity-100 dark:text-white" : "opacity-20 dark:text-white/20"}`}>
+                    <span className={`text-xs md:text-xs uppercase tracking-[0.2em] md:tracking-wider font-black ${currentStep >= s.step ? "opacity-100 dark:text-white" : "opacity-20 dark:text-white/20"}`}>
                       {s.label}
                     </span>
                     {s.step < 3 && <div className="w-6 md:w-12 h-[1px] bg-black/5 dark:bg-white/5 mx-1" />}
@@ -284,14 +285,14 @@ const CheckoutPage = () => {
                     <h1 className="text-3xl md:text-6xl font-serif tracking-tighter mb-4 italic leading-[1.1] dark:text-white">
                       {currentStep === 1 ? "Start Your Narrative." : currentStep === 2 ? "The Final Destination." : "Secure Fulfillment."}
                     </h1>
-                    <p className="text-[9px] uppercase tracking-[0.4em] font-black text-black/30 dark:text-white/30">Phase {currentStep} / 3</p>
+                    <p className="text-xs uppercase tracking-widest font-black text-black/60 dark:text-white/60">Phase {currentStep} / 3</p>
                   </div>
 
                   <div className="space-y-8">
                     {currentStep === 1 && (
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-2.5">
-                          <label className="text-[9px] uppercase tracking-widest font-black text-black/50 dark:text-white/40 ml-1">Full Name</label>
+                          <label className="text-xs uppercase tracking-widest font-black text-black/70 dark:text-white/60 ml-1">Full Name</label>
                           <input 
                             type="text" 
                             value={formData.name}
@@ -301,7 +302,7 @@ const CheckoutPage = () => {
                           />
                         </div>
                         <div className="space-y-2.5">
-                          <label className="text-[9px] uppercase tracking-widest font-black text-black/50 dark:text-white/40 ml-1">Contact Channel</label>
+                          <label className="text-xs uppercase tracking-widest font-black text-black/70 dark:text-white/60 ml-1">Contact Channel</label>
                           <input 
                             type="tel" 
                             maxLength={10}
@@ -312,10 +313,10 @@ const CheckoutPage = () => {
                           />
                         </div>
                         <div className="md:col-span-2 pt-4">
-                           <button onClick={nextStep} className="group flex items-center gap-4 bg-black text-white dark:bg-white dark:text-black px-10 py-4 text-[10px] uppercase tracking-[0.4em] font-black hover:bg-accent-dark transition-all shadow-xl">
+                           <Button onClick={nextStep} className="group flex items-center gap-4 px-10 py-4 shadow-xl">
                              Next Step
                              <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
-                           </button>
+                           </Button>
                         </div>
                       </div>
                     )}
@@ -323,7 +324,7 @@ const CheckoutPage = () => {
                     {currentStep === 2 && (
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-2.5">
-                          <label className="text-[9px] uppercase tracking-widest font-black text-black/50 dark:text-white/40 ml-1">
+                          <label className="text-xs uppercase tracking-widest font-black text-black/70 dark:text-white/60 ml-1">
                             Postal Pin {pincodeLoading && <span className="text-emerald-500 animate-pulse">— Verifying</span>}
                           </label>
                           <input 
@@ -336,7 +337,7 @@ const CheckoutPage = () => {
                           />
                         </div>
                         <div className="space-y-2.5">
-                          <label className="text-[9px] uppercase tracking-widest font-black text-black/50 dark:text-white/40 ml-1">House / Suite</label>
+                          <label className="text-xs uppercase tracking-widest font-black text-black/70 dark:text-white/60 ml-1">House / Suite</label>
                           <input 
                             type="text" 
                             value={formData.house}
@@ -346,7 +347,7 @@ const CheckoutPage = () => {
                           />
                         </div>
                         <div className="md:col-span-2 space-y-2.5">
-                          <label className="text-[9px] uppercase tracking-widest font-black text-black/50 dark:text-white/40 ml-1">Street / Landmark</label>
+                          <label className="text-xs uppercase tracking-widest font-black text-black/70 dark:text-white/60 ml-1">Street / Landmark</label>
                           <input 
                             type="text" 
                             value={formData.area}
@@ -356,32 +357,32 @@ const CheckoutPage = () => {
                           />
                         </div>
                         <div className="space-y-2.5">
-                          <label className="text-[9px] uppercase tracking-widest font-black text-black/50 dark:text-white/40 ml-1">City</label>
+                          <label className="text-xs uppercase tracking-widest font-black text-black/70 dark:text-white/60 ml-1">City</label>
                           <input 
                             type="text" 
                             readOnly={!manualMode}
                             value={formData.city}
                             onChange={(e) => setFormData({...formData, city: e.target.value})}
-                            className={`w-full border border-black/20 dark:border-white/10 p-5 text-sm outline-none shadow-sm dark:text-white ${manualMode ? 'bg-[#F9F9F7] dark:bg-white/5 focus:border-black dark:focus:border-white' : 'bg-black/[0.03] dark:bg-white/5 text-black/40 dark:text-white/40'}`}
+                            className={`w-full border border-black/20 dark:border-white/10 p-5 text-sm outline-none shadow-sm dark:text-white ${manualMode ? 'bg-[#F9F9F7] dark:bg-white/5 focus:border-black dark:focus:border-white' : 'bg-black/[0.03] dark:bg-white/5 text-black/60 dark:text-white/60'}`}
                           />
                         </div>
                         <div className="space-y-2.5">
-                          <label className="text-[9px] uppercase tracking-widest font-black text-black/50 dark:text-white/40 ml-1">State</label>
+                          <label className="text-xs uppercase tracking-widest font-black text-black/70 dark:text-white/60 ml-1">State</label>
                           <input 
                             type="text" 
                             readOnly={!manualMode}
                             value={formData.state}
                             onChange={(e) => setFormData({...formData, state: e.target.value})}
-                            className={`w-full border border-black/20 dark:border-white/10 p-5 text-sm outline-none shadow-sm dark:text-white ${manualMode ? 'bg-[#F9F9F7] dark:bg-white/5 focus:border-black dark:focus:border-white' : 'bg-black/[0.03] dark:bg-white/5 text-black/40 dark:text-white/40'}`}
+                            className={`w-full border border-black/20 dark:border-white/10 p-5 text-sm outline-none shadow-sm dark:text-white ${manualMode ? 'bg-[#F9F9F7] dark:bg-white/5 focus:border-black dark:focus:border-white' : 'bg-black/[0.03] dark:bg-white/5 text-black/60 dark:text-white/60'}`}
                           />
                         </div>
                         <div className="md:col-span-2 pt-4 flex flex-col md:flex-row gap-4">
-                           <button onClick={prevStep} className="px-8 py-4 border border-black/10 dark:border-white/10 text-[9px] uppercase tracking-[0.4em] font-black hover:bg-black/5 dark:hover:bg-white/5 transition-all dark:text-white">
+                           <Button variant="secondary" onClick={prevStep} className="px-8 py-4">
                              Back
-                           </button>
-                           <button onClick={nextStep} className="flex-grow bg-black text-white dark:bg-white dark:text-black px-10 py-4 text-[10px] uppercase tracking-[0.4em] font-black hover:bg-accent-dark transition-all shadow-xl">
+                           </Button>
+                           <Button onClick={nextStep} className="flex-grow px-10 py-4 shadow-xl">
                              Proceed to Payment
-                           </button>
+                           </Button>
                         </div>
                       </div>
                     )}
@@ -390,7 +391,7 @@ const CheckoutPage = () => {
                       <div className="space-y-8">
                         {/* Coupon Code Input - visible in payment step */}
                         <div className="bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-5 md:p-6 shadow-sm">
-                          <p className="text-[9px] md:text-[10px] uppercase tracking-widest font-black mb-4 text-black/50 dark:text-white/40">Have a Coupon Code?</p>
+                          <p className="text-xs md:text-xs uppercase tracking-widest font-black mb-4 text-black/70 dark:text-white/60">Have a Coupon Code?</p>
                           <div className="flex gap-2">
                             <input 
                               type="text" 
@@ -402,19 +403,19 @@ const CheckoutPage = () => {
                             <button 
                               onClick={handleApplyCoupon}
                               disabled={isValidatingCoupon || !couponCode}
-                              className="bg-black text-white dark:bg-white dark:text-black px-6 text-[10px] font-black uppercase tracking-widest hover:bg-black/90 dark:hover:bg-white/80 disabled:opacity-50 transition-all"
+                              className="bg-black text-white dark:bg-white dark:text-black px-6 text-xs font-black uppercase tracking-widest hover:bg-black/90 dark:hover:bg-white/80 disabled:opacity-50 transition-all"
                             >
                               {isValidatingCoupon ? "..." : "Apply"}
                             </button>
                           </div>
                           {appliedCoupon && (
                             <div className="mt-3 p-3 bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-100 dark:border-emerald-500/20 flex justify-between items-center">
-                              <span className="text-[9px] font-black uppercase text-emerald-700 dark:text-emerald-400 tracking-widest">Active: {appliedCoupon.code} ({appliedCoupon.percent}% off)</span>
-                              <button onClick={() => setAppliedCoupon(null)} className="text-[9px] font-black uppercase text-red-600 underline">Remove</button>
+                              <span className="text-xs font-black uppercase text-emerald-700 dark:text-emerald-400 tracking-widest">Active: {appliedCoupon.code} ({appliedCoupon.percent}% off)</span>
+                              <button onClick={() => setAppliedCoupon(null)} className="text-xs font-black uppercase text-red-600 underline">Remove</button>
                             </div>
                           )}
                           {couponError && (
-                            <p className="mt-2 text-[9px] text-red-600 font-bold">{couponError}</p>
+                            <p className="mt-2 text-xs text-red-600 font-bold">{couponError}</p>
                           )}
                         </div>
 
@@ -426,10 +427,10 @@ const CheckoutPage = () => {
                               paymentMethod === "COD" ? "border-black bg-black text-white dark:border-white dark:bg-white dark:text-black shadow-xl" : "border-black/20 dark:border-white/10 bg-white dark:bg-white/5 hover:border-black/40 dark:hover:border-white/20"
                             }`}
                           >
-                            <Banknote size={24} className={paymentMethod === "COD" ? "text-white dark:text-black" : "text-black/30 dark:text-white/30"} />
+                            <Banknote size={24} className={paymentMethod === "COD" ? "text-white dark:text-black" : "text-black/60 dark:text-white/60"} />
                             <div>
-                              <p className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.2em] dark:text-inherit">Cash on Delivery</p>
-                              <p className={`text-[8px] md:text-[9px] uppercase tracking-wider mt-1 ${paymentMethod === "COD" ? "text-white/60 dark:text-black/60" : "text-black/30 dark:text-white/30"}`}>Pay upon receipt</p>
+                              <p className="text-xs md:text-xs font-black uppercase tracking-[0.2em] dark:text-inherit">Cash on Delivery</p>
+                              <p className={`text-xs md:text-xs uppercase tracking-wider mt-1 ${paymentMethod === "COD" ? "text-white/60 dark:text-black/60" : "text-black/60 dark:text-white/60"}`}>Pay upon receipt</p>
                             </div>
                           </button>
                           
@@ -439,10 +440,10 @@ const CheckoutPage = () => {
                               paymentMethod === "ONLINE" ? "border-black bg-black text-white dark:border-white dark:bg-white dark:text-black shadow-xl" : "border-black/20 dark:border-white/10 bg-white dark:bg-white/5 hover:border-black/40 dark:hover:border-white/20"
                             }`}
                           >
-                            <CreditCard size={24} className={paymentMethod === "ONLINE" ? "text-white dark:text-black" : "text-black/30 dark:text-white/30"} />
+                            <CreditCard size={24} className={paymentMethod === "ONLINE" ? "text-white dark:text-black" : "text-black/60 dark:text-white/60"} />
                             <div>
-                              <p className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.3em] dark:text-inherit">Online Transfer</p>
-                              <p className={`text-[8px] md:text-[9px] uppercase tracking-wider mt-1 ${paymentMethod === "ONLINE" ? "text-white/60 dark:text-black/60" : "text-black/30 dark:text-white/30"}`}>UPI, Cards, Banking</p>
+                              <p className="text-xs md:text-xs font-black uppercase tracking-wider dark:text-inherit">Online Transfer</p>
+                              <p className={`text-xs md:text-xs uppercase tracking-wider mt-1 ${paymentMethod === "ONLINE" ? "text-white/60 dark:text-black/60" : "text-black/60 dark:text-white/60"}`}>UPI, Cards, Banking</p>
                             </div>
                           </button>
                         </div>
@@ -454,7 +455,7 @@ const CheckoutPage = () => {
                           if (crossSell.length === 0) return null;
                           return (
                             <div className="pt-6 border-t border-black/[0.06]">
-                              <p className="text-[9px] uppercase tracking-widest font-black text-black/40 dark:text-white/30 mb-4">You may also like</p>
+                              <p className="text-xs uppercase tracking-widest font-black text-black/60 dark:text-white/60 mb-4">You may also like</p>
                               <div className="grid grid-cols-3 gap-2.5">
                                 {crossSell.map(product => (
                                   <div key={product.id} className="border border-black/[0.06] dark:border-white/10 bg-white dark:bg-white/5 p-2 rounded-sm group">
@@ -463,9 +464,9 @@ const CheckoutPage = () => {
                                         <Image src={product.colors?.[0]?.images?.[0] || "/images/placeholder.jpg"} alt={product.name} fill className="object-contain p-1 group-hover:scale-105 transition-transform duration-300" />
                                       </div>
                                     </Link>
-                                    <h4 className="text-[9px] font-bold text-black/80 dark:text-white/80 line-clamp-1">{product.name}</h4>
-                                    <p className="text-[9px] font-black text-black dark:text-white mt-0.5">₹{product.selling_price.toLocaleString()}</p>
-                                    <button onClick={() => addItem(product)} className="mt-1.5 w-full bg-white dark:bg-white/10 hover:bg-black hover:text-white border border-black/15 dark:border-white/10 text-black dark:text-white py-1 text-[8px] uppercase tracking-widest font-black transition-colors rounded-sm">
+                                    <h4 className="text-xs font-bold text-black/80 dark:text-white/80 line-clamp-1">{product.name}</h4>
+                                    <p className="text-xs font-black text-black dark:text-white mt-0.5">₹{product.selling_price.toLocaleString()}</p>
+                                    <button onClick={() => addItem(product)} className="mt-1.5 w-full bg-white dark:bg-white/10 hover:bg-black hover:text-white border border-black/15 dark:border-white/10 text-black dark:text-white py-1 text-xs uppercase tracking-widest font-black transition-colors rounded-sm">
                                       + Add
                                     </button>
                                   </div>
@@ -477,16 +478,16 @@ const CheckoutPage = () => {
 
                         {/* Review & Checkout Buttons */}
                         <div className="pt-6 flex flex-col md:flex-row gap-4">
-                           <button onClick={prevStep} className="px-8 py-4 border border-black/10 dark:border-white/10 text-[9px] uppercase tracking-[0.4em] font-black hover:bg-black/5 dark:hover:bg-white/5 transition-all dark:text-white">
+                           <Button variant="secondary" onClick={prevStep} className="px-8 py-4">
                              Review Address
-                           </button>
-                           <button 
+                           </Button>
+                           <Button 
                              onClick={handleCheckout}
                              disabled={isProcessing}
-                             className="flex-grow bg-black text-white dark:bg-white dark:text-black px-10 py-4 text-[10px] uppercase tracking-[0.4em] font-black hover:bg-accent-dark transition-all shadow-xl disabled:opacity-50"
+                             className="flex-grow px-10 py-4 shadow-xl"
                            >
                              {isProcessing ? "Authenticating..." : `Fulfill Order - ₹${finalTotal.toLocaleString()}`}
-                           </button>
+                           </Button>
                         </div>
                       </div>
                     )}
@@ -500,7 +501,7 @@ const CheckoutPage = () => {
               <div className="sticky top-40 space-y-6 md:space-y-10">
                 <div className="bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-6 md:p-10 shadow-[0_30px_70px_rgba(0,0,0,0.04)] backdrop-blur-3xl relative overflow-hidden">
                   <div className="absolute top-0 left-0 w-full h-[2px] bg-black/5 dark:bg-white/5" />
-                  <h3 className="text-[10px] md:text-[11px] uppercase tracking-[0.4em] font-black mb-8 text-black/40 dark:text-white/30 border-b border-black/5 dark:border-white/10 pb-6">Selection Recap</h3>
+                  <h3 className="text-xs md:text-xs uppercase tracking-widest font-black mb-8 text-black/60 dark:text-white/60 border-b border-black/5 dark:border-white/10 pb-6">Selection Recap</h3>
                   
                   <div className="space-y-6 md:space-y-8 mb-10 max-h-[300px] md:max-h-[350px] overflow-y-auto no-scrollbar">
                     {activeItems.map((item) => (
@@ -510,7 +511,7 @@ const CheckoutPage = () => {
                         </div>
                         <div className="flex-grow">
                           <p className="text-xs md:text-sm font-serif italic text-foreground dark:text-white mb-1">{item.name}</p>
-                          <p className="text-[8px] md:text-[9px] font-black tracking-widest text-black/30 dark:text-white/20 uppercase">
+                          <p className="text-xs md:text-xs font-black tracking-widest text-black/60 dark:text-white/20 uppercase">
                             Qty: {item.quantity} × ₹{item.selling_price.toLocaleString()}
                           </p>
                         </div>
@@ -520,17 +521,17 @@ const CheckoutPage = () => {
                   </div>
 
                   <div className="space-y-4 pt-8 border-t border-black/5 dark:border-white/10">
-                    <div className="flex justify-between items-center text-[9px] md:text-[10px] uppercase tracking-widest font-black text-black/30 dark:text-white/30">
+                    <div className="flex justify-between items-center text-xs md:text-xs uppercase tracking-widest font-black text-black/60 dark:text-white/60">
                       <span>Curation Total</span>
                       <span className="text-black dark:text-white">₹{activeTotal.toLocaleString()}</span>
                     </div>
                     {appliedCoupon && (
-                      <div className="flex justify-between items-center text-[9px] md:text-[10px] uppercase tracking-widest font-black text-emerald-600">
+                      <div className="flex justify-between items-center text-xs md:text-xs uppercase tracking-widest font-black text-emerald-600">
                         <span>Artflow Discount</span>
                         <span>- ₹{discountAmount.toLocaleString()}</span>
                       </div>
                     )}
-                    <div className="flex justify-between items-center text-[9px] md:text-[10px] uppercase tracking-widest font-black text-black/30 dark:text-white/30">
+                    <div className="flex justify-between items-center text-xs md:text-xs uppercase tracking-widest font-black text-black/60 dark:text-white/60">
                       <span>Heritage Fulfillment</span>
                       <span className="text-black dark:text-white">{shippingFee === 0 ? "Complimentary" : `₹${shippingFee}`}</span>
                     </div>
@@ -538,7 +539,7 @@ const CheckoutPage = () => {
                     <div className="pt-8 mt-8 border-t border-black/10 dark:border-white/10">
                       <div className="flex justify-between items-end">
                         <div className="space-y-2">
-                          <p className="text-[9px] md:text-[10px] uppercase tracking-[0.5em] font-black text-black/20 dark:text-white/20">Total Investment</p>
+                          <p className="text-xs md:text-xs uppercase tracking-widest font-black text-black/20 dark:text-white/20">Total Investment</p>
                           <p className="text-3xl md:text-5xl font-black tracking-tighter leading-none dark:text-white">₹{finalTotal.toLocaleString()}</p>
                         </div>
                       </div>
@@ -548,39 +549,39 @@ const CheckoutPage = () => {
 
                 {/* Coupon Architecture */}
                 <div className="bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-6 md:p-8 shadow-sm">
-                  <p className="text-[8px] md:text-[9px] uppercase tracking-widest font-black mb-4 text-black/40 dark:text-white/40">Apply Artflow Code</p>
+                  <p className="text-xs md:text-xs uppercase tracking-widest font-black mb-4 text-black/60 dark:text-white/60">Apply Artflow Code</p>
                   <div className="flex gap-2">
                     <input 
                       type="text" 
                       placeholder="CODE" 
                       value={couponCode}
                       onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
-                      className="flex-grow bg-[#F9F9F7] dark:bg-white/5 border border-black/10 dark:border-white/10 p-4 text-[9px] md:text-[10px] tracking-widest font-black outline-none focus:ring-1 ring-black/5 dark:ring-white/10 uppercase dark:text-white"
+                      className="flex-grow bg-[#F9F9F7] dark:bg-white/5 border border-black/10 dark:border-white/10 p-4 text-xs md:text-xs tracking-widest font-black outline-none focus:ring-1 ring-black/5 dark:ring-white/10 uppercase dark:text-white"
                     />
                     <button 
                       onClick={handleApplyCoupon}
                       disabled={isValidatingCoupon || !couponCode}
-                      className="bg-black text-white dark:bg-white dark:text-black px-6 text-[9px] md:text-[10px] font-black uppercase tracking-widest hover:bg-black/90 dark:hover:bg-white/80 disabled:opacity-50 transition-all"
+                      className="bg-black text-white dark:bg-white dark:text-black px-6 text-xs md:text-xs font-black uppercase tracking-widest hover:bg-black/90 dark:hover:bg-white/80 disabled:opacity-50 transition-all"
                     >
                       {isValidatingCoupon ? "..." : "Apply"}
                     </button>
                   </div>
                   {appliedCoupon && (
                     <div className="mt-4 p-3 bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-100 dark:border-emerald-500/20 flex justify-between items-center animate-in fade-in slide-in-from-top-2">
-                      <span className="text-[8px] md:text-[9px] font-black uppercase text-emerald-700 dark:text-emerald-400 tracking-widest">Active: {appliedCoupon.code}</span>
-                      <button onClick={() => setAppliedCoupon(null)} className="text-[8px] font-black uppercase text-emerald-700 dark:text-emerald-400 underline">Remove</button>
+                      <span className="text-xs md:text-xs font-black uppercase text-emerald-700 dark:text-emerald-400 tracking-widest">Active: {appliedCoupon.code}</span>
+                      <button onClick={() => setAppliedCoupon(null)} className="text-xs font-black uppercase text-emerald-700 dark:text-emerald-400 underline">Remove</button>
                     </div>
                   )}
                 </div>
 
-                <div className="flex flex-col gap-4 md:gap-6 opacity-20 hover:opacity-40 transition-opacity duration-700 px-4 dark:text-white/50">
+                <div className="flex flex-col gap-4 md:gap-6 opacity-20 hover:opacity-40 transition-opacity duration-700 px-4 dark:text-white/70">
                   <div className="flex items-center gap-4">
                     <Truck size={18} strokeWidth={1.5} />
-                    <span className="text-[8px] uppercase tracking-[0.3em] font-black italic">Expedited Heritage Logistics Across India</span>
+                    <span className="text-xs uppercase tracking-wider font-black italic">Expedited Heritage Logistics Across India</span>
                   </div>
                   <div className="flex items-center gap-4">
                     <ShieldCheck size={18} strokeWidth={1.5} />
-                    <span className="text-[8px] uppercase tracking-[0.3em] font-black italic">Secured Razorpay Transaction Node</span>
+                    <span className="text-xs uppercase tracking-wider font-black italic">Secured Razorpay Transaction Node</span>
                   </div>
                 </div>
               </div>

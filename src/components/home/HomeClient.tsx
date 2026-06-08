@@ -8,6 +8,7 @@ import { ArrowRight, ArrowLeft, Banknote, Star, Award, Truck, X } from "lucide-r
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import Hero from "@/components/home/Hero";
+import { TrustBar } from "@/components/home/TrustBar";
 import ProductCard from "@/components/products/ProductCard";
 import QuickAddDrawer from "@/components/products/QuickAddDrawer";
 import BrandStory from "@/components/home/BrandStory";
@@ -65,7 +66,7 @@ const VideoCard = ({ video }: { video: { id: number; title: string; tag: string 
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
 
       <div className="absolute inset-0 p-8 flex flex-col justify-end">
-        <span className="text-[10px] uppercase tracking-widest font-black text-white/60 mb-2">{video.tag}</span>
+        <span className="text-xs uppercase tracking-widest font-black text-white/60 mb-2">{video.tag}</span>
         <h3 className="text-xl md:text-2xl font-serif italic text-white group-hover:translate-x-2 transition-transform duration-500">{video.title}</h3>
       </div>
 
@@ -87,7 +88,6 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
   // Show latest 12 products from Supabase (same as shop page)
   const latestProducts = initialProducts.slice(0, 12);
   const [currentReview, setCurrentReview] = useState(0);
-  const [showPopup, setShowPopup] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   // Custom Cursor states
@@ -159,21 +159,8 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
     const timer = setInterval(() => {
       setCurrentReview((prev) => (prev + 1) % reviews.length);
     }, 6000);
-    
-    const hasShownPopup = sessionStorage.getItem("yda-popup-shown");
-    let popupTimer: NodeJS.Timeout;
 
-    if (!hasShownPopup) {
-      popupTimer = setTimeout(() => {
-        setShowPopup(true);
-        sessionStorage.setItem("yda-popup-shown", "true");
-      }, 10000);
-    }
-
-    return () => {
-      clearInterval(timer);
-      if (popupTimer) clearTimeout(popupTimer);
-    };
+    return () => clearInterval(timer);
   }, [reviews.length]);
 
   const nextReview = () => setCurrentReview((prev) => (prev + 1) % reviews.length);
@@ -185,6 +172,7 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
       
       <main className="pt-[90px]">
         <Hero />
+        <TrustBar />
 
         {/* Visual Navigation */}
         <section className="py-16 md:py-24 container mx-auto px-6">
@@ -219,31 +207,7 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
           </div>
         </section>
 
-        {/* Trust Section - Boutique Style */}
-        <section className="py-24 md:py-32 bg-white border-y border-border-beige/50">
-          <div className="container mx-auto px-6">
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
-              {[
-                { icon: Truck, title: "Artisan Direct", text: "From Manoj's Studio To Your Door" },
-                { icon: Banknote, title: "Secure COD", text: "Pay At Your Doorstep" },
-                { icon: Star, title: "Prepaid Reward", text: "Extra 5% Off On Prepaid" },
-                { icon: Award, title: "YDA Certified", text: "100% Sanganeri Heritage" },
-              ].map((item, idx) => (
-                <motion.div 
-                  key={idx} 
-                  initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8, delay: idx * 0.1 }}
-                  className="flex flex-col items-center text-center group"
-                >
-                  <div className="w-16 h-16 mb-8 flex items-center justify-center bg-[#F8F8F5] rounded-full group-hover:scale-105 transition-transform duration-500">
-                    <item.icon size={28} strokeWidth={1} className="text-black" />
-                  </div>
-                  <h4 className="text-[10px] uppercase tracking-[0.3em] font-black mb-3 text-black">{item.title}</h4>
-                  <p className="text-[10px] text-black/40 font-sans leading-relaxed px-4 uppercase tracking-wider">{item.text}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
+
 
 
         {/* Studio Live Section (Lililo Style) */}
@@ -252,13 +216,13 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
             <div>
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-                <p className="text-[10px] uppercase tracking-[0.4em] font-black text-black">Studio Live</p>
+                <p className="text-xs uppercase tracking-widest font-black text-black">Studio Live</p>
               </div>
               <h2 className="text-4xl md:text-6xl font-serif tracking-tight italic">What's New in the Studio.</h2>
             </div>
             <Link 
               href="/shop"
-              className="hidden md:flex items-center gap-4 text-[10px] uppercase tracking-[0.2em] font-black border-b border-black/10 pb-2 hover:border-black transition-all"
+              className="hidden md:flex items-center gap-4 text-xs uppercase tracking-[0.2em] font-black border-b border-black/10 pb-2 hover:border-black transition-all"
             >
               View All Reels
               <ArrowRight size={16} />
@@ -289,7 +253,7 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
               transition={{ duration: 0.8 }}
               className="text-center mb-20"
             >
-              <p className="text-[10px] uppercase tracking-[0.5em] font-black text-[#5c5042] mb-6">Our Selection</p>
+              <p className="text-xs uppercase tracking-widest font-black text-[#5c5042] mb-6">Our Selection</p>
               <h2 className="text-4xl md:text-6xl font-serif tracking-tight mb-6 italic text-foreground">Latest Pieces</h2>
               <div className="w-12 h-[1px] bg-black/10 mx-auto" />
             </motion.div>
@@ -309,7 +273,7 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
             <div className="mt-20 text-center">
               <Link
                 href="/shop"
-                className="inline-block px-12 py-5 border border-black/10 text-black text-[10px] uppercase tracking-[0.4em] font-black transition-all hover:bg-black hover:text-white"
+                className="inline-block px-12 py-5 border border-black/10 text-black text-xs uppercase tracking-widest font-black transition-all hover:bg-black hover:text-white"
               >
                 View Full Collection
               </Link>
@@ -321,11 +285,11 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
         <section className="py-24 md:py-32 bg-[#F8F8F5] overflow-hidden border-t border-border-beige/50">
           <div className="container mx-auto px-6 mb-16 flex items-end justify-between">
             <div>
-              <p className="text-[10px] uppercase tracking-[0.6em] font-black text-[#5c5042] mb-4">Client Stories</p>
+              <p className="text-xs uppercase tracking-[0.6em] font-black text-[#5c5042] mb-4">Client Stories</p>
               <h2 className="text-4xl md:text-6xl font-serif tracking-tight italic text-foreground">What our collectors say.</h2>
             </div>
             <div className="hidden md:flex gap-4">
-              <span className="text-[10px] uppercase tracking-widest font-bold opacity-60 italic">Swipe to explore</span>
+              <span className="text-xs uppercase tracking-widest font-bold opacity-60 italic">Swipe to explore</span>
             </div>
           </div>
 
@@ -338,7 +302,7 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
             {/* Custom magnetic DRAG cursor */}
             {isHoveringReviews && (
               <motion.div
-                className="pointer-events-none absolute w-24 h-24 bg-amber-500 text-white rounded-full flex items-center justify-center text-[10px] uppercase tracking-[0.25em] font-black z-50 border border-white/20 shadow-2xl hidden md:flex"
+                className="pointer-events-none absolute w-24 h-24 bg-amber-500 text-white rounded-full flex items-center justify-center text-xs uppercase tracking-[0.25em] font-black z-50 border border-white/20 shadow-2xl hidden md:flex"
                 style={{
                   left: mousePos.x,
                   top: mousePos.y,
@@ -401,7 +365,7 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
                       "{review.text}"
                     </p>
                     <div className="pt-4 border-t border-white/10">
-                      <span className="text-[10px] uppercase tracking-[0.3em] font-black text-white/80">{review.name}</span>
+                      <span className="text-xs uppercase tracking-wider font-black text-white/80">{review.name}</span>
                     </div>
                   </div>
                 </div>
@@ -419,7 +383,7 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
           <div className="container mx-auto px-6 text-center">
             <div className="max-w-5xl mx-auto space-y-16">
                <div>
-                  <p className="text-[10px] uppercase tracking-[0.5em] font-black text-[#5c5042] mb-6 text-center">Artistry in Motion</p>
+                  <p className="text-xs uppercase tracking-widest font-black text-[#5c5042] mb-6 text-center">Artistry in Motion</p>
                   <h2 className="text-4xl md:text-6xl font-serif italic text-foreground text-center leading-tight">The Making of <br/> Modern Luxury</h2>
                </div>
                
@@ -460,7 +424,7 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2, duration: 0.8 }}
-                className="text-[10px] md:text-xs uppercase tracking-[0.6em] font-black mb-6 opacity-80"
+                className="text-xs md:text-xs uppercase tracking-[0.6em] font-black mb-6 opacity-80"
               >
                 Heritage Jaipur Block Prints
               </motion.p>
@@ -474,7 +438,7 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
               >
                 <Link 
                   href="/sanganeri-gujarati-prints" 
-                  className="inline-block border border-white/40 px-16 py-5 text-[10px] uppercase tracking-[0.4em] font-black hover:bg-white hover:text-black hover:border-white transition-all duration-700 backdrop-blur-sm"
+                  className="inline-block border border-white/40 px-16 py-5 text-xs uppercase tracking-widest font-black hover:bg-white hover:text-black hover:border-white transition-all duration-700 backdrop-blur-sm"
                 >
                   Explore Collection
                 </Link>
@@ -500,7 +464,7 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2, duration: 0.8 }}
-                className="text-[10px] md:text-xs uppercase tracking-[0.6em] font-black mb-6 opacity-80"
+                className="text-xs md:text-xs uppercase tracking-[0.6em] font-black mb-6 opacity-80"
               >
                 Traditional Western Craft
               </motion.p>
@@ -514,7 +478,7 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
               >
                 <Link 
                   href="/sanganeri-gujarati-prints" 
-                  className="inline-block border border-white/40 px-16 py-5 text-[10px] uppercase tracking-[0.4em] font-black hover:bg-white hover:text-black hover:border-white transition-all duration-700 backdrop-blur-sm"
+                  className="inline-block border border-white/40 px-16 py-5 text-xs uppercase tracking-widest font-black hover:bg-white hover:text-black hover:border-white transition-all duration-700 backdrop-blur-sm"
                 >
                   Explore Collection
                 </Link>
@@ -527,13 +491,13 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
         <section className="py-24 md:py-40 text-center bg-white overflow-hidden">
           <div className="container mx-auto px-6">
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }}>
-              <p className="text-[10px] uppercase tracking-[0.5em] font-black text-[#5c5042] mb-10 italic">Your Journey Begins Here</p>
+              <p className="text-xs uppercase tracking-widest font-black text-[#5c5042] mb-10 italic">Your Journey Begins Here</p>
               <h2 className="text-4xl md:text-7xl font-serif italic mb-16 max-w-3xl mx-auto leading-tight">
                 Discover pieces that <br/> tell your story.
               </h2>
               <Link 
                 href="/shop"
-                className="inline-block px-16 py-6 bg-black text-white text-[11px] uppercase tracking-[0.4em] font-black transition-all duration-700 hover:bg-accent-dark hover:-translate-y-2 shadow-2xl"
+                className="inline-block px-16 py-6 bg-black text-white text-[11px] uppercase tracking-widest font-black transition-all duration-700 hover:bg-accent-dark hover:-translate-y-2 shadow-2xl"
               >
                 Shop the selection
               </Link>
@@ -554,49 +518,7 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
       />
 
 
-      {/* Promotional Popup */}
-      <AnimatePresence>
-        {showPopup && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setShowPopup(false)}
-              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-            />
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-2xl overflow-hidden shadow-2xl z-10 mx-auto"
-            >
-              <div className="absolute top-4 right-4 z-20">
-                <button 
-                  onClick={() => setShowPopup(false)}
-                  className="p-2 bg-black/20 hover:bg-black/40 text-white rounded-full backdrop-blur-sm transition-colors"
-                >
-                  <X size={20} strokeWidth={2} />
-                </button>
-              </div>
-              
-              <Link href="/shop" onClick={() => setShowPopup(false)}>
-                <div className="relative w-full cursor-pointer group">
-                  <Image 
-                    src="/images/home-page-image/Website-Popup.png" 
-                    alt="Exclusive Offer" 
-                    width={1240}
-                    height={1748}
-                    loading="lazy"
-                    className="w-full h-auto object-contain transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-500" />
-                </div>
-              </Link>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+
     </div>
   );
 }

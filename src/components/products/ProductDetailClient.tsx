@@ -3,7 +3,7 @@
 import React, { useState, useRef, MouseEvent, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { ShoppingBag, ArrowLeft, ShieldCheck, Truck, RotateCcw, X, Star, ArrowRight, Banknote, Award, CheckCircle } from "lucide-react";
+import { ShoppingBag, ArrowLeft, ShieldCheck, Truck, RotateCcw, X, Star, ArrowRight, Banknote, Award, CheckCircle, ChevronDown } from "lucide-react";
 
 import { motion, AnimatePresence } from "framer-motion";
 import Header from "@/components/common/Header";
@@ -141,7 +141,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
         <div className="container mx-auto px-6 max-w-7xl">
           <button
             onClick={() => router.back()}
-            className="flex items-center gap-2 text-[10px] uppercase tracking-widest font-black text-black/40 hover:text-black transition-colors mb-12"
+            className="flex items-center gap-2 text-xs uppercase tracking-widest font-black text-black/60 hover:text-black transition-colors mb-12"
           >
             <ArrowLeft size={14} /> Back
           </button>
@@ -149,86 +149,21 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 xl:gap-24 items-start mb-24">
             {/* LEFT COLUMN: Gallery */}
             <div className="lg:col-span-7 lg:sticky lg:top-32">
-              <div className="flex flex-col gap-6">
-                <div
-                  ref={containerRef}
-                  onMouseMove={handleMouseMove}
-                  onMouseEnter={() => setIsHovered(true)}
-                  onMouseLeave={() => setIsHovered(false)}
-                  onClick={() => setIsZoomModalOpen(true)}
-                  className="relative aspect-square bg-white border border-border-beige/10 overflow-hidden cursor-crosshair rounded-sm"
-                >
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={`${selectedColor}-${selectedImage}`}
-                      initial={
-                        selectedColor === 0 && selectedImage === 0 ? false : { opacity: 0 }
-                      }
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.4 }}
-                      className="w-full h-full relative"
-                    >
-                      <Image
-                        src={currentImages[selectedImage]}
-                        alt={product.name}
-                        fill
-                        className="object-contain"
-                        priority={selectedColor === 0 && selectedImage === 0}
-                        sizes="(max-width: 1024px) 100vw, 700px"
-                        quality={80}
-                      />
-                    </motion.div>
-                  </AnimatePresence>
-
-                  {/* Amazon-style Lens overlay */}
-                  {isHovered && (
-                    <div 
-                      className="absolute pointer-events-none border border-black/20 bg-black/5 hidden lg:block z-10"
-                      style={{
-                        left: `${Math.max(20, Math.min(80, zoomPos.x))}%`, 
-                        top: `${Math.max(20, Math.min(80, zoomPos.y))}%`, 
-                        width: '40%', 
-                        height: '40%',
-                        transform: 'translate(-50%, -50%)',
-                        boxShadow: '0 0 0 9999px rgba(255, 255, 255, 0.4)'
-                      }}
-                    />
-                  )}
-                </div>
-
-                {/* Amazon-style Zoomed Output Box (appears on the right) */}
-                {isHovered && (
-                  <div className="absolute top-0 left-full ml-8 w-full max-w-[600px] aspect-square bg-white z-[100] border border-border-beige shadow-2xl hidden lg:block rounded-sm overflow-hidden pointer-events-none">
-                    <div 
-                      className="w-full h-full relative bg-white"
-                      style={{
-                        backgroundImage: `url("${currentImages[selectedImage]}")`,
-                        backgroundPosition: `${((Math.max(20, Math.min(80, zoomPos.x)) - 20) / 60) * 100}% ${((Math.max(20, Math.min(80, zoomPos.y)) - 20) / 60) * 100}%`,
-                        backgroundSize: '250%',
-                        backgroundRepeat: 'no-repeat'
-                      }}
-                    />
+              <div className="hidden lg:grid grid-cols-2 gap-4">
+                {currentImages.map((img, idx) => (
+                  <div key={idx} className={`relative bg-[#F8F8F5] overflow-hidden rounded-sm ${idx === 0 ? "col-span-2 aspect-[4/5]" : "aspect-[3/4]"}`}>
+                    <Image src={img} alt={product.name} fill priority={idx === 0} sizes="(max-width: 1024px) 100vw, 700px" quality={80} className="object-cover hover:scale-105 transition-transform duration-700" />
                   </div>
-                )}
-
+                ))}
+              </div>
+              <div className="lg:hidden flex flex-col gap-4">
+                <div className="relative aspect-[4/5] bg-[#F8F8F5] overflow-hidden rounded-sm">
+                  <Image src={currentImages[selectedImage]} alt={product.name} fill priority sizes="100vw" quality={80} className="object-cover" />
+                </div>
                 <div className="flex gap-4 overflow-x-auto pb-4 custom-scrollbar-hide snap-x">
                   {currentImages.map((img, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setSelectedImage(idx)}
-                      className={`relative aspect-square w-20 md:w-24 flex-shrink-0 snap-start transition-all duration-300 rounded-sm border-2 ${selectedImage === idx ? "border-black opacity-100" : "border-transparent opacity-40 hover:opacity-100"
-                        }`}
-                    >
-                      <Image
-                        src={img}
-                        alt={`${product.name} thumbnail ${idx + 1}`}
-                        fill
-                        loading="lazy"
-                        sizes="96px"
-                        quality={70}
-                        className="object-cover"
-                      />
+                    <button key={idx} onClick={() => setSelectedImage(idx)} className={`relative aspect-square w-20 flex-shrink-0 snap-start transition-all duration-300 rounded-sm border-2 ${selectedImage === idx ? "border-black opacity-100" : "border-transparent opacity-40 hover:opacity-100"}`}>
+                      <Image src={img} alt={`${product.name} thumbnail ${idx + 1}`} fill loading="lazy" sizes="80px" quality={70} className="object-cover" />
                     </button>
                   ))}
                 </div>
@@ -238,7 +173,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
             {/* RIGHT COLUMN: Info */}
             <div className="lg:col-span-5 flex flex-col pt-0">
               <div className="mb-6">
-                <span className="text-[9px] uppercase tracking-[0.5em] font-black text-black opacity-40 mb-3 block">
+                <span className="text-xs uppercase tracking-widest font-black text-black opacity-40 mb-3 block">
                   {product.type} / {product.category}
                 </span>
                 <h1 className="text-3xl md:text-5xl font-serif tracking-tight leading-[1.1] mb-6">
@@ -249,8 +184,8 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
               <div className="flex flex-col gap-3 mb-10">
                 <div className="flex items-center gap-5">
                   <span className="text-3xl font-black text-black tracking-tighter">₹{product.selling_price.toLocaleString()}</span>
-                  <span className="text-lg text-black/30 line-through tracking-wider">₹{product.original_price.toLocaleString()}</span>
-                  <span className="text-[10px] font-black tracking-widest text-emerald-600 uppercase italic">
+                  <span className="text-lg text-black/60 line-through tracking-wider">₹{product.original_price.toLocaleString()}</span>
+                  <span className="text-xs font-black tracking-widest text-emerald-600 uppercase italic">
                     Special Offer Price
                   </span>
                 </div>
@@ -261,7 +196,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-500 opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-600"></span>
                   </span>
-                  <span className="text-[9px] font-sans font-bold uppercase tracking-wider text-amber-800">
+                  <span className="text-xs font-sans font-bold uppercase tracking-wider text-amber-800">
                     ✨ {viewers} active collectors are viewing this piece right now
                   </span>
                 </div>
@@ -270,7 +205,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
               <div className="space-y-10 mb-16">
                 {product.colors.length > 1 && (
                   <div>
-                    <span className="text-[10px] uppercase tracking-[0.3em] font-black text-black/40 mb-5 block">Variation</span>
+                    <span className="text-xs uppercase tracking-wider font-black text-black/60 mb-5 block">Variation</span>
                     <div className="flex flex-wrap gap-4">
                       {product.colors.map((color, idx) => (
                         <button
@@ -295,26 +230,21 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                 {/* Ref here so StickyCartBar knows when this leaves the viewport */}
                 <div ref={addToCartRef} className="grid grid-cols-1 gap-4">
                   {/* Stock Status Badge */}
+                  {/* StockBadge Component */}
                   {product.stock <= 0 ? (
-                    <div className="bg-red-50 border border-red-100 p-4 mb-2">
-                       <p className="text-[10px] uppercase tracking-widest font-black text-red-600 flex items-center gap-2">
-                         <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse" />
-                         Currently Sold Out
-                       </p>
+                    <div className="inline-flex items-center gap-2 bg-red-50 text-red-600 px-3 py-1.5 rounded-full text-[10px] uppercase tracking-widest font-black self-start mb-2 border border-red-100">
+                      <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse" />
+                      Sold Out
                     </div>
                   ) : product.stock < 4 ? (
-                    <div className="bg-orange-50 border border-orange-100 p-4 mb-2">
-                       <p className="text-[10px] uppercase tracking-widest font-black text-orange-600 flex items-center gap-2 italic">
-                         <span className="w-1.5 h-1.5 rounded-full bg-orange-600 animate-bounce" />
-                         Hurry up! Only {product.stock} pieces left in stock.
-                       </p>
+                    <div className="inline-flex items-center gap-2 bg-orange-50 text-orange-600 px-3 py-1.5 rounded-full text-[10px] uppercase tracking-widest font-black self-start mb-2 border border-orange-100">
+                      <span className="w-1.5 h-1.5 rounded-full bg-orange-600 animate-bounce" />
+                      Only {product.stock} left!
                     </div>
                   ) : (
-                    <div className="bg-emerald-50 border border-emerald-100 p-4 mb-2">
-                       <p className="text-[10px] uppercase tracking-widest font-black text-emerald-600 flex items-center gap-2">
-                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
-                         In Stock: {product.stock} units available
-                       </p>
+                    <div className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded-full text-[10px] uppercase tracking-widest font-black self-start mb-2 border border-emerald-100">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
+                      In Stock
                     </div>
                   )}
 
@@ -327,7 +257,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                       animate={{ x: addMagnetic.offset.x, y: addMagnetic.offset.y }}
                       transition={{ type: "spring", stiffness: 200, damping: 20 }}
                       href="/cart"
-                      className="w-full py-5 text-[11px] uppercase tracking-[0.4em] font-black transition-colors duration-300 shadow-lg bg-emerald-600 text-white hover:bg-emerald-700 flex items-center justify-center gap-3"
+                      className="w-full py-5 text-[11px] uppercase tracking-widest font-black transition-colors duration-300 shadow-lg bg-emerald-600 text-white hover:bg-emerald-700 flex items-center justify-center gap-3"
                     >
                       <CheckCircle size={16} /> Go to Cart
                     </motion.a>
@@ -341,9 +271,9 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                       whileTap={product.stock > 0 ? { scale: 0.98 } : {}}
                       onClick={product.stock > 0 ? () => addItem(product) : undefined}
                       disabled={product.stock <= 0}
-                      className={`w-full py-5 text-[11px] uppercase tracking-[0.4em] font-black transition-colors duration-300 shadow-lg ${
+                      className={`w-full py-5 text-[11px] uppercase tracking-widest font-black transition-colors duration-300 shadow-lg ${
                         product.stock <= 0 
-                          ? "bg-black/10 text-black/40 cursor-not-allowed shadow-none" 
+                          ? "bg-black/10 text-black/60 cursor-not-allowed shadow-none" 
                           : "bg-[#FFD700] hover:bg-[#F2CC00] text-black"
                       }`}
                     >
@@ -361,7 +291,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                     whileTap={product.stock > 0 ? { scale: 0.98 } : {}}
                     onClick={product.stock > 0 ? handleBuyNow : undefined}
                     disabled={product.stock <= 0}
-                    className={`flex-grow py-6 uppercase tracking-[0.4em] text-[12px] font-sans font-black transition-colors flex items-center justify-center gap-4 shadow-2xl ${
+                    className={`flex-grow py-6 uppercase tracking-widest text-[12px] font-sans font-black transition-colors flex items-center justify-center gap-4 shadow-2xl ${
                       product.stock <= 0 
                         ? "bg-black/5 text-black/20 cursor-not-allowed shadow-none" 
                         : "bg-[#1a1a1a] text-white hover:bg-black"
@@ -376,7 +306,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                   href={`https://wa.me/917877646756?text=Hello%20YDA!%20I%20am%20interested%20in%20the%20${encodeURIComponent(product.name)}.%20Could%20you%20share%20more%20details?`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-4 flex w-full py-5 border border-black/20 text-black dark:border-white/20 dark:text-white uppercase tracking-[0.3em] text-[10px] font-sans font-black items-center justify-center gap-3 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors"
+                  className="mt-4 flex w-full py-5 border border-black/20 text-black dark:border-white/20 dark:text-white uppercase tracking-wider text-xs font-sans font-black items-center justify-center gap-3 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors"
                 >
                   <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
@@ -387,22 +317,22 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                 {/* Complete the Look Bundle */}
                 {relatedProducts && relatedProducts.length > 0 && (
                   <div className="mt-8 p-5 bg-[#FAF9F5] border border-[#EBE3D5] rounded-sm shadow-sm">
-                    <span className="text-[8px] uppercase tracking-widest font-black text-black/40 block mb-3">Perfect Styling Set</span>
-                    <h4 className="text-[10px] font-sans font-black uppercase tracking-wider text-black mb-4">✨ Complete The Curation & Save 10%</h4>
+                    <span className="text-[11px] uppercase tracking-widest font-black text-black/60 block mb-3">Perfect Styling Set</span>
+                    <h4 className="text-xs font-sans font-black uppercase tracking-wider text-black mb-4">✨ Complete The Curation & Save 10%</h4>
                     <div className="flex items-center gap-4">
                       {/* Current Product Thumbnail */}
                       <div className="w-14 h-16 bg-[#F9F8F6] relative rounded border border-black/5 flex-shrink-0">
                         <img src={product.colors?.[0]?.images?.[0]} alt={product.name} className="w-full h-full object-contain p-1" />
                       </div>
-                      <span className="text-lg font-light text-black/30">+</span>
+                      <span className="text-lg font-light text-black/60">+</span>
                       {/* Related Product Thumbnail */}
                       <div className="w-14 h-16 bg-[#F9F8F6] relative rounded border border-black/5 flex-shrink-0">
                         <img src={relatedProducts[0].colors?.[0]?.images?.[0]} alt={relatedProducts[0].name} className="w-full h-full object-contain p-1" />
                       </div>
                       
                       <div className="flex-grow">
-                        <p className="text-[9px] font-black uppercase text-black line-clamp-1">{relatedProducts[0].name}</p>
-                        <p className="text-[11px] font-bold text-amber-800 mt-0.5">₹{(product.selling_price + relatedProducts[0].selling_price - 100).toLocaleString()} <span className="text-[9px] text-black/30 line-through">₹{(product.selling_price + relatedProducts[0].selling_price).toLocaleString()}</span></p>
+                        <p className="text-xs font-black uppercase text-black line-clamp-1">{relatedProducts[0].name}</p>
+                        <p className="text-[11px] font-bold text-amber-800 mt-0.5">₹{(product.selling_price + relatedProducts[0].selling_price - 100).toLocaleString()} <span className="text-xs text-black/60 line-through">₹{(product.selling_price + relatedProducts[0].selling_price).toLocaleString()}</span></p>
                       </div>
                     </div>
                     <button 
@@ -411,7 +341,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                         addItem(relatedProducts[0]);
                         router.push("/cart");
                       }}
-                      className="mt-4 w-full bg-white hover:bg-black hover:text-white text-black border border-black py-2.5 text-[9px] uppercase tracking-[0.2em] font-black transition-colors rounded-sm"
+                      className="mt-4 w-full bg-white hover:bg-black hover:text-white text-black border border-black py-2.5 text-xs uppercase tracking-[0.2em] font-black transition-colors rounded-sm"
                     >
                       Buy Styling Bundle
                     </button>
@@ -419,114 +349,73 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                 )}
               </div>
 
-              <div className="pt-12 border-t border-black/5">
-                <h3 className="text-[10px] uppercase tracking-[0.4em] font-black text-black mb-8 block font-sans">Product Information</h3>
-                <div className="space-y-10">
-                  <p className="text-base font-sans text-black/60 leading-relaxed max-w-xl">
-                    {product.description}
-                  </p>
+              <div className="pt-12 border-t border-black/5 space-y-2">
+                <details className="group border-b border-black/10 pb-4 cursor-pointer" open>
+                  <summary className="flex justify-between items-center text-xs uppercase tracking-widest font-black text-black list-none [&::-webkit-details-marker]:hidden">
+                    Product Description
+                    <ChevronDown className="w-4 h-4 transition-transform group-open:rotate-180" />
+                  </summary>
+                  <div className="pt-6 space-y-6">
+                    <p className="text-sm font-sans text-black/60 leading-relaxed">
+                      {product.description}
+                    </p>
+                  </div>
+                </details>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-12 pt-4">
-                    <div className="flex items-center gap-4 group">
-                      <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-black/40 group-hover:bg-black group-hover:text-white transition-all duration-300">
-                        <Banknote size={18} strokeWidth={1.5} />
-                      </div>
-                      <span className="text-[11px] font-bold uppercase tracking-widest text-black/80">Secure COD Available</span>
+                <details className="group border-b border-black/10 py-4 cursor-pointer">
+                  <summary className="flex justify-between items-center text-xs uppercase tracking-widest font-black text-black list-none [&::-webkit-details-marker]:hidden">
+                    Delivery & Returns
+                    <ChevronDown className="w-4 h-4 transition-transform group-open:rotate-180" />
+                  </summary>
+                  <div className="pt-6 grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-8">
+                    <div className="flex items-center gap-4">
+                      <Banknote size={16} className="text-black/40" />
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-black/80">Secure COD Available</span>
                     </div>
-
-                    <div className="flex items-center gap-4 group">
-                      <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-black/40 group-hover:bg-black group-hover:text-white transition-all duration-300">
-                        <RotateCcw size={18} strokeWidth={1.5} />
-                      </div>
-                      <span className="text-[11px] font-bold uppercase tracking-widest text-black/80">Easy Heritage Exchange</span>
+                    <div className="flex items-center gap-4">
+                      <RotateCcw size={16} className="text-black/40" />
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-black/80">Easy Heritage Exchange</span>
                     </div>
-
-                    <div className="flex items-center gap-4 group">
-                      <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-black/40 group-hover:bg-black group-hover:text-white transition-all duration-300">
-                        <Award size={18} strokeWidth={1.5} />
-                      </div>
-                      <span className="text-[11px] font-bold uppercase tracking-widest text-black/80">Manoj Tailor Certified</span>
+                    <div className="flex items-center gap-4">
+                      <Award size={16} className="text-black/40" />
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-black/80">Manoj Tailor Certified</span>
                     </div>
-
-                    <div className="flex items-center gap-4 group">
-                      <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-black/40 group-hover:bg-black group-hover:text-white transition-all duration-300">
-                        <Truck size={18} strokeWidth={1.5} />
-                      </div>
-                      <span className="text-[11px] font-bold uppercase tracking-widest text-black/80">Artisan Direct Shipping</span>
+                    <div className="flex items-center gap-4">
+                      <Truck size={16} className="text-black/40" />
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-black/80">Artisan Direct Shipping</span>
                     </div>
                   </div>
+                </details>
 
-                  {/* Category-Specific Visual Guide */}
-                  <div className="mt-10 p-5 bg-[#FAF9F5] border border-[#EBE3D5] rounded-sm">
+                <details className="group border-b border-black/10 py-4 cursor-pointer">
+                  <summary className="flex justify-between items-center text-xs uppercase tracking-widest font-black text-black list-none [&::-webkit-details-marker]:hidden">
+                    Visual Guide
+                    <ChevronDown className="w-4 h-4 transition-transform group-open:rotate-180" />
+                  </summary>
+                  <div className="pt-6">
                     {product.category === "bags" ? (
-                      <div>
-                        <p className="text-[9px] uppercase tracking-widest font-black text-black/40 mb-3 block">Visual Curation Guide</p>
-                        <h4 className="text-xs font-sans font-black uppercase tracking-wider text-black mb-3">🎒 What Fits Inside Your Curation</h4>
-                        <div className="grid grid-cols-2 gap-3 text-[10px] font-sans text-black/75">
-                          <div className="flex items-center gap-2">
-                            <span className="text-emerald-600">✓</span> <span>13" & 14" Macbook Pro / iPad Pro</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-emerald-600">✓</span> <span>Designer Sunglasses Case</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-emerald-600">✓</span> <span>Daily Planner & Notebook</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-emerald-600">✓</span> <span>Luxury Wallet & Phone Pouch</span>
-                          </div>
-                          <div className="flex items-center gap-2 col-span-2 pt-2 border-t border-black/5 text-[9px] text-black/40 tracking-wide">
-                            Dimensions: 14.5" Width x 12" Height x 4.5" Depth
-                          </div>
-                        </div>
+                      <div className="bg-[#FAF9F5] p-5 rounded-sm border border-[#EBE3D5]">
+                        <h4 className="text-[10px] font-sans font-black uppercase tracking-wider text-black mb-3">🎒 What Fits Inside</h4>
+                        <ul className="space-y-2 text-[11px] font-sans text-black/75">
+                          <li className="flex items-center gap-2"><span className="text-emerald-600">✓</span> 13" & 14" Macbook Pro</li>
+                          <li className="flex items-center gap-2"><span className="text-emerald-600">✓</span> Designer Sunglasses Case</li>
+                          <li className="flex items-center gap-2"><span className="text-emerald-600">✓</span> Daily Planner & Notebook</li>
+                          <li className="flex items-center gap-2"><span className="text-emerald-600">✓</span> Luxury Wallet & Phone Pouch</li>
+                        </ul>
                       </div>
                     ) : (
-                      <div>
-                        <p className="text-[9px] uppercase tracking-widest font-black text-black/40 mb-3 block">Visual Styling Guide</p>
-                        <h4 className="text-xs font-sans font-black uppercase tracking-wider text-black mb-3">🛋️ Where It Belongs / Styling Ideas</h4>
-                        <div className="grid grid-cols-2 gap-3 text-[10px] font-sans text-black/75">
-                          <div className="flex items-center gap-2">
-                            <span className="text-amber-700">✦</span> <span>Living Room Accent Sofa</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-amber-700">✦</span> <span>Master Bed Central Pillow Stack</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-amber-700">✦</span> <span>Cozy Armchair Statement Accent</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-amber-700">✦</span> <span>Terrace / Balcony Premium Seating</span>
-                          </div>
-                          <div className="flex items-center gap-2 col-span-2 pt-2 border-t border-black/5 text-[9px] text-black/40 tracking-wide">
-                            Dimensions: 16" x 16" Standard Luxury Accent Size
-                          </div>
-                        </div>
+                      <div className="bg-[#FAF9F5] p-5 rounded-sm border border-[#EBE3D5]">
+                        <h4 className="text-[10px] font-sans font-black uppercase tracking-wider text-black mb-3">🛋️ Styling Ideas</h4>
+                        <ul className="space-y-2 text-[11px] font-sans text-black/75">
+                          <li className="flex items-center gap-2"><span className="text-amber-700">✦</span> Living Room Accent Sofa</li>
+                          <li className="flex items-center gap-2"><span className="text-amber-700">✦</span> Master Bed Central Pillow Stack</li>
+                          <li className="flex items-center gap-2"><span className="text-amber-700">✦</span> Cozy Armchair Accent</li>
+                          <li className="flex items-center gap-2"><span className="text-amber-700">✦</span> Terrace / Balcony Seating</li>
+                        </ul>
                       </div>
                     )}
                   </div>
-
-                  {/* Seal of Authenticity Card */}
-                  <div className="mt-8 p-6 border border-amber-900/10 bg-amber-500/[0.03] rounded-sm relative overflow-hidden flex items-center gap-4">
-                    <div className="absolute top-0 right-0 w-24 h-24 bg-amber-500/[0.04] blur-xl rounded-full" />
-                    
-                    {/* Golden vintage circular badge */}
-                    <div className="flex-shrink-0 w-16 h-16 rounded-full border border-dashed border-amber-600/30 flex items-center justify-center relative bg-white shadow-sm">
-                      <div className="w-12 h-12 rounded-full border border-amber-600/40 flex flex-col items-center justify-center p-1 text-center bg-amber-50/50">
-                        <span className="text-[6px] font-black uppercase text-amber-800 tracking-tighter">YDA</span>
-                        <span className="text-[5px] font-bold text-amber-700 leading-none">100%</span>
-                        <span className="text-[5px] font-black uppercase text-amber-800 tracking-tighter">Jaipur</span>
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-1">
-                      <h4 className="text-[10px] font-sans font-black uppercase tracking-widest text-amber-900">Heritage Craftsmanship Seal</h4>
-                      <p className="text-[10px] font-sans text-amber-900/60 leading-relaxed">
-                        This piece carries the authentic seal of Manoj Tailor's atelier. Hand-block printed using premium organic colors on vintage-finished cotton in Jaipur, India.
-                      </p>
-                    </div>
-                  </div>
-
-                </div>
+                </details>
               </div>
             </div>
           </div>
@@ -534,7 +423,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
           <div className="w-full space-y-24">
             {/* The Craftsmanship Journey Block */}
             <div className="pt-24 border-t border-black/5">
-              <span className="text-[9px] uppercase tracking-[0.4em] font-black text-black opacity-40 mb-3 block font-sans">Craftsmanship Narrative</span>
+              <span className="text-xs uppercase tracking-widest font-black text-black opacity-40 mb-3 block font-sans">Craftsmanship Narrative</span>
               <h3 className="text-2xl md:text-3xl font-serif italic text-black mb-10">Behind The Masterpiece</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="bg-[#FAF9F6] border border-[#EBE3D5] p-8 rounded-sm space-y-4 hover:shadow-md transition-shadow">
@@ -565,7 +454,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
 
             {/* Cinematic Review Showcase */}
             <div className="pt-24 border-t border-black/5">
-              <h3 className="text-[10px] uppercase tracking-[0.4em] font-black text-black mb-12 block font-sans">Client Stories</h3>
+              <h3 className="text-xs uppercase tracking-widest font-black text-black mb-12 block font-sans">Client Stories</h3>
               <div className="relative bg-[#FBF9F4] p-10 md:p-20 overflow-hidden rounded-sm group">
                 <div className="absolute top-0 right-0 w-96 h-96 bg-white/40 blur-[100px] -mr-48 -mt-48 rounded-full" />
                 <div className="absolute bottom-0 left-0 w-96 h-96 bg-black/[0.02] blur-[80px] -ml-48 -mb-48 rounded-full" />
@@ -598,7 +487,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                             <Star key={i} size={14} className="fill-[#FFD700] text-[#FFD700]" />
                           ))}
                         </div>
-                        <span className="text-[8px] uppercase tracking-[0.3em] font-sans font-black text-amber-800">
+                        <span className="text-[11px] uppercase tracking-wider font-sans font-black text-amber-800">
                           ✦ Heritage Curation Certified ✦
                         </span>
                       </div>
@@ -610,7 +499,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                       {/* Customer Uploaded Gallery Thumbnails */}
                       {reviews[currentReview].userUploadedPhotos && (
                         <div className="flex gap-3 mb-8 items-center">
-                          <span className="text-[7px] uppercase tracking-widest font-black text-black/30">Collector's Setup:</span>
+                          <span className="text-[7px] uppercase tracking-widest font-black text-black/60">Collector's Setup:</span>
                           {reviews[currentReview].userUploadedPhotos.map((photo, pIdx) => (
                             <div key={pIdx} className="w-12 h-12 rounded border-2 border-white shadow-md relative overflow-hidden bg-gray-50 flex-shrink-0 group/thumb cursor-zoom-in">
                               <img src={photo} alt="Customer styling preview" className="w-full h-full object-cover transition-transform group-hover/thumb:scale-110" />
@@ -623,8 +512,8 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                         <div className="flex items-center gap-4">
                           <div className="w-10 h-[1px] bg-black/20" />
                           <div className="flex flex-col">
-                            <span className="text-xs uppercase tracking-[0.4em] font-black text-black mb-1">{reviews[currentReview].name}</span>
-                            <span className="text-[8px] uppercase tracking-[0.2em] text-emerald-700 font-bold flex items-center gap-1.5">
+                            <span className="text-xs uppercase tracking-widest font-black text-black mb-1">{reviews[currentReview].name}</span>
+                            <span className="text-[11px] uppercase tracking-[0.2em] text-emerald-700 font-bold flex items-center gap-1.5">
                               <span className="w-1 h-1 rounded-full bg-emerald-600 animate-ping" />
                               Verified Buyer — {reviews[currentReview].purchaseSpecs}
                             </span>
@@ -636,7 +525,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                           href={`https://wa.me/917877646756?text=Hello%20YDA!%20I%20am%20absolutely%20inspired%20by%20${encodeURIComponent(reviews[currentReview].name)}'s%20curation%20of%20the%20${encodeURIComponent(reviews[currentReview].purchaseSpecs)}.%20Could%20we%20design%20a%20similar%20styled%20set%20for%20my%20home?`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-[8px] uppercase tracking-widest font-black text-amber-900 border border-amber-900/20 px-4 py-2 hover:bg-amber-900 hover:text-white transition-all self-start sm:self-auto rounded-sm bg-amber-500/[0.03]"
+                          className="text-[11px] uppercase tracking-widest font-black text-amber-900 border border-amber-900/20 px-4 py-2 hover:bg-amber-900 hover:text-white transition-all self-start sm:self-auto rounded-sm bg-amber-500/[0.03]"
                         >
                           Inquire This Style
                         </a>
@@ -658,7 +547,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
 
             {/* Recommendations Section */}
             <div className="pt-12 border-t border-black/5">
-              <h3 className="text-[10px] uppercase tracking-[0.4em] font-black text-black mb-12 block font-sans">You May Also Love</h3>
+              <h3 className="text-xs uppercase tracking-widest font-black text-black mb-12 block font-sans">You May Also Love</h3>
               <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12">
                 {relatedProducts.map((p) => (
                   <ProductCard key={p.id} product={p} onQuickAdd={handleQuickAdd} />
@@ -666,7 +555,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
               </div>
 
               <div className="mt-20 pt-10 flex justify-center">
-                <Link href="/shop" className="group flex items-center gap-5 text-[10px] uppercase tracking-[0.4em] font-black text-black">
+                <Link href="/shop" className="group flex items-center gap-5 text-xs uppercase tracking-widest font-black text-black">
                   Explore More Heritage
                   <div className="w-12 h-px bg-black/20 group-hover:w-20 transition-all duration-500" />
                   <ArrowRight size={18} className="transition-transform group-hover:translate-x-2" />

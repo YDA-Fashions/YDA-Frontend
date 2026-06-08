@@ -41,7 +41,7 @@ const BrandStory = () => {
             viewport={{ once: true }}
             className="order-2 md:order-1"
           >
-            <span className="text-[10px] uppercase tracking-[0.4em] font-sans font-bold text-accent-dark mb-4 block">
+            <span className="text-xs uppercase tracking-widest font-sans font-bold text-accent-dark mb-4 block">
               The Heart of YDA
             </span>
             <h2 className="text-4xl md:text-6xl font-serif tracking-tight mb-8">
@@ -60,7 +60,7 @@ const BrandStory = () => {
             </div>
             <Link 
               href="/story"
-              className="inline-block px-10 py-4 border border-foreground/20 text-[10px] uppercase tracking-[0.2em] font-sans font-bold hover:bg-foreground hover:text-background transition-colors"
+              className="inline-block px-10 py-4 border border-foreground/20 text-xs uppercase tracking-[0.2em] font-sans font-bold hover:bg-foreground hover:text-background transition-colors"
             >
               Discover Our Roots
             </Link>

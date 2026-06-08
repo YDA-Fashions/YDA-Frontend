@@ -63,14 +63,14 @@ export default function OrderCertificateModal({
             <button
               type="button"
               onClick={onClose}
-              className="absolute top-4 right-4 p-2 text-black/30 hover:text-black transition-colors z-20"
+              className="absolute top-4 right-4 p-2 text-black/60 hover:text-black transition-colors z-20"
               aria-label="Close certificate"
             >
               <X size={20} strokeWidth={1.5} />
             </button>
 
             <div className="relative p-8 md:p-12 text-center">
-              <p className="text-[9px] uppercase tracking-[0.4em] font-black text-amber-800/70 mb-2">
+              <p className="text-xs uppercase tracking-widest font-black text-amber-800/70 mb-2">
                 Certificate of Authenticity
               </p>
               <h2
@@ -96,26 +96,26 @@ export default function OrderCertificateModal({
                   />
                   <span className="absolute inset-3 rounded-full border border-amber-600/30" />
                 </div>
-                <p className="mt-4 text-[10px] uppercase tracking-[0.25em] font-black text-amber-900/90 max-w-[200px] leading-relaxed">
+                <p className="mt-4 text-xs uppercase tracking-[0.25em] font-black text-amber-900/90 max-w-[200px] leading-relaxed">
                   Authentic Heritage Piece – YDA
                 </p>
               </div>
 
               <dl className="grid grid-cols-2 gap-4 text-left mb-8 font-sans text-sm">
                 <div>
-                  <dt className="text-[9px] uppercase tracking-widest font-black text-black/40">
+                  <dt className="text-xs uppercase tracking-widest font-black text-black/60">
                     Order Reference
                   </dt>
                   <dd className="font-semibold mt-1">#{orderRef}</dd>
                 </div>
                 <div>
-                  <dt className="text-[9px] uppercase tracking-widest font-black text-black/40">
+                  <dt className="text-xs uppercase tracking-widest font-black text-black/60">
                     Date
                   </dt>
                   <dd className="font-semibold mt-1">{orderDate}</dd>
                 </div>
                 <div className="col-span-2">
-                  <dt className="text-[9px] uppercase tracking-widest font-black text-black/40">
+                  <dt className="text-xs uppercase tracking-widest font-black text-black/60">
                     Total Curation
                   </dt>
                   <dd className="font-semibold mt-1 text-emerald-900">
@@ -126,7 +126,7 @@ export default function OrderCertificateModal({
 
               {order.order_items && order.order_items.length > 0 && (
                 <div className="border-t border-amber-200/50 pt-6">
-                  <p className="text-[9px] uppercase tracking-widest font-black text-black/40 mb-4">
+                  <p className="text-xs uppercase tracking-widest font-black text-black/60 mb-4">
                     Pieces in this curation
                   </p>
                   <div className="flex flex-wrap justify-center gap-3">
@@ -153,7 +153,7 @@ export default function OrderCertificateModal({
               <button
                 type="button"
                 onClick={onClose}
-                className="mt-10 w-full bg-black text-white py-4 text-[10px] uppercase tracking-[0.3em] font-black hover:bg-black/90 transition-all"
+                className="mt-10 w-full bg-black text-white py-4 text-xs uppercase tracking-wider font-black hover:bg-black/90 transition-all"
               >
                 Close Certificate
               </button>

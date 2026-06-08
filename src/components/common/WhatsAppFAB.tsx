@@ -88,7 +88,7 @@ export default function WhatsAppFAB() {
                 animate={{ opacity: 1, width: "auto", x: 0 }}
                 exit={{ opacity: 0, width: 0, x: -10 }}
                 transition={{ duration: 0.3 }}
-                className="ml-2.5 text-[10px] font-sans font-black tracking-widest uppercase whitespace-nowrap overflow-hidden"
+                className="ml-2.5 text-xs font-sans font-black tracking-widest uppercase whitespace-nowrap overflow-hidden"
               >
                 Chat with us
               </motion.span>

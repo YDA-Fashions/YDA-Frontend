@@ -44,7 +44,7 @@ export default async function SanganeriGujaratiPrintsPage() {
             <MotionP 
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-[10px] md:text-sm uppercase tracking-[0.5em] mb-4 font-bold"
+              className="text-xs md:text-sm uppercase tracking-widest mb-4 font-bold"
             >
               The Soul of the Loom
             </MotionP>
@@ -63,7 +63,7 @@ export default async function SanganeriGujaratiPrintsPage() {
             transition={{ delay: 1, duration: 1.5 }}
             className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4"
           >
-            <span className="text-[10px] uppercase tracking-[0.3em] text-white opacity-60">Begin the Narrative</span>
+            <span className="text-xs uppercase tracking-wider text-white opacity-60">Begin the Narrative</span>
             <div className="w-[1px] h-12 bg-white/40" />
           </MotionDiv>
         </section>
@@ -131,7 +131,7 @@ export default async function SanganeriGujaratiPrintsPage() {
           <div className="container mx-auto px-6">
             <MotionDiv initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }} className="text-center max-w-2xl mx-auto mb-20">
               <h2 className="text-4xl md:text-5xl font-serif mb-6 tracking-tight uppercase">Crafted, Not Made.</h2>
-              <p className="text-[10px] uppercase tracking-[0.4em] font-sans font-bold text-accent-dark mb-8">The Process Behind the Print</p>
+              <p className="text-xs uppercase tracking-widest font-sans font-bold text-accent-dark mb-8">The Process Behind the Print</p>
               <p className="text-foreground/50 text-sm leading-relaxed">
                 At YDA, our prints are more than just designs — they are living artifacts. Each fabric is treated as a canvas, where artisans apply pressure and pigments to bring ancient stories into modern silhouettes. A slow, meditative process that defies mass production.
               </p>
@@ -179,7 +179,7 @@ export default async function SanganeriGujaratiPrintsPage() {
         <section className="py-24 md:py-44 text-center">
             <MotionDiv initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }}>
               <h3 className="text-3xl font-serif italic opacity-30 mb-8 max-w-lg mx-auto">Explore the transition from heritage art to modern silhouettes.</h3>
-              <a href="/shop" className="inline-block px-12 py-4 border border-foreground text-[10px] uppercase tracking-[0.4em] font-bold hover:bg-foreground hover:text-white transition-all duration-500">
+              <a href="/shop" className="inline-block px-12 py-4 border border-foreground text-xs uppercase tracking-widest font-bold hover:bg-foreground hover:text-white transition-all duration-500">
                 Explore The Studio
               </a>
             </MotionDiv>

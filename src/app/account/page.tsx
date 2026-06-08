@@ -41,7 +41,7 @@ const AccountPage = () => {
   if (isAuthLoading || isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="animate-pulse text-[10px] uppercase tracking-[0.5em] font-black">Identifying...</div>
+        <div className="animate-pulse text-xs uppercase tracking-widest font-black">Identifying...</div>
       </div>
     );
   }
@@ -56,7 +56,7 @@ const AccountPage = () => {
           <div className="mb-12 md:mb-16 border-b border-black/5 pb-8">
             <Link 
               href="/" 
-              className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] font-black text-black/40 hover:text-black transition-colors mb-8"
+              className="inline-flex items-center gap-2 text-xs uppercase tracking-wider font-black text-black/60 hover:text-black transition-colors mb-8"
             >
               <ArrowLeft size={14} /> Back to Studio
             </Link>
@@ -75,16 +75,16 @@ const AccountPage = () => {
                 </div>
                 <div className="space-y-4">
                   <div>
-                    <p className="text-[10px] uppercase tracking-widest font-black text-black/40 mb-1">User ID</p>
+                    <p className="text-xs uppercase tracking-widest font-black text-black/60 mb-1">User ID</p>
                     <p className="text-xs font-mono break-all text-black/60">{user?.id}</p>
                   </div>
                   <div>
-                    <p className="text-[10px] uppercase tracking-widest font-black text-black/40 mb-1">Email</p>
+                    <p className="text-xs uppercase tracking-widest font-black text-black/60 mb-1">Email</p>
                     <p className="text-sm font-sans font-bold">{user?.email}</p>
                   </div>
                   <button 
                     onClick={() => signOut()}
-                    className="w-full mt-8 py-3 border border-black text-[10px] uppercase tracking-widest font-black hover:bg-black hover:text-white transition-all"
+                    className="w-full mt-8 py-3 border border-black text-xs uppercase tracking-widest font-black hover:bg-black hover:text-white transition-all"
                   >
                     Logout
                   </button>
@@ -109,14 +109,14 @@ const AccountPage = () => {
                         {lastOrder.shipping_address}
                       </p>
                     </div>
-                    <p className="text-[10px] text-black/40 italic">
+                    <p className="text-xs text-black/60 italic">
                       *Address automatically updated from your last order (#{lastOrder.id.slice(0,8).toUpperCase()})
                     </p>
                   </div>
                 ) : (
                   <div className="py-8 text-center border-2 border-dashed border-black/5 rounded-sm">
-                    <p className="text-xs uppercase tracking-widest text-black/30">No address saved yet</p>
-                    <Link href="/shop" className="text-[10px] uppercase tracking-widest font-bold mt-4 inline-block hover:underline">
+                    <p className="text-xs uppercase tracking-widest text-black/60">No address saved yet</p>
+                    <Link href="/shop" className="text-xs uppercase tracking-widest font-bold mt-4 inline-block hover:underline">
                       Make your first order
                     </Link>
                   </div>
@@ -127,7 +127,7 @@ const AccountPage = () => {
               <div className="bg-black text-white p-8 rounded-sm shadow-xl flex items-center justify-between group cursor-pointer" onClick={() => router.push('/orders')}>
                 <div>
                   <h3 className="text-xl font-serif italic mb-2">Order History</h3>
-                  <p className="text-[10px] uppercase tracking-widest text-white/60">View all your previous masterpieces</p>
+                  <p className="text-xs uppercase tracking-widest text-white/60">View all your previous masterpieces</p>
                 </div>
                 <div className="w-12 h-12 border border-white/20 rounded-full flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all">
                   <Package size={20} />

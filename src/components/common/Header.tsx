@@ -112,6 +112,7 @@ const Header = () => {
     { name: "Small Totes", href: "/small-tote-bags", previewImage: "/images/home-page-image/small-tote.jpg" },
     { name: "New Arrivals", href: "/new-arrivals", previewImage: "/images/home-page-image/gujarati-print-1.jpg" },
     { name: "Cushion Covers", href: "/cushion-covers", previewImage: "/images/home-page-image/cushion-1.jpg" },
+    { name: "Journal", href: "/blog", previewImage: "/images/home-page-image/sanganeri-print-1.jpg.png" },
     { name: "Our Story", href: "/story", previewImage: "/images/home-page-image/sanganeri-print-1.jpg.png" },
   ];
 
@@ -189,13 +190,13 @@ const Header = () => {
                 </div>
                 <button 
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="p-2.5 -mr-2 text-black/40 hover:text-black border border-black/8 rounded-full transition-colors"
+                  className="p-2.5 -mr-2 text-black/60 hover:text-black border border-black/8 rounded-full transition-colors"
                 >
                   <X size={28} strokeWidth={1} />
                 </button>
               </div>
               <nav className="flex flex-col gap-6 mt-4">
-                <p className="text-[9px] uppercase tracking-[0.35em] font-sans font-semibold text-[#8B7D6B] mb-2">Collections</p>
+                <p className="text-xs uppercase tracking-[0.35em] font-sans font-semibold text-[#8B7D6B] mb-2">Collections</p>
                 {navLinks.map((link) => (
                   <Link 
                     key={link.name} 
@@ -212,8 +213,8 @@ const Header = () => {
                 <div className="flex items-center gap-4 mb-8 p-4 bg-[#F5F1E8] border border-[#E8E2D6] rounded-sm">
                   <div className="w-10 h-10 rounded-full bg-[#F5F1E8] border border-[#E8E2D6] flex items-center justify-center font-serif italic text-lg text-[#8B7D6B]">Y</div>
                   <div>
-                    <p className="text-[9px] uppercase tracking-[0.3em] font-sans font-semibold text-black/80">YDA Studio</p>
-                    <p className="text-[9px] text-[#8B7D6B] uppercase tracking-[0.25em] font-sans mt-0.5">Handcrafted Heritage</p>
+                    <p className="text-xs uppercase tracking-wider font-sans font-semibold text-black/80">YDA Studio</p>
+                    <p className="text-xs text-[#8B7D6B] uppercase tracking-[0.25em] font-sans mt-0.5">Handcrafted Heritage</p>
                   </div>
                 </div>
               </div>
@@ -248,13 +249,13 @@ const Header = () => {
             >
               {/* Header inside Drawer */}
               <div className="flex justify-between items-center pb-6 border-b border-[#E8E2D6]/80">
-                <span className="text-[11px] uppercase tracking-[0.3em] font-sans font-semibold text-[#8B7D6B]">Search Curation</span>
+                <span className="text-[11px] uppercase tracking-wider font-sans font-semibold text-[#8B7D6B]">Search Curation</span>
                 <button 
                   onClick={() => {
                     setIsSearchOpen(false);
                     setSearchQuery("");
                   }}
-                  className="p-1.5 text-black/50 hover:text-black hover:rotate-90 transition-transform duration-300"
+                  className="p-1.5 text-black/70 hover:text-black hover:rotate-90 transition-transform duration-300"
                   aria-label="Close Search"
                 >
                   <X size={20} />
@@ -274,7 +275,7 @@ const Header = () => {
                 {searchQuery && (
                   <button 
                     onClick={() => setSearchQuery("")}
-                    className="absolute right-0 top-1/2 -translate-y-1/2 text-[9px] uppercase tracking-widest font-black text-black/30 hover:text-black"
+                    className="absolute right-0 top-1/2 -translate-y-1/2 text-xs uppercase tracking-widest font-black text-black/60 hover:text-black"
                   >
                     Clear
                   </button>
@@ -288,7 +289,7 @@ const Header = () => {
                   <div>
                     {filteredResults.length > 0 ? (
                       <div className="space-y-6">
-                        <p className="text-[9px] uppercase tracking-widest font-black text-black/30">
+                        <p className="text-xs uppercase tracking-widest font-black text-black/60">
                           Found {filteredResults.length} Creations
                         </p>
                         <div className="space-y-4">
@@ -311,18 +312,18 @@ const Header = () => {
                                 />
                               </div>
                               <div className="flex-grow">
-                                <p className="text-[7px] uppercase tracking-widest font-black text-black/40 mb-0.5">{product.category}</p>
+                                <p className="text-[7px] uppercase tracking-widest font-black text-black/60 mb-0.5">{product.category}</p>
                                 <h4 className="text-xs font-serif italic text-black/80 group-hover:text-black line-clamp-1">{product.name}</h4>
-                                <p className="text-[9px] font-sans font-bold text-black mt-0.5">₹{product.selling_price}</p>
+                                <p className="text-xs font-sans font-bold text-black mt-0.5">₹{product.selling_price}</p>
                               </div>
-                              <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0 text-black/50" />
+                              <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0 text-black/70" />
                             </Link>
                           ))}
                         </div>
                       </div>
                     ) : (
                       <div className="text-center py-16">
-                        <p className="text-sm font-serif italic text-black/40">No matching creations found.</p>
+                        <p className="text-sm font-serif italic text-black/60">No matching creations found.</p>
                       </div>
                     )}
                   </div>
@@ -331,13 +332,13 @@ const Header = () => {
                   <div className="space-y-8">
                     {/* Trending Section */}
                     <div>
-                      <h4 className="text-[9px] uppercase tracking-widest font-black text-black/40 mb-4">Trending Searches</h4>
+                      <h4 className="text-xs uppercase tracking-widest font-black text-black/60 mb-4">Trending Searches</h4>
                       <div className="flex flex-wrap gap-2">
                         {["Jungle Print", "Tote Bag", "Cushion Covers", "Lime", "Floral Print"].map((tag) => (
                           <button
                             key={tag}
                             onClick={() => setSearchQuery(tag)}
-                            className="text-[9px] uppercase tracking-widest font-black text-black/60 bg-[#F5F4F0] border border-[#EBE3D5]/60 hover:bg-black hover:text-white px-3 py-1.5 rounded-full transition-all duration-200"
+                            className="text-xs uppercase tracking-widest font-black text-black/60 bg-[#F5F4F0] border border-[#EBE3D5]/60 hover:bg-black hover:text-white px-3 py-1.5 rounded-full transition-all duration-200"
                           >
                             {tag}
                           </button>
@@ -350,7 +351,7 @@ const Header = () => {
 
                     {/* Bestselling Creations */}
                     <div>
-                      <h4 className="text-[9px] uppercase tracking-widest font-black text-black/40 mb-4">Featured Masterpieces</h4>
+                      <h4 className="text-xs uppercase tracking-widest font-black text-black/60 mb-4">Featured Masterpieces</h4>
                       <div className="space-y-4">
                         {PRODUCTS.slice(0, 3).map((product) => (
                           <Link
@@ -375,9 +376,9 @@ const Header = () => {
                                 Bestseller
                               </span>
                               <h4 className="text-xs font-serif italic text-black/80 group-hover:text-black line-clamp-1">{product.name}</h4>
-                              <p className="text-[9px] font-sans font-bold text-black mt-0.5">₹{product.selling_price}</p>
+                              <p className="text-xs font-sans font-bold text-black mt-0.5">₹{product.selling_price}</p>
                             </div>
-                            <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0 text-black/50" />
+                            <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0 text-black/70" />
                           </Link>
                         ))}
                       </div>
@@ -478,7 +479,7 @@ const Header = () => {
               >
                 <ShoppingBag size={22} strokeWidth={1.5} />
                 {isMounted && cartItemCount > 0 && (
-                  <span className="absolute top-0 right-0 min-w-[18px] h-[18px] px-1 bg-[#C9A84C] text-white text-[9px] flex items-center justify-center rounded-full font-sans font-bold shadow-sm ring-2 ring-[#FDFBF7]">
+                  <span className="absolute top-0 right-0 min-w-[18px] h-[18px] px-1 bg-[#C9A84C] text-white text-xs flex items-center justify-center rounded-full font-sans font-bold shadow-sm ring-2 ring-[#FDFBF7]">
                     {cartItemCount}
                   </span>
                 )}
@@ -509,7 +510,7 @@ const Header = () => {
                       className="absolute right-0 mt-3 w-80 bg-white border border-[#E8E2D6] p-7 shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-[60]"
                     >
                       <div className="mb-6 pb-6 border-b border-[#E8E2D6]">
-                        <p className="text-[10px] uppercase tracking-[0.25em] font-sans font-semibold text-[#8B7D6B] mb-2">Signed in as</p>
+                        <p className="text-xs uppercase tracking-[0.25em] font-sans font-semibold text-[#8B7D6B] mb-2">Signed in as</p>
                         <p className="text-base font-serif italic truncate text-black">{user.email}</p>
                       </div>
                       <div className="space-y-5">

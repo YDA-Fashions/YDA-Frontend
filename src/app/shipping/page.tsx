@@ -20,12 +20,12 @@ export default function ShippingPolicy() {
             animate={{ opacity: 1, y: 0 }}
             className="space-y-4 max-w-3xl mx-auto"
           >
-            <span className="text-[10px] uppercase tracking-[0.5em] font-black text-black/40 dark:text-white/40 block">YDA Fashions</span>
+            <span className="text-xs uppercase tracking-widest font-black text-black/60 dark:text-white/60 block">YDA Fashions</span>
             <h1 className="text-4xl md:text-6xl font-serif tracking-tight text-black dark:text-white italic">
               Shipping Policy
             </h1>
             <div className="w-16 h-[1px] bg-black/10 dark:bg-white/10 mx-auto mt-6 mb-4" />
-            <p className="text-[10px] md:text-xs uppercase tracking-[0.3em] font-medium text-black/50 dark:text-white/50">
+            <p className="text-xs md:text-xs uppercase tracking-wider font-medium text-black/70 dark:text-white/70">
               Artisan Curation & Delivery Timelines
             </p>
           </motion.div>
@@ -38,7 +38,7 @@ export default function ShippingPolicy() {
             <div className="w-full lg:w-[35%] shrink-0">
               <div className="lg:sticky lg:top-32 space-y-8">
                 <div className="bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-8 shadow-sm">
-                  <h3 className="text-[10px] uppercase tracking-[0.3em] font-black text-black/40 dark:text-white/40 mb-6">At a Glance</h3>
+                  <h3 className="text-xs uppercase tracking-wider font-black text-black/60 dark:text-white/60 mb-6">At a Glance</h3>
                   
                   <div className="space-y-6">
                     <div className="flex gap-4">
@@ -73,14 +73,14 @@ export default function ShippingPolicy() {
                   </div>
 
                   <div className="border-t border-black/5 dark:border-white/10 mt-8 pt-8">
-                    <p className="text-xs text-black/50 dark:text-white/50 leading-relaxed mb-4">
+                    <p className="text-xs text-black/70 dark:text-white/70 leading-relaxed mb-4">
                       Need custom dispatch options or urgent delivery for a special occasion?
                     </p>
                     <a 
                       href="https://wa.me/917877646756?text=Hello%20YDA!%20I%20have%20a%20shipping%20query."
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-[10px] uppercase tracking-widest font-black text-emerald-600 dark:text-emerald-400 hover:underline"
+                      className="inline-flex items-center gap-2 text-xs uppercase tracking-widest font-black text-emerald-600 dark:text-emerald-400 hover:underline"
                     >
                       <MessageCircle size={14} />
                       Inquire via WhatsApp
@@ -95,9 +95,9 @@ export default function ShippingPolicy() {
               <div className="bg-white dark:bg-[#121212] p-8 md:p-12 border border-black/5 dark:border-white/10 shadow-sm space-y-10">
                 
                 <section className="space-y-4">
-                  <div className="flex items-center gap-3 text-black/40 dark:text-white/40">
+                  <div className="flex items-center gap-3 text-black/60 dark:text-white/60">
                     <span className="font-serif italic text-lg">01 /</span>
-                    <h2 className="text-[10px] uppercase tracking-[0.3em] font-black">Processing & Delivery Timelines</h2>
+                    <h2 className="text-xs uppercase tracking-wider font-black">Processing & Delivery Timelines</h2>
                   </div>
                   <div className="prose prose-sm dark:prose-invert text-black/70 dark:text-white/70 max-w-none leading-relaxed space-y-4">
                     <p>
@@ -112,9 +112,9 @@ export default function ShippingPolicy() {
                 <div className="h-px bg-black/5 dark:bg-white/10" />
 
                 <section className="space-y-4">
-                  <div className="flex items-center gap-3 text-black/40 dark:text-white/40">
+                  <div className="flex items-center gap-3 text-black/60 dark:text-white/60">
                     <span className="font-serif italic text-lg">02 /</span>
-                    <h2 className="text-[10px] uppercase tracking-[0.3em] font-black">Shipping Charges & Tiers</h2>
+                    <h2 className="text-xs uppercase tracking-wider font-black">Shipping Charges & Tiers</h2>
                   </div>
                   <div className="prose prose-sm dark:prose-invert text-black/70 dark:text-white/70 max-w-none leading-relaxed space-y-4">
                     <p>
@@ -129,9 +129,9 @@ export default function ShippingPolicy() {
                 <div className="h-px bg-black/5 dark:bg-white/10" />
 
                 <section className="space-y-4">
-                  <div className="flex items-center gap-3 text-black/40 dark:text-white/40">
+                  <div className="flex items-center gap-3 text-black/60 dark:text-white/60">
                     <span className="font-serif italic text-lg">03 /</span>
-                    <h2 className="text-[10px] uppercase tracking-[0.3em] font-black">Delivery & Addresses</h2>
+                    <h2 className="text-xs uppercase tracking-wider font-black">Delivery & Addresses</h2>
                   </div>
                   <div className="prose prose-sm dark:prose-invert text-black/70 dark:text-white/70 max-w-none leading-relaxed space-y-4">
                     <p>
@@ -146,9 +146,9 @@ export default function ShippingPolicy() {
                 <div className="h-px bg-black/5 dark:bg-white/10" />
 
                 <section className="space-y-4">
-                  <div className="flex items-center gap-3 text-black/40 dark:text-white/40">
+                  <div className="flex items-center gap-3 text-black/60 dark:text-white/60">
                     <span className="font-serif italic text-lg">04 /</span>
-                    <h2 className="text-[10px] uppercase tracking-[0.3em] font-black">Cash on Delivery (COD)</h2>
+                    <h2 className="text-xs uppercase tracking-wider font-black">Cash on Delivery (COD)</h2>
                   </div>
                   <div className="prose prose-sm dark:prose-invert text-black/70 dark:text-white/70 max-w-none leading-relaxed space-y-4">
                     <p>

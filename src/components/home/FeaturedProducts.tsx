@@ -20,7 +20,7 @@ const FeaturedProducts = () => {
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="text-[10px] uppercase tracking-[0.4em] font-sans font-bold text-foreground/40 mb-4 block"
+              className="text-xs uppercase tracking-widest font-sans font-bold text-foreground/40 mb-4 block"
             >
               Curated Essentials
             </motion.span>

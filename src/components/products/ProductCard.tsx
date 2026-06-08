@@ -70,15 +70,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickAdd }) => {
             )}
             
             <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
-              <span className="text-[8px] uppercase tracking-[0.2em] font-bold bg-white/90 backdrop-blur-md text-black px-3 py-1.5 shadow-sm w-fit">
+              <span className="text-[11px] uppercase tracking-[0.2em] font-bold bg-white/90 backdrop-blur-md text-black px-3 py-1.5 shadow-sm w-fit">
                 Jaipur Heritage
               </span>
               {isSoldOut ? (
-                <span className="text-[8px] uppercase tracking-[0.2em] font-black bg-red-600 text-white px-3 py-1.5 shadow-sm w-fit">
+                <span className="text-[11px] uppercase tracking-[0.2em] font-black bg-red-600 text-white px-3 py-1.5 shadow-sm w-fit">
                   Sold Out
                 </span>
               ) : product.stock < 4 ? (
-                <span className="text-[8px] uppercase tracking-[0.2em] font-black bg-orange-500 text-white px-3 py-1.5 shadow-sm w-fit animate-pulse">
+                <span className="text-[11px] uppercase tracking-[0.2em] font-black bg-orange-500 text-white px-3 py-1.5 shadow-sm w-fit animate-pulse">
                   Only {product.stock} Left!
                 </span>
               ) : null}
@@ -87,7 +87,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickAdd }) => {
 
           <div className="p-3 md:p-5 flex flex-col gap-2 md:gap-3">
             <div className="flex flex-col gap-0.5 md:gap-1">
-              <span className="text-[7px] md:text-[8px] uppercase tracking-[0.3em] font-black text-accent-dark/60">{product.category}</span>
+              <span className="text-[7px] md:text-[11px] uppercase tracking-wider font-black text-accent-dark/60">{product.category}</span>
               <h3 className="text-xs md:text-base font-serif italic tracking-tight text-foreground line-clamp-1">
                 {product.name}
               </h3>
@@ -98,11 +98,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickAdd }) => {
                 <span className="text-xs md:text-sm font-black text-black">
                   ₹{product.selling_price.toLocaleString()}
                 </span>
-                <span className="text-[9px] md:text-[10px] text-black/20 line-through">
+                <span className="text-xs md:text-xs text-black/20 line-through">
                   ₹{product.original_price.toLocaleString()}
                 </span>
               </div>
-              <span className="text-[7px] md:text-[8px] font-black text-emerald-600 bg-emerald-50 px-1.5 md:px-2 py-0.5 tracking-tighter uppercase">
+              <span className="text-[7px] md:text-[11px] font-black text-emerald-600 bg-emerald-50 px-1.5 md:px-2 py-0.5 tracking-tighter uppercase">
                 {discount}% Off
               </span>
             </div>
@@ -116,9 +116,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickAdd }) => {
             onClick={!isSoldOut ? handleAddToCart : undefined}
             disabled={isSoldOut}
             aria-label={isSoldOut ? "Sold out" : `Add ${product.name} to cart`}
-            className={`w-full py-3 md:py-4 text-[8px] md:text-[9px] tracking-[0.2em] md:tracking-[0.3em] font-black uppercase transition-all flex items-center justify-center gap-2 group/btn rounded-full md:rounded-none ${
+            className={`w-full py-3 md:py-4 text-[11px] md:text-xs tracking-[0.2em] md:tracking-wider font-black uppercase transition-all flex items-center justify-center gap-2 group/btn rounded-full md:rounded-none ${
               isSoldOut
-                ? "bg-black/10 text-black/40 cursor-not-allowed"
+                ? "bg-black/10 text-black/60 cursor-not-allowed"
                 : "bg-black text-white hover:bg-accent-dark"
             }`}
           >

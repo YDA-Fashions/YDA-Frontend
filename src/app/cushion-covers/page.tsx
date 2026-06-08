@@ -29,7 +29,7 @@ export default async function CushionCoversPage() {
             {/* Left: Text Content with solid luxury background */}
             <div className="flex flex-col justify-center px-8 py-16 md:px-16 lg:px-24 bg-black text-white dark:bg-[#0B0B0B]">
               <div className="max-w-xl">
-                <span className="text-[10px] uppercase tracking-[0.4em] font-black text-white/50 mb-4 block">Handcrafted Collection</span>
+                <span className="text-xs uppercase tracking-widest font-black text-white/70 mb-4 block">Handcrafted Collection</span>
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif tracking-tight uppercase leading-tight mb-6">
                   Cushion <br />
                   <span className="italic font-normal text-white/95 lowercase">covers</span>

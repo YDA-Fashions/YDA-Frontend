@@ -43,10 +43,10 @@ const CartToast = () => {
             <div className="flex-grow min-w-0">
               <div className="flex items-center gap-2 mb-1">
                 <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                <span className="text-[9px] md:text-[10px] uppercase tracking-[0.2em] md:tracking-[0.3em] font-black text-black/50">Added to Selection</span>
+                <span className="text-xs md:text-xs uppercase tracking-[0.2em] md:tracking-wider font-black text-black/70">Added to Selection</span>
               </div>
               <h4 className="text-[14px] md:text-[15px] font-serif italic mb-0.5 md:mb-1 truncate text-black">{lastAddedItem.name}</h4>
-              <p className="text-[11px] md:text-[12px] font-black tracking-tight text-black/40">₹{lastAddedItem.selling_price.toLocaleString()}</p>
+              <p className="text-xs md:text-[12px] font-black tracking-tight text-black/60">₹{lastAddedItem.selling_price.toLocaleString()}</p>
             </div>
 
             {/* Actions */}
@@ -54,7 +54,7 @@ const CartToast = () => {
               <Link 
                 href="/cart"
                 onClick={() => setCartToastOpen(false)}
-                className="text-[10px] md:text-[11px] uppercase tracking-[0.2em] font-black text-black hover:opacity-60 transition-all border-b border-black pb-0.5 whitespace-nowrap"
+                className="text-xs md:text-xs uppercase tracking-[0.2em] font-black text-black hover:opacity-60 transition-all border-b border-black pb-0.5 whitespace-nowrap"
               >
                 View
               </Link>
