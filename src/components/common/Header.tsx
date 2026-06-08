@@ -210,13 +210,24 @@ const Header = () => {
               </nav>
 
               <div className="mt-auto pt-12 border-t border-[#E8E2D6]/60">
-                <div className="flex items-center gap-4 mb-8 p-4 bg-[#F5F1E8] border border-[#E8E2D6] rounded-sm">
-                  <div className="w-10 h-10 rounded-full bg-[#F5F1E8] border border-[#E8E2D6] flex items-center justify-center font-serif italic text-lg text-[#8B7D6B]">Y</div>
-                  <div>
-                    <p className="text-xs uppercase tracking-wider font-sans font-semibold text-black/80">YDA Studio</p>
-                    <p className="text-xs text-[#8B7D6B] uppercase tracking-[0.25em] font-sans mt-0.5">Handcrafted Heritage</p>
+                <Link
+                  href={user ? "/account" : "/login"}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center gap-4 mb-8 p-4 bg-[#F5F1E8] border border-[#E8E2D6] rounded-sm hover:bg-[#EDE8DC] hover:border-[#8B7D6B]/30 transition-colors active:scale-[0.99]"
+                >
+                  <div className="w-10 h-10 rounded-full bg-white border border-[#E8E2D6] flex items-center justify-center font-serif italic text-lg text-[#8B7D6B]">
+                    {user?.email?.charAt(0).toUpperCase() || "Y"}
                   </div>
-                </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs uppercase tracking-wider font-sans font-semibold text-black/80">
+                      {user ? "My Account" : "YDA Studio"}
+                    </p>
+                    <p className="text-xs text-[#8B7D6B] uppercase tracking-[0.25em] font-sans mt-0.5 truncate">
+                      {user ? user.email : "Sign in · Handcrafted Heritage"}
+                    </p>
+                  </div>
+                  <ArrowRight size={16} className="text-[#8B7D6B] shrink-0" />
+                </Link>
               </div>
             </div>
           </motion.div>

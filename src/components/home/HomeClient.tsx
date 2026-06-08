@@ -259,7 +259,7 @@ export default function HomeClient({ initialProducts }: HomeClientProps) {
             </motion.div>
 
             {latestProducts.length > 0 ? (
-              <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 md:gap-x-10 gap-y-12 md:gap-y-24">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-y-10 md:gap-x-10 md:gap-y-24">
                 {latestProducts.map((product) => (
                   <div key={product.id} className="w-full">
                     <ProductCard product={product} onQuickAdd={handleQuickAdd} />

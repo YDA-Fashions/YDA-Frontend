@@ -10,29 +10,33 @@ import { Button } from "@/components/ui/Button";
 const BANNERS = [
   {
     image: "/images/Slider-image-C/Slider-image-C1.jpg",
-    mobileImage: "/images/mobile-slider-/mobile-slider-1.jpg",
     title: "Hand-Block Heritage",
     subtitle: "Jaipur's soul in every stitch.",
+    mobileBg:
+      "bg-gradient-to-br from-[#2A2218] via-[#5C4A38] to-[#9A7B5A]",
   },
   {
     image: "/images/Slider-image-C/Slider-image-C2.jpg",
-    mobileImage: "/images/mobile-slider-/mobile-slider-2.jpg",
     title: "Manoj's Mastery",
     subtitle: "20 years of tailoring excellence.",
+    mobileBg:
+      "bg-gradient-to-br from-[#1E2420] via-[#3D4F42] to-[#6B8570]",
   },
   {
     image: "/images/Slider-image-C/Slider-image-C3.jpg",
-    mobileImage: "/images/mobile-slider-/mobile-slider-3.jpg",
     title: "The Art of Detail",
     subtitle: "Reviving Sanganeri Chapai Culture.",
+    mobileBg:
+      "bg-gradient-to-br from-[#261C1A] via-[#5A3D38] to-[#A67C6B]",
   },
   {
     image: "/images/Slider-image-C/Slider-image-C4.jpg",
-    mobileImage: "/images/mobile-slider-/mobile-slider-4.jpg",
     title: "Timeless Luxury",
     subtitle: "Crafted for the modern wardrobe.",
+    mobileBg:
+      "bg-gradient-to-br from-[#1A1A22] via-[#3A3A4A] to-[#7A6B8A]",
   },
-];
+] as const;
 
 const Hero = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -49,29 +53,30 @@ const Hero = () => {
 
   const currentBanner = BANNERS[currentIndex];
 
-  const renderBannerImage = (banner: (typeof BANNERS)[0], priority = false) => (
-    <>
-      <Image
-        src={banner.mobileImage}
-        alt={banner.title}
-        fill
-        priority={priority}
-        fetchPriority={priority ? "high" : "auto"}
-        quality={75}
-        className="object-cover brightness-[0.75] md:hidden"
-        sizes="100vw"
-      />
-      <Image
-        src={banner.image}
-        alt={banner.title}
-        fill
-        priority={priority}
-        fetchPriority={priority ? "high" : "auto"}
-        quality={75}
-        className="hidden object-cover brightness-[0.75] md:block"
-        sizes="100vw"
-      />
-    </>
+  const renderMobileBackground = (banner: (typeof BANNERS)[number]) => (
+    <div className={`absolute inset-0 md:hidden ${banner.mobileBg}`}>
+      <div className="absolute inset-0 opacity-[0.12] bg-[radial-gradient(circle_at_30%_20%,white,transparent_55%)]" />
+      <div className="absolute inset-0 opacity-20 bg-[repeating-linear-gradient(45deg,transparent,transparent_12px,rgba(255,255,255,0.04)_12px,rgba(255,255,255,0.04)_24px)]" />
+      <p className="absolute -right-4 top-1/2 -translate-y-1/2 text-[7rem] font-serif italic text-white/[0.06] leading-none select-none pointer-events-none">
+        YDA
+      </p>
+    </div>
+  );
+
+  const renderDesktopImage = (
+    banner: (typeof BANNERS)[number],
+    priority = false
+  ) => (
+    <Image
+      src={banner.image}
+      alt={banner.title}
+      fill
+      priority={priority}
+      fetchPriority={priority ? "high" : "auto"}
+      quality={75}
+      className="hidden object-cover brightness-[0.75] md:block"
+      sizes="100vw"
+    />
   );
 
   return (
@@ -79,10 +84,11 @@ const Hero = () => {
       <div className="absolute inset-0 z-0">
         {!isCarouselReady ? (
           <div className="absolute inset-0">
-            {renderBannerImage(BANNERS[0], true)}
-            <div className="absolute inset-0 bg-black/30 md:bg-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20 md:bg-gradient-to-b md:from-black/30 md:via-transparent md:to-black/60" />
-            <div className="absolute inset-0 bg-gradient-to-tr from-black/60 via-transparent to-transparent opacity-60" />
+            {renderMobileBackground(BANNERS[0])}
+            {renderDesktopImage(BANNERS[0], true)}
+            <div className="absolute inset-0 bg-black/20 md:bg-black/30" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/10 md:bg-gradient-to-b md:from-black/30 md:via-transparent md:to-black/60" />
+            <div className="absolute inset-0 bg-gradient-to-tr from-black/40 via-transparent to-transparent opacity-50 md:opacity-60" />
           </div>
         ) : (
           <AnimatePresence initial={false}>
@@ -95,16 +101,17 @@ const Hero = () => {
               className="absolute inset-0"
             >
               <motion.div
-                initial={{ scale: 1.1 }}
+                initial={{ scale: 1.05 }}
                 animate={{ scale: 1 }}
                 transition={{ duration: 8, ease: "easeOut" }}
                 className="absolute inset-0"
               >
-                {renderBannerImage(currentBanner, currentIndex === 0)}
+                {renderMobileBackground(currentBanner)}
+                {renderDesktopImage(currentBanner, currentIndex === 0)}
               </motion.div>
-              <div className="absolute inset-0 bg-black/30 md:bg-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20 md:bg-gradient-to-b md:from-black/30 md:via-transparent md:to-black/60" />
-              <div className="absolute inset-0 bg-gradient-to-tr from-black/60 via-transparent to-transparent opacity-60" />
+              <div className="absolute inset-0 bg-black/20 md:bg-black/30" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/10 md:bg-gradient-to-b md:from-black/30 md:via-transparent md:to-black/60" />
+              <div className="absolute inset-0 bg-gradient-to-tr from-black/40 via-transparent to-transparent opacity-50 md:opacity-60" />
             </motion.div>
           </AnimatePresence>
         )}
